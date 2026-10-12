@@ -1,0 +1,99 @@
+{% comment %}
+  Redline footer social icons.
+  URLs come from Theme settings > Social media.
+  Optional custom icons can be passed from the footer section.
+
+  Accepts:
+  - class: {String} optional class on the <ul>
+  - icon_facebook / icon_twitter / icon_instagram / icon_linkedin: {Image} optional
+{% endcomment %}
+
+<ul class="list-unstyled redline-footer__social{% if class %} {{ class }}{% endif %}" role="list">
+  {%- if settings.social_facebook_link != blank -%}
+    <li class="redline-footer__social-item">
+      <a
+        href="{{ settings.social_facebook_link }}"
+        class="redline-footer__social-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {%- if icon_facebook != blank -%}
+          {{
+            icon_facebook
+            | image_url: width: 80
+            | image_tag: class: 'redline-footer__social-icon', loading: 'lazy', alt: 'Facebook'
+          }}
+        {%- else -%}
+          <span class="svg-wrapper">{{- 'icon-facebook.svg' | inline_asset_content -}}</span>
+        {%- endif -%}
+        <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_twitter_link != blank -%}
+    <li class="redline-footer__social-item">
+      <a
+        href="{{ settings.social_twitter_link }}"
+        class="redline-footer__social-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {%- if icon_twitter != blank -%}
+          {{
+            icon_twitter
+            | image_url: width: 80
+            | image_tag: class: 'redline-footer__social-icon', loading: 'lazy', alt: 'X'
+          }}
+        {%- else -%}
+          <span class="svg-wrapper">{{- 'icon-twitter.svg' | inline_asset_content -}}</span>
+        {%- endif -%}
+        <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_instagram_link != blank -%}
+    <li class="redline-footer__social-item">
+      <a
+        href="{{ settings.social_instagram_link }}"
+        class="redline-footer__social-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {%- if icon_instagram != blank -%}
+          {{
+            icon_instagram
+            | image_url: width: 80
+            | image_tag: class: 'redline-footer__social-icon', loading: 'lazy', alt: 'Instagram'
+          }}
+        {%- else -%}
+          <span class="svg-wrapper">{{- 'icon-instagram.svg' | inline_asset_content -}}</span>
+        {%- endif -%}
+        <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_linkedin_link != blank -%}
+    <li class="redline-footer__social-item">
+      <a
+        href="{{ settings.social_linkedin_link }}"
+        class="redline-footer__social-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {%- if icon_linkedin != blank -%}
+          {{
+            icon_linkedin
+            | image_url: width: 80
+            | image_tag: class: 'redline-footer__social-icon', loading: 'lazy', alt: 'LinkedIn'
+          }}
+        {%- else -%}
+          <span class="redline-footer__social-fallback" aria-hidden="true">in</span>
+        {%- endif -%}
+        <span class="visually-hidden">LinkedIn</span>
+      </a>
+    </li>
+  {%- endif -%}
+</ul>

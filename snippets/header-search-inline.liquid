@@ -1,0 +1,74 @@
+{% comment %}
+  Renders the Redline inline header search bar (visible, not modal).
+
+  Accepts:
+  - input_id: {String} Id for the search input element (required)
+
+  Usage:
+  {% render 'header-search-inline', input_id: 'HeaderSearchInline' %}
+{% endcomment %}
+
+{%- liquid
+  assign search_placeholder = section.settings.search_placeholder | default: 'Search appliances, brands and more...'
+-%}
+
+<div class="header-search-inline">
+  {%- if settings.predictive_search_enabled -%}
+    <predictive-search class="header-search-inline__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+  {%- else -%}
+    <search-form class="header-search-inline__form">
+  {%- endif -%}
+  <form action="{{ routes.search_url }}" method="get" role="search" class="header-search-inline__form-inner">
+    <label class="visually-hidden" for="{{ input_id }}">{{ 'general.search.search' | t }}</label>
+    <input
+      class="header-search-inline__input"
+      id="{{ input_id }}"
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ search_placeholder | escape }}"
+      {%- if settings.predictive_search_enabled -%}
+        role="combobox"
+        aria-expanded="false"
+        aria-owns="predictive-search-results-inline"
+        aria-controls="predictive-search-results-inline"
+        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+      {%- endif -%}
+    >
+    <input type="hidden" name="options[prefix]" value="last">
+    <button type="submit" class="header-search-inline__submit" aria-label="{{ 'general.search.search' | t }}">
+      {%- if section.settings.icon_search != blank -%}
+        {{
+          section.settings.icon_search
+          | image_url: width: 48
+          | image_tag: class: 'header-search-inline__submit-icon', loading: 'lazy', alt: ''
+        }}
+      {%- else -%}
+        <span class="svg-wrapper header-search-inline__submit-icon">
+          {{- 'icon-search.svg' | inline_asset_content -}}
+        </span>
+      {%- endif -%}
+    </button>
+  </form>
+  {%- if settings.predictive_search_enabled -%}
+    <div
+      id="predictive-search-results-inline"
+      class="predictive-search predictive-search--header header-search-inline__results"
+      tabindex="-1"
+      data-predictive-search
+    >
+      <div class="predictive-search__loading-state loading__spinner" hidden>
+        {{ 'loading-spinner.svg' | inline_asset_content }}
+      </div>
+    </div>
+    <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+    </predictive-search>
+  {%- else -%}
+    </search-form>
+  {%- endif -%}
+</div>

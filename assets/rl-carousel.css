@@ -1,0 +1,22 @@
+/* ==========================================================================
+   rl-carousel.css — layout for the reusable infinite carousel (rl-carousel.js)
+   Cards per screen + gap come from variables so CSS is the single source of truth:
+     --car-pv-d / -t / -m   (desktop / tablet / mobile cards, decimals allowed)
+     --car-gap-d / -t / -m
+   ========================================================================== */
+.rl-car { --car-pv: var(--car-pv-d, 3); --car-gap: var(--car-gap-d, 24px); }
+@media (max-width: 989px) { .rl-car { --car-pv: var(--car-pv-t, 2); --car-gap: var(--car-gap-t, 20px); } }
+@media (max-width: 749px) { .rl-car { --car-pv: var(--car-pv-m, 1); --car-gap: var(--car-gap-m, 16px); } }
+
+.rl-car__viewport { overflow: hidden; cursor: grab; touch-action: pan-y; -webkit-user-select: none; user-select: none; padding-bottom: 10px; }
+.rl-car__viewport.is-dragging { cursor: grabbing; }
+.rl-car__viewport:focus-visible { outline: 2px solid var(--rl-heading, #000); outline-offset: -2px; }
+.rl-car__track { display: flex; gap: var(--car-gap); will-change: transform; }
+.rl-car__slide { flex: 0 0 calc((100% - var(--car-gap) * (var(--car-pv) - 1)) / var(--car-pv)); min-width: 0; }
+.rl-car__slide img { -webkit-user-drag: none; }
+
+/* Stepper (short line with a moving red segment) */
+.rl-car__stepper-wrap { padding: 0 20px; }
+.rl-car__stepper { position: relative; width: 100%; max-width: var(--stepper-w, 240px); height: 4px; margin: 0 auto; background: var(--rl-track, #eee); border-radius: 4px; cursor: pointer; }
+.rl-car__stepper::before { content: ""; position: absolute; inset: -10px 0; }
+.rl-car__thumb { position: absolute; top: -1px; left: 0; height: 6px; width: 20%; background: var(--rl-accent, #d0021b); border-radius: 6px; transition: left .4s ease, width .3s ease; }

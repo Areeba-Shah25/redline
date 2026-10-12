@@ -1,0 +1,86 @@
+/* rl-split-banners.css — 1–3 side-by-side photo banners (Instant Pot / Ecovacs style). Pure CSS.
+   Per-card modifiers: --light | --dark, --left | --right, --fill | --outline (button) */
+.rl-split__grid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: var(--sb-gap, 14px); margin: 0; padding: 0; list-style: none; }
+.rl-split__item { margin: 0; min-width: 0; list-style: none; }
+
+.rl-split__card { position: relative; display: flex; align-items: center; height: 100%; min-height: var(--sb-h, 260px); overflow: hidden; border-radius: var(--sb-radius, 8px); background: var(--sb-fade, #fff); box-shadow: 0 8px 28px rgba(0, 0, 0, .08); }
+ .rl-split__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.rl-split__media img, .rl-split__media svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Overlay = merchant colour (--sb-fade) at merchant opacity (--sb-op). No colour maths needed. */
+.rl-split__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--sb-fade, #ffffff);
+  opacity: var(--sb-op, 0.85);
+}
+/* "Fade" type: a mask makes the overlay solid across the text area, then it melts away over the photo */
+.rl-split__card--left .rl-split__overlay { -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(var(--sb-tw, 58%) + 4%), transparent calc(var(--sb-tw, 58%) + 34%)); mask-image: linear-gradient(to right, #000 0, #000 calc(var(--sb-tw, 58%) + 4%), transparent calc(var(--sb-tw, 58%) + 34%)); }
+.rl-split__card--right .rl-split__overlay { -webkit-mask-image: linear-gradient(to left, #000 0, #000 calc(var(--sb-tw, 58%) + 4%), transparent calc(var(--sb-tw, 58%) + 34%)); mask-image: linear-gradient(to left, #000 0, #000 calc(var(--sb-tw, 58%) + 4%), transparent calc(var(--sb-tw, 58%) + 34%)); }
+/* "Tint" type: one flat colour over the whole photo (sits inside the photo so it also works on mobile) */
+.rl-split__tint {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--sb-fade, #ffffff);
+  opacity: var(--sb-op, 0.85);
+}
+.rl-split__card--tint .rl-split__overlay { display: none; }
+
+.rl-split__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 28px 32px;
+  display: flex;
+}
+.rl-split__card--right .rl-split__content { justify-content: flex-end; }
+.rl-split__text { width: 100%; max-width: var(--sb-tw, 58%); }
+
+.rl-split__heading { font-size: clamp(20px, 2.3vw, 30px); font-weight: 700; line-height: 1.15; letter-spacing: -.01em; margin: 0 0 14px; }
+.rl-split__desc { font-size: 14px; line-height: 1.55; margin: 0 0 22px; }
+.rl-split__desc p { margin: 0 0 .5em; }
+.rl-split__desc p:last-child { margin-bottom: 0; }
+
+/* Light card = dark text, Dark card = white text */
+.rl-split__card--light { color: var(--rl-text, #444); }
+.rl-split__card--light .rl-split__heading { color: var(--rl-heading, #1a1a1a); }
+.rl-split__card--dark { color: rgba(255, 255, 255, .88); }
+.rl-split__card--dark .rl-split__heading { color: #fff; }
+
+.rl-split__btn { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; text-decoration: none; padding: 13px 26px; border-radius: 4px; border: 1px solid transparent; transition: transform .2s ease, filter .2s ease, background .2s ease, color .2s ease; }
+.rl-split__btn--fill { background: var(--rl-accent, #d0021b) linear-gradient(180deg, rgba(255,255,255,.14), rgba(0,0,0,.10)); color: #fff; box-shadow: 0 6px 16px -6px var(--rl-accent, #d0021b); }
+.rl-split__btn--fill:hover { filter: brightness(.92); transform: translateY(-1px); }
+.rl-split__btn--outline { background: transparent; color: currentColor; border-color: currentColor; }
+.rl-split__card--light .rl-split__btn--outline { color: var(--rl-heading, #1a1a1a); }
+.rl-split__card--dark .rl-split__btn--outline { color: #fff; border-color: rgba(255, 255, 255, .7); }
+.rl-split__btn--outline:hover { background: rgba(127, 127, 127, .15); transform: translateY(-1px); }
+.rl-split__btn:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 3px; }
+
+@media (max-width: 989px) {
+  .rl-split__content { padding: 24px 22px; }
+  .rl-split__text { max-width: 72%; }
+}
+@media (max-width: 749px) {
+  .rl-split__grid { grid-auto-flow: row; grid-auto-columns: auto; }
+  /* photo on top, text below on a solid panel (easier to read) */
+  .rl-split__card { flex-direction: column; align-items: stretch; min-height: 0; }
+  .rl-split__media { position: relative; inset: auto; height: var(--sb-mh, 200px); flex: 0 0 var(--sb-mh, 200px); }
+  .rl-split__overlay { display: none; }
+  .rl-split__content { background: var(--sb-fade, #fff); padding: 22px 20px 26px; justify-content: flex-start !important; }
+  .rl-split__text { max-width: none; }
+  .rl-split__desc { font-size: 14px; margin-bottom: 18px; }
+}
+.rl-split__overlay {
+  background: #ff0000 !important;
+  opacity: 0.8 !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+}

@@ -1,0 +1,39 @@
+/* ==========================================================================
+   rl-base.css — shared foundation for every Redline section (rl-*)
+   Colors / spacing arrive as CSS variables set by each section's style="".
+   ========================================================================== */
+.rl-section {
+  --rl-maxw: 1400px;
+  background: var(--rl-bg, #fff);
+  color: var(--rl-text, #444);
+  padding: var(--rl-pt, 40px) 0 var(--rl-pb, 40px);
+  overflow: hidden;
+}
+.rl-section *, .rl-section *::before, .rl-section *::after { box-sizing: border-box; }
+
+.rl-container { max-width: var(--rl-maxw); margin: 0 auto; padding: 0 20px; }
+.rl-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px; }
+
+.rl-eyebrow { color: var(--rl-accent, #d0021b); font-size: 15px; font-weight: 700; letter-spacing: 0.22em; line-height: 1.2; margin: 0 0 10px; font-family: 'Manrope'; }
+.rl-heading { color: var(--rl-heading, #1a1a1a);font-size: clamp(26px, 3vw, 40px); font-weight: 700; line-height: 1.1; margin: 0px; }
+
+.rl-link {font-family: 'Manrope'; display: inline-flex; align-items: center; gap: 6px; color: var(--rl-accent, #d0021b); font-size: 15px; font-weight: 500; text-decoration: none; }
+.rl-link svg { width: 14px; height: 14px; transition: transform .2s ease; }
+.rl-link:hover svg, .rl-link:focus-visible svg { transform: translateX(4px); }
+
+.rl-vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 749px) {
+  .rl-section { padding-top: calc(var(--rl-pt, 40px) * .7); padding-bottom: calc(var(--rl-pb, 40px) * .7); }
+  .rl-eyebrow { font-size: 14px; }
+  .rl-link { font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rl-section *, .rl-section *::before, .rl-section *::after { transition: none !important; animation: none !important; }
+}
+/* Round arrow button (carousel / scroller controls) */
+.rl-arrow { width: 34px; height: 34px; padding: 0; border-radius: 50%; border: 1px solid var(--rl-border, #e6e6e6); background: #fff; color: var(--rl-heading, #1a1a1a); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background .2s, color .2s, border-color .2s, opacity .2s; }
+.rl-arrow:hover:not(:disabled) { background: var(--rl-accent, #d0021b); border-color: var(--rl-accent, #d0021b); color: #fff; }
+.rl-arrow:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 2px; }
+.rl-arrow:disabled { opacity: .35; cursor: default; }
+.rl-arrow svg { width: 16px; height: 16px; }

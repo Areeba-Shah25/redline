@@ -1,0 +1,230 @@
+{{ 'redline-announcement.css' | asset_url | stylesheet_tag }}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign bg_color = section.settings.background_color | default: '#1A1E21'
+  assign text_color = section.settings.text_color | default: '#FFFFFF'
+  assign message = section.settings.message
+  assign message_link = section.settings.message_link
+
+  assign utility_blocks = section.blocks | where: 'type', 'utility_link'
+  assign announcement_blocks = section.blocks | where: 'type', 'announcement'
+
+  if message == blank and announcement_blocks.size > 0
+    assign message = announcement_blocks.first.settings.text
+    assign message_link = announcement_blocks.first.settings.link
+  endif
+-%}
+
+{%- style -%}
+  .redline-announcement-{{ section.id }} {
+    --ra-bg: {{ bg_color }};
+    --ra-text: {{ text_color }};
+  }
+{%- endstyle -%}
+
+<div
+  class="redline-announcement redline-announcement-{{ section.id }}"
+  role="region"
+  aria-label="{{ 'sections.header.announcement' | t }}"
+>
+  <div class="redline-announcement__inner page-width">
+    <div class="redline-announcement__message">
+      {%- if message != blank -%}
+        {%- if message_link != blank -%}
+          <a href="{{ message_link }}" class="redline-announcement__message-link">
+            {{ message | escape }}
+          </a>
+        {%- else -%}
+          <p class="redline-announcement__message-text">{{ message | escape }}</p>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if utility_blocks.size > 0 -%}
+      <nav class="redline-announcement__utilities" aria-label="Announcement links">
+        <ul class="redline-announcement__list" role="list">
+          {%- for block in utility_blocks -%}
+            {%- if block.settings.text != blank -%}
+              <li class="redline-announcement__item" {{ block.shopify_attributes }}>
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}" class="redline-announcement__link">
+                    {{ block.settings.text | escape }}
+                  </a>
+                {%- else -%}
+                  <span class="redline-announcement__text">{{ block.settings.text | escape }}</span>
+                {%- endif -%}
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "class": "announcement-bar-section",
+  "max_blocks": 12,
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left message"
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "Free Delivery Across Mauritius"
+    },
+    {
+      "type": "url",
+      "id": "message_link",
+      "label": "Message link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#1A1E21"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Legacy settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "t:sections.announcement-bar.settings.auto_rotate.label",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "change_slides_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "t:sections.announcement-bar.settings.change_slides_speed.label",
+      "default": 5
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": true,
+      "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.show_social.label",
+      "info": "t:sections.announcement-bar.settings.show_social.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.enable_country_selector.label",
+      "info": "t:sections.announcement-bar.settings.enable_country_selector.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.enable_language_selector.label",
+      "info": "t:sections.announcement-bar.settings.enable_language_selector.info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "utility_link",
+      "name": "Right link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Label",
+          "default": "Find A Store"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "t:sections.announcement-bar.blocks.announcement.settings.text.default",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement-bar.presets.name",
+      "blocks": [
+        {
+          "type": "utility_link",
+          "settings": {
+            "text": "Find A Store"
+          }
+        },
+        {
+          "type": "utility_link",
+          "settings": {
+            "text": "Help & Support"
+          }
+        },
+        {
+          "type": "utility_link",
+          "settings": {
+            "text": "5250 2503 ,5941 6225"
+          }
+        }
+      ],
+      "settings": {
+        "message": "Free Delivery Across Mauritius",
+        "background_color": "#1A1E21",
+        "text_color": "#FFFFFF"
+      }
+    }
+  ]
+}
+{% endschema %}

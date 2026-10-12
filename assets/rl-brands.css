@@ -1,0 +1,100 @@
+/* rl-brands.css — logo slider (card row, 20px gap). Uses rl-carousel layout vars. */
+.rl-brands .rl-head { margin-bottom: 24px; }
+.rl-brands__link { padding-bottom: 4px; white-space: nowrap; }
+
+.rl-brands__stage { position: relative; }
+
+.rl-brands .rl-car__slide { min-width: 0; }
+.rl-brands__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--cell-h, 100px);
+  padding: 16px 20px;
+  color: var(--rl-heading, #1a1a1a);
+  text-decoration: none;
+  background: var(--rl-cell, #fff);
+  border: 1px solid var(--rl-border, #e5e5e5);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.rl-brands__cell img {
+  display: block;
+  width: 150px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: transform .25s ease, filter .25s ease, opacity .25s ease;
+  -webkit-user-drag: none;
+}
+.rl-brands__name { font-weight: 700; font-size: 18px; text-align: center; }
+
+a.rl-brands__cell:hover img,
+a.rl-brands__cell:focus-visible img { transform: scale(1.06); }
+a.rl-brands__cell:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 2px; }
+
+/* Arrows — white circle, gray border (matches design) */
+.rl-brands__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--rl-border, #e5e5e5);
+  background: #fff;
+  color: var(--rl-heading, #1a1a1a);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+  transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.rl-brands__arrow:hover {
+  background: var(--rl-accent, #d0021b);
+  border-color: var(--rl-accent, #d0021b);
+  color: #fff;
+}
+.rl-brands__arrow:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 3px; }
+.rl-brands__arrow svg { width: 18px; height: 18px; display: block; }
+.rl-brands__arrow--prev { left: -8px; }
+.rl-brands__arrow--next { right: -8px; }
+
+.rl-brands__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.rl-brands__dot {
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #d0d0d0;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+.rl-brands__dot.is-active { background: var(--rl-accent, #d0021b); transform: scale(1.15); }
+.rl-brands__dot:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 3px; }
+
+/* modifier: grey logos, color on hover */
+.rl-brands--gray .rl-brands__cell img { filter: grayscale(1); opacity: .75; }
+.rl-brands--gray a.rl-brands__cell:hover img,
+.rl-brands--gray a.rl-brands__cell:focus-visible img { filter: none; opacity: 1; }
+
+@media (max-width: 989px) {
+  .rl-brands__cell { height: calc(var(--cell-h, 100px) * .9); }
+  .rl-brands__arrow { width: 40px; height: 40px; }
+}
+@media (max-width: 749px) {
+  .rl-brands__cell { height: calc(var(--cell-h, 100px) * .8); padding: 12px 14px; }
+  .rl-brands__arrow--prev { left: 0; }
+  .rl-brands__arrow--next { right: 0; }
+}

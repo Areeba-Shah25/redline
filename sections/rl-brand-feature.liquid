@@ -1,0 +1,373 @@
+{%- comment -%}
+  rl-brand-feature — brand spotlight: coloured panel (logo, text, button) + white product carousel from a collection.
+  Needs assets: rl-base.css, rl-brand-feature.css, rl-brand-feature.js
+  Product cards use static 4 yellow + 1 grey stars (rl-static-stars).
+  NEW: optional photo behind the brand panel with a merchant-chosen overlay colour + strength.
+       (needs the small CSS block "Brand panel photo + overlay" appended to rl-brand-feature.css)
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-brand-feature.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign src = s.collection | default: collections.all -%}
+
+{%- assign shade_alpha = s.panel_overlay_opacity | divided_by: 100.0 -%}
+{%- assign shade = s.panel_overlay_color | color_modify: 'alpha', shade_alpha -%}
+{%- assign panel_focal = s.panel_image.presentation.focal_point | default: '50% 50%' -%}
+{%- assign panel_focal_style = 'object-position:' | append: panel_focal -%}
+
+<section
+  class="rl-section rl-bf{% if s.button_gradient %} rl-bf--grad{% endif %}"
+  data-rl-bf
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-border:{{ s.border_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--bf-panel:{{ s.panel_color }};--bf-panel-text:{{ s.panel_text_color }};--bf-shade:{{ shade }};--bf-btn:{{ s.button_color }};--bf-btn-text:{{ s.button_text_color }};--bf-card:{{ s.card_bg }};--bf-left:{{ s.left_width }}px;--bf-logo:{{ s.logo_width }}px;--bf-radius:{{ s.radius }}px;--bf-pv-d:{{ s.cards_desktop }};--bf-pv-t:{{ s.cards_tablet }};--bf-pv-m:{{ s.cards_mobile }};"
+>
+  <div class="rl-container">
+    <div class="rl-bf__box">
+      <div class="rl-bf__intro">
+        {%- if s.panel_image != blank -%}
+          <div class="rl-bf__bg" aria-hidden="true">
+            {{
+              s.panel_image
+              | image_url: width: 1000
+              | image_tag:
+                loading: 'lazy',
+                widths: '400, 600, 800, 1000',
+                sizes: '(min-width: 750px) 400px, 100vw',
+                alt: '',
+                style: panel_focal_style
+            }}
+          </div>
+          <span class="rl-bf__shade" aria-hidden="true"></span>
+        {%- endif -%}
+
+        {%- if s.logo != blank -%}
+          <div class="rl-bf__logo">
+            {{
+              s.logo
+              | image_url: width: 600
+              | image_tag:
+                loading: 'lazy',
+                widths: '200, 300, 400, 600',
+                sizes: '(min-width: 750px) 300px, 60vw',
+                alt: s.brand_name
+            }}
+          </div>
+        {%- elsif s.brand_name != blank -%}
+          <p class="rl-bf__brand">{{ s.brand_name }}</p>
+        {%- endif -%}
+
+        {%- if s.description != blank -%}
+          <div class="rl-bf__desc">{{ s.description }}</div>
+        {%- endif -%}
+
+        {%- if s.button_label != blank and s.button_link != blank -%}
+          <a class="rl-bf__btn" href="{{ s.button_link }}">{{ s.button_label }}</a>
+        {%- endif -%}
+      </div>
+
+      <div class="rl-bf__panel">
+        {%- if src.products_count > 0 -%}
+          {%- if s.show_arrows -%}
+            <button type="button" class="rl-bf__arrow rl-bf__arrow--prev" data-bf-prev aria-label="Previous products">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M15 5l-7 7 7 7"/>
+              </svg>
+            </button>
+            <button type="button" class="rl-bf__arrow rl-bf__arrow--next" data-bf-next aria-label="Next products">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          {%- endif -%}
+
+          <ul class="rl-bf__scroller" role="list">
+            {%- for product in src.products limit: s.product_limit -%}
+              {%- assign saving = 0 -%}
+              {%- assign on_sale = false -%}
+              {%- if product.compare_at_price > product.price and product.available -%}
+                {%- assign on_sale = true -%}
+                {%- assign saving = product.compare_at_price | minus: product.price -%}
+              {%- endif -%}
+              {%- assign alt_text = product.featured_media.alt | default: product.title -%}
+              <li class="rl-bf__item">
+                <a class="rl-bf__card" href="{{ product.url }}" draggable="false">
+                  {%- if product.available == false -%}
+                    <span class="rl-bf__badge rl-bf__badge--sold">{{ s.sold_out_text }}</span>
+                  {%- elsif on_sale and s.badge_style != 'none' -%}
+                    <span class="rl-bf__badge">
+                      {%- if s.badge_style == 'percent' -%}
+                        {{ s.badge_text }}
+                        {{ saving | times: 100 | divided_by: product.compare_at_price }}%
+                      {%- else -%}
+                        {{ s.badge_text }}
+                        {{ saving | money_without_trailing_zeros }}
+                      {%- endif -%}
+                    </span>
+                  {%- endif -%}
+
+                  <div class="rl-bf__media">
+                    {%- if product.featured_media -%}
+                      {{
+                        product.featured_media
+                        | image_url: width: 400
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '160, 240, 320, 400',
+                          sizes: '(min-width: 990px) 12vw, 40vw',
+                          alt: alt_text
+                      }}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    {%- endif -%}
+                  </div>
+
+                  <div class="rl-bf__body">
+                    {%- if s.show_vendor and product.vendor != blank -%}
+                      <p class="rl-bf__vendor">{{ product.vendor }}</p>
+                    {%- endif -%}
+                    <h3 class="rl-bf__title">{{ product.title }}</h3>
+
+                    {%- if s.show_rating -%}
+                      <div class="rl-bf__rating">
+                        {% render 'rl-static-stars', class: 'rl-bf__stars', count_class: 'rl-bf__count' %}
+                      </div>
+                    {%- endif -%}
+
+                    <div class="rl-bf__price">
+                      {%- if on_sale -%}
+                        <span class="rl-vh">Sale price</span
+                        ><span class="rl-bf__now rl-bf__now--sale">
+                          {{- product.price | money_without_trailing_zeros -}}
+                        </span>
+                        <span class="rl-vh">Regular price</span
+                        ><span class="rl-bf__was">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+                      {%- else -%}
+                        <span class="rl-bf__now">{{ product.price | money_without_trailing_zeros }}</span>
+                      {%- endif -%}
+                    </div>
+                    <span class="rl-bf__cta">{{ s.card_button_label }}</span>
+                  </div>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}
+          <p class="rl-bf__empty">
+            {%- if request.design_mode -%}Pick a collection that has products in this section's settings.{%- endif -%}
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'rl-brand-feature.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "RL Brand feature",
+  "tag": "div",
+  "class": "section-rl-brand-feature",
+  "settings": [
+    { "type": "header", "content": "1. Brand panel" },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Brand logo",
+      "info": "Use a white / transparent PNG or SVG (with the tagline inside it if you have one)."
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand name",
+      "default": "Promate",
+      "info": "Screen-reader text for the logo. Shown as plain text if no logo is uploaded."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>The worldwide leader in consumer electronic accessories with a focus on Mobile, Tablet and Computer accessories is on www.redline.mu ! We are the only brand giving 2 years manufacturing warranty in Mauritius. Enjoy your favourite Promate products here!</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Shop New Arrival" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Button is hidden if there is no link." },
+
+    { "type": "header", "content": "Brand panel photo (optional)" },
+    {
+      "type": "image_picker",
+      "id": "panel_image",
+      "label": "Photo behind the brand panel",
+      "info": "Empty = plain colored panel. Set the focus point so nothing important is cropped."
+    },
+    {
+      "type": "color",
+      "id": "panel_overlay_color",
+      "label": "Image overlay color",
+      "default": "#b0000f",
+      "info": "Tints the photo so the white text stays readable. Only used when a photo is added."
+    },
+    {
+      "type": "range",
+      "id": "panel_overlay_opacity",
+      "label": "Overlay strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 70,
+      "info": "0 = photo only, 100 = solid color."
+    },
+
+    { "type": "header", "content": "2. Products" },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "e.g. “Promate – New Arrivals”. Empty = all products."
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 10
+    },
+
+    { "type": "header", "content": "3. Card content" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Brand name", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Star rating", "default": true },
+    {
+      "type": "select",
+      "id": "badge_style",
+      "label": "Sale badge",
+      "options": [
+        { "value": "amount", "label": "Amount saved (Save $6)" },
+        { "value": "percent", "label": "Percent saved (Save 20%)" },
+        { "value": "none", "label": "Hide badge" }
+      ],
+      "default": "amount"
+    },
+    { "type": "text", "id": "badge_text", "label": "Badge word", "default": "Save" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold-out badge", "default": "Sold out" },
+    { "type": "text", "id": "card_button_label", "label": "Card button text", "default": "View Product" },
+
+    { "type": "header", "content": "4. Layout" },
+    {
+      "type": "range",
+      "id": "left_width",
+      "label": "Brand panel width (desktop)",
+      "min": 240,
+      "max": 440,
+      "step": 10,
+      "unit": "px",
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 100,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "default": 210
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Rounded corners",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "cards_desktop",
+      "label": "Cards on desktop",
+      "options": [
+        { "value": "3.5", "label": "3.5" },
+        { "value": "4.5", "label": "4.5 (as in design)" },
+        { "value": "5.5", "label": "5.5" }
+      ],
+      "default": "4.5"
+    },
+    {
+      "type": "select",
+      "id": "cards_tablet",
+      "label": "Cards on tablet",
+      "options": [
+        { "value": "2.5", "label": "2.5" },
+        { "value": "3.5", "label": "3.5" }
+      ],
+      "default": "2.5"
+    },
+    {
+      "type": "select",
+      "id": "cards_mobile",
+      "label": "Cards on mobile",
+      "options": [
+        { "value": "1.5", "label": "1.5" },
+        { "value": "1.8", "label": "1.8" },
+        { "value": "2.2", "label": "2.2" }
+      ],
+      "default": "1.8"
+    },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrow buttons (desktop)", "default": false },
+
+    { "type": "header", "content": "5. Colors" },
+    { "type": "color", "id": "panel_color", "label": "Brand panel", "default": "#b0000f" },
+    { "type": "color", "id": "panel_text_color", "label": "Brand panel text", "default": "#ffffff" },
+    { "type": "color", "id": "button_color", "label": "Button", "default": "#ffffff" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#1a1a1a" },
+    { "type": "checkbox", "id": "button_gradient", "label": "Soft gradient on button", "default": false },
+    { "type": "color", "id": "accent_color", "label": "Accent (sale price, badge)", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Product titles & prices", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#444444" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e6e6e6" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "6. Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top space",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom space",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [{ "name": "RL Brand feature" }]
+}
+{% endschema %}

@@ -1,0 +1,186 @@
+{%- comment -%}
+  rl-brands — "Our Brands" logo slider (one-by-one).
+  Needs assets: rl-base.css, rl-carousel.css, rl-brands.css, rl-carousel.js
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-carousel.css' | asset_url | stylesheet_tag }}
+{{ 'rl-brands.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign show_count = section.blocks.size -%}
+
+<section
+  class="rl-section rl-brands rl-car{% if s.grayscale %} rl-brands--gray{% endif %}"
+  data-rl-carousel
+  data-autoplay="{{ s.autoplay }}"
+  data-speed="{{ s.autoplay_speed | times: 1000 }}"
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-border:{{ s.border_color }};--rl-cell:{{ s.cell_bg }};--rl-bg:{{ s.section_bg }};--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--cell-h:{{ s.cell_height }}px;--car-pv-d:{{ s.items_desktop }};--car-pv-t:{{ s.items_tablet }};--car-pv-m:{{ s.items_mobile }};--car-gap-d:20px;--car-gap-t:20px;--car-gap-m:16px;"
+>
+  <div class="rl-container">
+    <div class="rl-head">
+      <div>
+        {%- if s.eyebrow != blank -%}<p class="rl-eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="rl-heading">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+      {%- if s.link_text != blank and s.link_url != blank -%}
+        <a class="rl-link rl-brands__link" href="{{ s.link_url }}">{{ s.link_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if show_count > 0 -%}
+      <div class="rl-brands__stage">
+        <div class="rl-car__viewport" tabindex="0" role="region" aria-roledescription="carousel" aria-label="{{ s.heading | default: 'Brands' | escape }}">
+          <div class="rl-car__track">
+            {%- for block in section.blocks -%}
+              <div class="rl-car__slide" {{ block.shopify_attributes }}>
+                {%- capture logo -%}
+                  {%- if block.settings.logo != blank -%}
+                    {{ block.settings.logo | image_url: width: 480 | image_tag: loading: 'lazy', widths: '160, 240, 360, 480', sizes: '(min-width: 990px) 14vw, 40vw', alt: block.settings.name }}
+                  {%- else -%}
+                    <span class="rl-brands__name">{{ block.settings.name | default: 'Brand' }}</span>
+                  {%- endif -%}
+                {%- endcapture -%}
+                {%- if block.settings.link != blank -%}
+                  <a class="rl-brands__cell" href="{{ block.settings.link }}" aria-label="{{ block.settings.name | escape }}" draggable="false">{{ logo }}</a>
+                {%- else -%}
+                  <div class="rl-brands__cell">{{ logo }}</div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- if show_count > 1 and s.show_arrows -%}
+          <button type="button" class="rl-brands__arrow rl-brands__arrow--prev" data-car-prev aria-label="Previous brands">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="rl-brands__arrow rl-brands__arrow--next" data-car-next aria-label="Next brands">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        {%- endif -%}
+      </div>
+
+      {%- if show_count > 1 and s.show_dots -%}
+        <div class="rl-brands__dots" role="tablist" aria-label="Brand slides">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              class="rl-brands__dot{% if forloop.first %} is-active{% endif %}"
+              data-car-dot
+              aria-label="Go to brand {{ forloop.index }}"
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'rl-carousel.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "RL Brands",
+  "tag": "div",
+  "class": "section-rl-brands",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Trusted Worldwide" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Brands" },
+    { "type": "text", "id": "link_text", "label": "Link text", "default": "View All Brands" },
+    { "type": "url", "id": "link_url", "label": "Link", "info": "Hidden if empty." },
+
+    { "type": "header", "content": "Slider" },
+    {
+      "type": "select",
+      "id": "items_desktop",
+      "label": "Items to show (desktop)",
+      "options": [
+        { "value": "5", "label": "5" },
+        { "value": "6", "label": "6" },
+        { "value": "7", "label": "7" }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "select",
+      "id": "items_tablet",
+      "label": "Items to show (tablet)",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "items_mobile",
+      "label": "Items to show (mobile)",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "2"
+    },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": true },
+    { "type": "checkbox", "id": "show_dots", "label": "Show dots", "default": false },
+    { "type": "range", "id": "max_width", "label": "Content max width", "min": 900, "max": 1800, "step": 20, "unit": "px", "default": 1280 },
+
+    { "type": "header", "content": "Logo box" },
+    { "type": "range", "id": "cell_height", "label": "Box height", "min": 70, "max": 200, "step": 5, "unit": "px", "default": 100 },
+    { "type": "checkbox", "id": "grayscale", "label": "Grey logos, color on hover", "default": false },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent (small title & link)", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Heading text", "default": "#1a1a1a" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e5e5e5" },
+    { "type": "color", "id": "cell_bg", "label": "Logo box background", "default": "#ffffff" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "PNG, SVG or WebP with transparent background works best." },
+        { "type": "text", "id": "name", "label": "Brand name", "info": "Image description. Shown as text if no logo.", "default": "Brand" },
+        { "type": "url", "id": "link", "label": "Brand link (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "RL Brands",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "RedLine" } },
+        { "type": "brand", "settings": { "name": "Sharp" } },
+        { "type": "brand", "settings": { "name": "Instant" } },
+        { "type": "brand", "settings": { "name": "Nutricook" } },
+        { "type": "brand", "settings": { "name": "Ooni" } },
+        { "type": "brand", "settings": { "name": "Rotai" } },
+        { "type": "brand", "settings": { "name": "Brand 7" } },
+        { "type": "brand", "settings": { "name": "Brand 8" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
