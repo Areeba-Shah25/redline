@@ -15,7 +15,8 @@
 .rl-pc__rating { display: flex; align-items: center; gap: 6px; margin: 0 0 8px; }
 .rl-pc__stars { display: inline-flex; align-items: center; gap: 2px; line-height: 0; }
 .rl-pc__stars svg { display: block; flex-shrink: 0; }
-.rl-pc__count { font-size: 12px; color: #8a8a8a; }
+.rl-pc__count,
+.rl-stars__count { font-size: 12px; color: #8a8a8a; }
 
 /* Price sits under title/rating; button absorbs leftover height */
 .rl-pc__price { display: flex; align-items: baseline; gap: 8px; margin: 0 0 12px; }

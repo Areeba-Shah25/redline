@@ -1,47 +1,15 @@
 {% comment %}
-  Renders the desktop nav. When a header "Mega menu" block matches a link title,
-  the Redline mega panel opens instead of the default nested dropdown.
+  Renders a standard dropdown style menu for the header.
+
+  Usage:
+  {% render 'header-dropdown-menu' %}
 {% endcomment %}
 
 <nav class="header__inline-menu">
   <ul class="list-menu list-menu--inline" role="list">
     {%- for link in section.settings.menu.links -%}
-      {%- liquid
-        assign mega_block = nil
-        assign link_key = link.title | strip | downcase
-        for block in section.blocks
-          if block.type == 'mega_menu'
-            assign trigger = block.settings.menu_trigger | strip | downcase
-            if trigger != blank
-              if trigger == link_key or trigger == link.handle
-                assign mega_block = block
-                break
-              endif
-            endif
-          endif
-        endfor
-      -%}
       <li>
-        {%- if mega_block != nil -%}
-          <header-menu>
-            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
-              <summary
-                id="HeaderMenu-{{ link.handle }}"
-                class="header__menu-item list-menu__item link focus-inset"
-              >
-                <span
-                  {%- if link.child_active or link.current %}
-                    class="header__active-menu-item"
-                  {% endif %}
-                >
-                  {{- link.title | escape -}}
-                </span>
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </summary>
-              {% render 'redline-mega-panel', block: mega_block, link: link %}
-            </details>
-          </header-menu>
-        {%- elsif link.links != blank -%}
+        {%- if link.links != blank -%}
           <header-menu>
             <details id="Details-HeaderMenu-{{ forloop.index }}">
               <summary
@@ -86,7 +54,7 @@
                           {{- 'icon-caret.svg' | inline_asset_content -}}
                         </summary>
                         <ul
-                          id="HeaderMenu-SubMenuList-{{ link.handle }}-{{ childlink.handle }}"
+                          id="HeaderMenu-SubMenuList-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
                           class="header__submenu list-menu motion-reduce"
                         >
                           {%- for grandchildlink in childlink.links -%}

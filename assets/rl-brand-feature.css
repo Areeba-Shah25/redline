@@ -101,9 +101,3 @@
   .rl-bf__arrow { display: none; }
   .rl-bf__btn { display: block; text-align: center; padding: 14px 20px; }
 }
-/* ===== Brand panel photo + overlay =====
-   APPEND this block to the END of assets/rl-brand-feature.css */
-.rl-bf__intro { position: relative; isolation: isolate; overflow: hidden; }
-.rl-bf__bg, .rl-bf__shade { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.rl-bf__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.rl-bf__shade { background: var(--bf-shade, rgba(176, 0, 15, .7)); }

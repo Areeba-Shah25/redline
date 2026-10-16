@@ -13,16 +13,16 @@
   --redline-header-radius: 8px;
 }
 
-/* Sticky header above page sections; mega dropdown stays under this chrome */
+/* Keep sticky header above section arrows/sliders (hero z-index 5, brands 3) */
 .section-header.shopify-section-group-header-group,
 .shopify-section-group-header-group.section-header {
-  z-index: 10;
+  z-index: 100;
 }
 
 .header-wrapper.header-wrapper--redline {
   background: #ffffff;
   position: relative;
-  z-index: 10;
+  z-index: 100;
 }
 
 .header-wrapper--redline.header-wrapper--border-bottom {
@@ -48,8 +48,8 @@
 
 @media screen and (min-width: 750px) {
   .header.header--redline {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 }
 
@@ -477,8 +477,8 @@
       'categories menu menu';
     column-gap: 2rem;
     row-gap: 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 5rem;
+    padding-right: 5rem;
     padding-top: var(--header-padding-top, 1.6rem);
     padding-bottom: var(--header-padding-bottom, 1.2rem);
     overflow: visible;

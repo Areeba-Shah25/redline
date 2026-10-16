@@ -18,17 +18,6 @@
 {%- if section.settings.menu_type_desktop == 'mega' -%}
   <link rel="stylesheet" href="{{ 'component-mega-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 {%- endif -%}
-{%- assign has_redline_mega = false -%}
-{%- for block in section.blocks -%}
-  {%- if block.type == 'mega_menu' -%}
-    {%- assign has_redline_mega = true -%}
-    {%- break -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- if has_redline_mega -%}
-  {{ 'redline-mega-menu.css' | asset_url | stylesheet_tag }}
-{%- endif -%}
-<script src="{{ 'redline-header-menu.js' | asset_url }}" defer="defer"></script>
 
 <style>
   header-drawer {
@@ -157,7 +146,6 @@
   {% if header_tag == 'sticky-header' %}
     data-sticky-type="{{ section.settings.sticky_header_type }}"
   {% endif %}
-  data-menu-open="{{ section.settings.menu_open_trigger | default: 'hover' }}"
   class="header-wrapper header-wrapper--redline color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
 >
   <header
@@ -486,7 +474,7 @@
 {
   "name": "t:sections.header.name",
   "class": "section-header",
-  "max_blocks": 12,
+  "max_blocks": 3,
   "settings": [
     {
       "type": "select",
@@ -554,17 +542,6 @@
       ],
       "default": "dropdown",
       "label": "t:sections.header.settings.menu_type_desktop.label"
-    },
-    {
-      "type": "select",
-      "id": "menu_open_trigger",
-      "label": "Open dropdown on",
-      "options": [
-        { "value": "click", "label": "Click" },
-        { "value": "hover", "label": "Hover" }
-      ],
-      "default": "hover",
-      "info": "Desktop only. Mobile always uses tap."
     },
     {
       "type": "text",
@@ -727,84 +704,6 @@
   "blocks": [
     {
       "type": "@app"
-    },
-    {
-      "type": "mega_menu",
-      "name": "Mega menu",
-      "settings": [
-        {
-          "type": "text",
-          "id": "menu_trigger",
-          "label": "Show under menu item",
-          "info": "Exact menu label, e.g. Home Appliances. Case-insensitive.",
-          "default": "Home Appliances"
-        },
-        {
-          "type": "range",
-          "id": "columns",
-          "min": 1,
-          "max": 4,
-          "step": 1,
-          "label": "Number of columns",
-          "default": 4
-        },
-
-        { "type": "header", "content": "Column 1" },
-        { "type": "image_picker", "id": "column_1_image", "label": "Image" },
-        { "type": "text", "id": "column_1_title", "label": "Title", "default": "TV & Sound" },
-        { "type": "product_list", "id": "column_1_products", "label": "Products", "limit": 12, "info": "Shown as text links under the title." },
-
-        { "type": "header", "content": "Column 2" },
-        { "type": "image_picker", "id": "column_2_image", "label": "Image" },
-        { "type": "text", "id": "column_2_title", "label": "Title", "default": "Refrigeration" },
-        { "type": "product_list", "id": "column_2_products", "label": "Products", "limit": 12 },
-
-        { "type": "header", "content": "Column 3" },
-        { "type": "image_picker", "id": "column_3_image", "label": "Image" },
-        { "type": "text", "id": "column_3_title", "label": "Title", "default": "Everyday Living" },
-        { "type": "product_list", "id": "column_3_products", "label": "Products", "limit": 12 },
-
-        { "type": "header", "content": "Column 4" },
-        { "type": "image_picker", "id": "column_4_image", "label": "Image" },
-        { "type": "text", "id": "column_4_title", "label": "Title", "default": "Comfort" },
-        { "type": "product_list", "id": "column_4_products", "label": "Products", "limit": 12 },
-
-        { "type": "header", "content": "Right banner" },
-        { "type": "image_picker", "id": "banner_image", "label": "Banner image" },
-        {
-          "type": "textarea",
-          "id": "banner_title",
-          "label": "Banner title",
-          "default": "Upgrade your everyday",
-          "info": "33px / 38px line height. Use a line break for two lines."
-        },
-        {
-          "type": "richtext",
-          "id": "banner_richtext",
-          "label": "Banner rich text (optional)",
-          "info": "Extra content on the banner image. Uses the same large title styling."
-        },
-        { "type": "text", "id": "banner_button_label", "label": "Banner button label", "default": "Explore appliances" },
-        { "type": "url", "id": "banner_button_link", "label": "Banner button link" },
-
-        { "type": "header", "content": "Bottom bar" },
-        {
-          "type": "text",
-          "id": "view_all_label",
-          "label": "View all label",
-          "default": "View all Home Appliances"
-        },
-        {
-          "type": "url",
-          "id": "view_all_link",
-          "label": "View all link",
-          "info": "Usually a collection."
-        },
-        { "type": "text", "id": "brand_1", "label": "Brand 1", "default": "SHARP" },
-        { "type": "text", "id": "brand_2", "label": "Brand 2", "default": "AEG" },
-        { "type": "text", "id": "brand_3", "label": "Brand 3", "default": "Electrolux" },
-        { "type": "text", "id": "brand_4", "label": "Brand 4", "default": "Redline" }
-      ]
     }
   ]
 }
