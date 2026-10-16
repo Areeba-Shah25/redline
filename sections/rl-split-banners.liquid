@@ -1,0 +1,293 @@
+{%- comment -%}
+  rl-split-banners — 1 to 3 photo banners side by side (e.g. "Instant Pot" + "Ecovacs"). Pure CSS, no JavaScript.
+  Needs assets: rl-base.css, rl-split-banners.css
+  Each banner is a block: photo, text, button, Light/Dark style, text side.
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-split-banners.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+
+<section
+  class="rl-section rl-split"
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-bg:{{ s.section_bg }};--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--sb-gap:{{ s.gap }}px;--sb-h:{{ s.height }}px;--sb-mh:{{ s.mobile_image_height }}px;--sb-radius:{{ s.radius }}px;--sb-tw:{{ s.text_width }}%;"
+>
+  <div class="rl-container">
+    {%- if section.blocks.size > 0 -%}
+      <ul class="rl-split__grid" role="list">
+        {%- for block in section.blocks limit: 3 -%}
+          {%- assign b = block.settings -%}
+          {%- if b.theme == 'dark' -%}
+            {%- assign fade = '#14110f' -%}
+          {%- else -%}
+            {%- assign fade = '#ffffff' -%}
+          {%- endif -%}
+          {%- assign a_strong = b.fade_strength | divided_by: 100.0 -%}
+          {%- assign a_mid = a_strong | times: 0.75 -%}
+          {%- assign c_strong = fade | color_modify: 'alpha', a_strong -%}
+          {%- assign c_mid = fade | color_modify: 'alpha', a_mid -%}
+          {%- assign c_zero = fade | color_modify: 'alpha', 0 -%}
+          {%- assign focal = b.image.presentation.focal_point | default: '50% 50%' -%}
+          {%- assign focal_style = 'object-position:' | append: focal -%}
+
+          <li class="rl-split__item" {{ block.shopify_attributes }}>
+            <div
+              class="rl-split__card rl-split__card--{{ b.theme }} rl-split__card--{{ b.text_side }}"
+              style="--sb-fade:{{ fade }};--sb-strong:{{ c_strong }};--sb-mid:{{ c_mid }};--sb-zero:{{ c_zero }};"
+            >
+              <div class="rl-split__media">
+                {%- if b.image != blank -%}
+                  {%- capture img -%}{{ b.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '600, 900, 1200, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: b.image_alt, style: focal_style }}{%- endcapture -%}
+                  {%- if b.mobile_image != blank -%}
+                    <picture>
+                      <source
+                        media="(max-width: 749px)"
+                        srcset="{{ b.mobile_image | image_url: width: 900 }} 900w, {{ b.mobile_image | image_url: width: 1400 }} 1400w"
+                        sizes="100vw"
+                      >
+                      {{ img }}
+                    </picture>
+                  {%- else -%}
+                    {{ img }}
+                  {%- endif -%}
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag }}
+                {%- endif -%}
+              </div>
+              <div class="rl-split__overlay"></div>
+
+              <div class="rl-split__content">
+                <div class="rl-split__text">
+                  {%- if b.heading != blank -%}
+                    <h2 class="rl-split__heading">{{ b.heading | escape | newline_to_br }}</h2>
+                  {%- endif -%}
+                  {%- if b.description != blank -%}
+                    <div class="rl-split__desc">{{ b.description }}</div>
+                  {%- endif -%}
+                  {%- if b.button_label != blank and b.button_link != blank -%}
+                    <a class="rl-split__btn rl-split__btn--{{ b.button_style }}" href="{{ b.button_link }}">
+                      {{- b.button_label -}}
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- elsif request.design_mode -%}
+      <p>Add a banner block in this section's settings.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RL Split banners",
+  "tag": "div",
+  "class": "section-rl-split-banners",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Banner height (desktop)",
+      "min": 200,
+      "max": 520,
+      "step": 10,
+      "unit": "px",
+      "default": 260
+    },
+    {
+      "type": "range",
+      "id": "text_width",
+      "label": "Text width",
+      "min": 40,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 60,
+      "info": "Share of the banner the text may use."
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between banners",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Rounded corners",
+      "min": 0,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 900,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Mobile photo height",
+      "min": 140,
+      "max": 360,
+      "step": 10,
+      "unit": "px",
+      "default": 200,
+      "info": "On mobile each banner stacks: photo on top, text below."
+    },
+
+    { "type": "header", "content": "Colors (light banners)" },
+    { "type": "color", "id": "accent_color", "label": "Red button", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Description", "default": "#333333" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top space",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom space",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "limit": 3,
+      "settings": [
+        { "type": "header", "content": "Photo" },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo",
+          "info": "About 1400 × 700 px. Set the focus point so nothing important is cropped."
+        },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile photo (optional)" },
+        { "type": "text", "id": "image_alt", "label": "Photo description" },
+
+        { "type": "header", "content": "Text" },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Heading goes here",
+          "info": "Press Enter to start a new line."
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Short description of this brand or offer.</p>"
+        },
+
+        { "type": "header", "content": "Button" },
+        { "type": "text", "id": "button_label", "label": "Button text", "default": "Discover more info" },
+        { "type": "url", "id": "button_link", "label": "Button link", "info": "Hidden if empty." },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "options": [
+            { "value": "fill", "label": "Red filled" },
+            { "value": "outline", "label": "Outline" }
+          ],
+          "default": "fill"
+        },
+
+        { "type": "header", "content": "Style" },
+        {
+          "type": "select",
+          "id": "theme",
+          "label": "Style",
+          "options": [
+            { "value": "light", "label": "Light (white fade, dark text)" },
+            { "value": "dark", "label": "Dark (dark fade, white text)" }
+          ],
+          "default": "light"
+        },
+        {
+          "type": "select",
+          "id": "text_side",
+          "label": "Text side",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "range",
+          "id": "fade_strength",
+          "label": "Fade strength",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "default": 85,
+          "info": "Makes the text readable over the photo. 0 = no fade."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "RL Split banners",
+      "blocks": [
+        {
+          "type": "banner",
+          "settings": {
+            "heading": "Instant Pot®:\nAmerica’s No.1 Air\nFryer Brand",
+            "description": "<p>The Instant™ Vortex® Plus 6-quart Clear Cook Air Fryer is now Available!<br>Using an Instant Vortex is everyday magic and is good for your health!<br>We have several models in store to choose from!</p>",
+            "button_label": "Discover more info",
+            "button_style": "fill",
+            "theme": "light",
+            "text_side": "left"
+          }
+        },
+        {
+          "type": "banner",
+          "settings": {
+            "heading": "Ecovacs | Auto\nCleaning Robots",
+            "description": "<p>To empower and inspire you to live a more convenient, connected lifestyle, we design intelligent robotic solutions that seamlessly integrate into your everyday life, so you have more time to do what you love.</p>",
+            "button_label": "Our Products",
+            "button_style": "outline",
+            "theme": "dark",
+            "text_side": "left",
+            "fade_strength": 80
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

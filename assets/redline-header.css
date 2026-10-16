@@ -1,0 +1,611 @@
+/* Redline global header — two-row layout */
+
+:root {
+  --redline-header-accent: #e1061d;
+  --redline-header-accent-dark: #b50417;
+  --redline-header-accent-gradient: linear-gradient(180deg, #e1061d 0%, #b50417 100%);
+  --redline-header-border: #e8e8e8;
+  --redline-header-nav-line: #f1f2f3;
+  --redline-header-muted: #9a9a9a;
+  --redline-header-text: #1a1a1a;
+  --redline-header-search-bg: #ffffff;
+  --redline-header-search-border: #dcdcdc;
+  --redline-header-radius: 8px;
+}
+
+/* Keep sticky header above section arrows/sliders (hero z-index 5, brands 3) */
+.section-header.shopify-section-group-header-group,
+.shopify-section-group-header-group.section-header {
+  z-index: 100;
+}
+
+.header-wrapper.header-wrapper--redline {
+  background: #ffffff;
+  position: relative;
+  z-index: 100;
+}
+
+.header-wrapper--redline.header-wrapper--border-bottom {
+  border-bottom: 0.1rem solid var(--redline-header-border);
+}
+
+.header.header--redline {
+  display: grid;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  padding-top: var(--header-padding-top, 0);
+  padding-bottom: var(--header-padding-bottom, 0);
+  column-gap: 1.2rem;
+  row-gap: 0;
+  align-items: center;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'categories heading icons';
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 750px) {
+  .header.header--redline {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
+.header--redline .header__categories {
+  grid-area: categories;
+}
+
+.header--redline .header__heading,
+.header--redline .header__heading-link {
+  grid-area: heading;
+  justify-self: start;
+  margin: 0;
+  line-height: 0;
+}
+
+.header--redline .header__heading-link {
+  padding: 0;
+}
+
+.header--redline .header-search-inline {
+  grid-area: search;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+  max-width: 62.4rem;
+  justify-self: center;
+}
+
+.header--redline .header__icons {
+  grid-area: icons;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-right: 0;
+  justify-self: end;
+}
+
+.header--redline .header__inline-menu {
+  grid-area: menu;
+  margin: 0;
+  min-width: 0;
+}
+
+/* —— Logo —— */
+.header--redline .header__heading-link .h2,
+.header--redline .header__logo-text {
+  font-size: clamp(2rem, 2.2vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--redline-header-text);
+  line-height: 1;
+}
+
+.header--redline .header__logo-divider {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin: 0 0.35em;
+  background: var(--redline-header-accent);
+  vertical-align: -0.12em;
+}
+
+.header--redline .header__heading-logo {
+  height: auto;
+  max-width: 100%;
+}
+
+/* —— Search —— */
+.header--redline .header-search-inline__form,
+.header--redline .header-search-inline__form-inner {
+  display: block;
+  width: 100%;
+}
+
+.header--redline .header-search-inline__form-inner {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: var(--redline-header-search-bg);
+  border: 1px solid var(--redline-header-search-border);
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0;
+  box-shadow: none;
+  height: 6rem;
+  min-height: 6rem;
+}
+
+.header--redline .header-search-inline__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0 2.4rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--redline-header-text);
+  outline: none;
+  box-shadow: none;
+  height: 100%;
+  line-height: 1.3;
+}
+
+.header--redline .header-search-inline__input::placeholder {
+  color: var(--redline-header-muted);
+}
+
+.header--redline .header-search-inline__submit {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+  min-width: 6rem;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #e1061d 0%, #b50417 100%);
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+  margin: 0;
+}
+
+.header--redline .header-search-inline__submit:hover {
+  filter: brightness(0.95);
+}
+
+.header--redline .header-search-inline__submit:focus-visible {
+  outline: 2px solid var(--redline-header-accent);
+  outline-offset: 2px;
+}
+
+.header--redline .header-search-inline__submit-icon,
+.header--redline .header-search-inline__submit .svg-wrapper,
+.header--redline .header-search-inline__submit .icon {
+  width: 2.2rem;
+  height: 2.2rem;
+  display: block;
+  object-fit: contain;
+  color: #ffffff;
+}
+
+.header--redline .header-search-inline__results {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.4rem);
+  z-index: 4;
+}
+
+/* —— Utility links —— */
+.header--redline .header__utility {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: var(--redline-header-text);
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1.454rem;
+  line-height: 2.181rem;
+  letter-spacing: 0;
+  white-space: nowrap;
+  min-height: 4.4rem;
+  padding: 0 0.4rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  width: auto;
+  height: auto;
+}
+
+.header--redline .header__utility:hover {
+  color: var(--redline-header-accent);
+}
+
+.header--redline .header__utility-label {
+  display: none;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  font-size: 1.454rem;
+  line-height: 2.181rem;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.header--redline .header__utility-icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.header--redline .header__utility-icon img,
+.header--redline .header__utility-icon .svg-wrapper,
+.header--redline .header__utility-icon .icon {
+  width: 3.6rem;
+  height: 3.6rem;
+  display: block;
+  object-fit: contain;
+}
+
+.header--redline shopify-account.header__utility {
+  height: auto;
+  min-width: 0;
+  width: auto;
+}
+
+/* Keep account slot visible; suppress any internal loader flash from the web component */
+.header--redline shopify-account:not(:defined) .header__utility-icon,
+.header--redline shopify-account:not(:defined) .header__utility-label {
+  opacity: 1;
+}
+.header--redline shopify-account:not(:defined)::part(button),
+.header--redline shopify-account:not(:defined)::part(avatar) {
+  display: none !important;
+}
+
+.header--redline .header__utility--cart {
+  position: relative;
+  margin-right: 0;
+}
+
+.header--redline .header__utility--cart .cart-count-bubble {
+  position: absolute;
+  top: 0;
+  left: 2.4rem;
+  min-width: 0.8rem;
+  height: 0.8rem;
+  padding: 0;
+  background: var(--redline-header-accent);
+  border: 0;
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+}
+
+.header--redline .header__utility--cart .cart-count-bubble span[aria-hidden='true'] {
+  display: none;
+}
+
+.header--redline .header__mobile-search {
+  display: inline-flex;
+}
+
+.header--redline .desktop-localization-wrapper {
+  display: none;
+}
+
+/* —— Categories trigger —— */
+.header--redline .header__categories {
+  position: static;
+}
+
+.header--redline .header__categories header-drawer,
+.header--redline .header__categories .menu-drawer-container {
+  display: block;
+  position: static;
+}
+
+.header--redline .header__categories-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  height: 4.4rem;
+  width: 4.4rem;
+  padding: 0;
+  background: transparent;
+  color: var(--redline-header-text);
+  border-radius: 2px;
+  text-decoration: none;
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.95rem;
+  letter-spacing: 0;
+  min-width: 0;
+  position: relative;
+  z-index: 4;
+}
+
+/* Disable Dawn’s button-sized overlay (causes the disturbed strip) */
+.header--redline .header__categories-trigger.header__icon--menu::before,
+.header--redline .header__categories-trigger.header__icon--menu[aria-expanded='true']::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Full-viewport dim overlay while categories drawer is open */
+.header--redline .header__categories .menu-drawer-container::after {
+  content: '';
+  position: fixed;
+  top: var(--header-bottom-position, var(--header-height, 0px));
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity var(--duration-default, 0.2s) ease, visibility var(--duration-default, 0.2s) ease;
+}
+
+.header--redline .header__categories .menu-drawer-container[open].menu-opening::after {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Drawer panel flush to viewport left, above overlay */
+.header--redline .header__categories .menu-drawer {
+  position: fixed;
+  left: 0;
+  top: var(--header-bottom-position, var(--header-height, 0px));
+  height: calc(var(--viewport-height, 100vh) - var(--header-bottom-position, var(--header-height, 0px)));
+  z-index: 3;
+  max-width: 40rem;
+}
+
+.header--redline .header__categories-trigger .header__categories-icon {
+  display: inline-flex;
+  width: 1.8rem;
+  height: 1.8rem;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.header--redline .header__categories-trigger .header__categories-icon .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  color: currentColor;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  transition: transform 150ms ease, opacity 150ms ease, visibility 150ms ease;
+}
+
+/* Icon toggle: hamburger when closed, close when open */
+.header--redline .header__categories details:not([open]) .header__categories-icon .icon-close,
+.header--redline .header__categories details[open] .header__categories-icon .icon-hamburger {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
+.header--redline .header__categories details[open] .header__categories-icon .icon-close,
+.header--redline .header__categories details:not([open]) .header__categories-icon .icon-hamburger {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.header--redline .header__categories-trigger .header__categories-label {
+  display: none;
+}
+
+/* —— Menu —— */
+.header--redline .header__inline-menu .list-menu--inline {
+  flex-wrap: nowrap;
+  gap: 0.2rem 0.4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.header--redline .header__inline-menu .list-menu--inline::-webkit-scrollbar {
+  display: none;
+}
+
+.header--redline .header__menu-item {
+  padding: 0.8rem 1rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--redline-header-text);
+}
+
+.header--redline .header__menu-item:hover {
+  color: var(--redline-header-accent);
+}
+
+.header--redline .header__active-menu-item,
+.header--redline .header__menu-item[aria-current='page'],
+.header--redline .list-menu__item--active {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.header--redline .header__active-menu-item {
+  font-weight: 700;
+}
+
+.header--redline summary.list-menu__item {
+  padding-right: 2.4rem;
+}
+
+.header--redline .header__menu-item .icon-caret {
+  right: 0.4rem;
+}
+
+.header--redline > .header__inline-menu {
+  display: none;
+}
+
+/* —— Desktop two-row layout —— */
+@media screen and (min-width: 990px) {
+  .header.header--redline {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'heading search icons'
+      'categories menu menu';
+    column-gap: 2rem;
+    row-gap: 0;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-top: var(--header-padding-top, 1.6rem);
+    padding-bottom: var(--header-padding-bottom, 1.2rem);
+    overflow: visible;
+  }
+
+  /* Kill old 100vw divider (caused horizontal scrollbar) */
+  .header.header--redline::before {
+    content: none;
+  }
+
+  /*
+    Full-width line on the wrapper (already edge-to-edge).
+    Uses width: 100% — not 100vw — so no scrollbar.
+    Vertical position tracks the top of the nav row via sticky measurement:
+    top row ends where categories/menu begin; we place the line with a
+    border on a full-bleed pseudo that sits at that boundary.
+  */
+  .header-wrapper--redline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #f1f2f3;
+    /* Align with top of Shop categories / menu row */
+    bottom: 65px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .section-header:has(.header--redline) {
+    overflow-x: clip;
+  }
+
+  .header-wrapper--redline {
+    overflow: visible;
+  }
+
+  .header--redline .header__heading {
+    padding-bottom: 0;
+    align-self: center;
+  }
+
+  .header--redline .header-search-inline {
+    margin-top: 29px;
+    margin-bottom: 29px;
+    padding-bottom: 0;
+    max-width: 62.4rem;
+  }
+
+  .header--redline .header__icons {
+    gap: 30px;
+    padding-bottom: 0;
+    align-self: center;
+  }
+
+  .header--redline .header__utility-label {
+    display: inline;
+  }
+
+  .header--redline .header__mobile-search {
+    display: none;
+  }
+
+  .header--redline .header__categories,
+  .header--redline > .header__inline-menu {
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .header--redline > .header__inline-menu {
+    display: block;
+  }
+
+  .header--redline .header__categories-trigger {
+    width: auto;
+    height: 4.4rem;
+    margin: 1rem 0;
+    padding: 0 1.8rem;
+    background: linear-gradient(180deg, #e1061d 0%, #b50417 100%);
+    color: #ffffff;
+    border-radius: 2px;
+    gap: 0.7rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.95rem;
+    letter-spacing: 0;
+  }
+
+  .header--redline .header__categories-trigger:hover {
+    color: #ffffff;
+    filter: brightness(0.95);
+  }
+
+  .header--redline .header__categories-trigger .header__categories-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .header--redline .header__categories-trigger .header__categories-icon .icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    color: #ffffff;
+  }
+
+  .header--redline .header__categories-trigger .header__categories-label {
+    display: inline;
+    color: #ffffff;
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.95rem;
+    letter-spacing: 0;
+  }
+}
+
+/* —— Tablet: keep hamburger + hide desktop nav row pieces —— */
+@media screen and (max-width: 989px) {
+  .header--redline .header-search-inline {
+    display: none;
+  }
+
+  .header--redline > .header__inline-menu {
+    display: none;
+  }
+}

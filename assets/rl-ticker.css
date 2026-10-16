@@ -1,0 +1,28 @@
+/* rl-ticker.css — endless scrolling message bar (marquee). Pure CSS, no JavaScript.
+   Seamless trick: the message list is rendered twice, each copy is at least one screen wide,
+   and the track slides exactly -50% (= one copy) then restarts. Modifiers: --right, --still-on-hover, --normal-case */
+.rl-tick { background: linear-gradient(180deg, #E1061D 0%, #B50417 100%);
+  ; color: var(--tk-text, #fff); overflow: hidden; }
+.rl-tick__track { display: flex; width: max-content; animation: rl-tick-run var(--tk-dur, 30s) linear infinite; will-change: transform; }
+.rl-tick--right .rl-tick__track { animation-direction: reverse; }
+.rl-tick--pause:hover .rl-tick__track, .rl-tick--pause:focus-within .rl-tick__track { animation-play-state: paused; }
+
+.rl-tick__group { display: flex; align-items: center; justify-content: space-around; flex: 0 0 auto; min-width: 100vw; margin: 0; padding: 0; list-style: none; }
+.rl-tick__item {font-family: 'Manrope'; display: flex; align-items: center; gap: 14px; height: var(--tk-h); padding: 0 26px; white-space: nowrap; font-size: var(--tk-fs); font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
+.rl-tick--normal .rl-tick__item { text-transform: none; letter-spacing: 0; }
+.rl-tick__item a { color: inherit; text-decoration: none; }
+.rl-tick__item a:hover { text-decoration: underline; }
+.rl-tick__icon { width: 18px; height: 18px; flex: 0 0 18px; color: var(--tk-icon, #fff); }
+
+@keyframes rl-tick-run { to { transform: translateX(-50%); } }
+
+/* Visitors who prefer less motion: no animation, the bar can be scrolled by hand */
+@media (prefers-reduced-motion: reduce) {
+  .rl-tick { overflow-x: auto; }
+  .rl-tick__track { animation: none; width: auto; }
+  .rl-tick__group[aria-hidden="true"] { display: none; }
+  .rl-tick__group { min-width: 0; }
+}
+@media (max-width: 749px) {
+  .rl-tick__item { padding: 0 20px; gap: 10px; font-size: calc(var(--tk-fs, 13px) - 1px); }
+}

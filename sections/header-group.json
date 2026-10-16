@@ -1,0 +1,89 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "utility_find_store": {
+          "type": "utility_link",
+          "settings": {
+            "text": "Find A Store",
+            "link": ""
+          }
+        },
+        "utility_help": {
+          "type": "utility_link",
+          "settings": {
+            "text": "Help & Support",
+            "link": ""
+          }
+        },
+        "utility_phones": {
+          "type": "utility_link",
+          "settings": {
+            "text": "5250 2503 ,5941 6225",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "utility_find_store",
+        "utility_help",
+        "utility_phones"
+      ],
+      "settings": {
+        "message": "Free Delivery Across Mauritius",
+        "message_link": "",
+        "background_color": "#1a1e21",
+        "text_color": "#ffffff",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-1",
+        "show_line_separator": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_position": "middle-left",
+        "mobile_logo_position": "center",
+        "menu": "primary-menu",
+        "menu_type_desktop": "dropdown",
+        "categories_label": "Shop categories",
+        "search_placeholder": "Search appliances, brands and more...",
+        "show_wishlist": true,
+        "wishlist_link": "",
+        "icon_search": "shopify://shop_images/Search.png",
+        "icon_account": "shopify://shop_images/User.png",
+        "icon_wishlist": "shopify://shop_images/Heart.png",
+        "icon_cart": "shopify://shop_images/Cart.png",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "margin_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

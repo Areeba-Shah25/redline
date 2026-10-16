@@ -1,0 +1,133 @@
+{%- comment -%}
+  rl-testimonials — infinite testimonial carousel + centered stepper
+  Needs assets: rl-base.css, rl-carousel.css, rl-testimonials.css, rl-carousel.js
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-carousel.css' | asset_url | stylesheet_tag }}
+{{ 'rl-testimonials.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+
+<section
+  class="rl-section rl-testi rl-car"
+  data-rl-carousel
+  data-autoplay="{{ s.autoplay }}"
+  data-speed="{{ s.autoplay_speed | times: 1000 }}"
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-muted:{{ s.muted_color }};--rl-card:{{ s.card_bg }};--rl-border:{{ s.border_color }};--rl-bg:{{ s.section_bg }};--rl-track:{{ s.track_color }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--car-pv-d:{{ s.slides_desktop }};--car-pv-t:{{ s.slides_tablet }};--car-pv-m:1;--car-gap-d:24px;--car-gap-t:20px;--car-gap-m:16px;--stepper-w:{{ s.stepper_width }}px;"
+>
+  <div class="rl-testi__head">
+    {%- if s.eyebrow != blank -%}<p class="rl-eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="rl-heading">{{ s.heading }}</h2>{%- endif -%}
+  </div>
+
+  <div class="rl-testi__wrap">
+    {%- if s.show_arrows -%}
+      <button type="button" class="rl-testi__arrow rl-testi__arrow--prev" data-car-prev aria-label="Previous testimonial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>
+      </button>
+      <button type="button" class="rl-testi__arrow rl-testi__arrow--next" data-car-next aria-label="Next testimonial">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
+      </button>
+    {%- endif -%}
+
+    <div class="rl-car__viewport" tabindex="0" role="region" aria-roledescription="carousel" aria-label="{{ s.heading | escape }}">
+      <div class="rl-car__track">
+        {%- for block in section.blocks -%}
+          <div class="rl-car__slide" {{ block.shopify_attributes }}>
+            <article class="rl-testi__card">
+              {%- if block.settings.rating > 0 -%}
+                <div class="rl-testi__stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+                  {%- for i in (1..5) -%}{%- if i <= block.settings.rating -%}★{%- else -%}☆{%- endif -%}{%- endfor -%}
+                </div>
+              {%- endif -%}
+              <p class="rl-testi__quote">&ldquo;{{ block.settings.quote }}&rdquo;</p>
+              <div class="rl-testi__author">
+                <div class="rl-testi__avatar">
+                  {%- if block.settings.avatar != blank -%}
+                    {{ block.settings.avatar | image_url: width: 120, height: 120 | image_tag: loading: 'lazy', alt: block.settings.name }}
+                  {%- else -%}
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><ellipse cx="12" cy="17.5" rx="5.5" ry="3.5"/></svg>
+                  {%- endif -%}
+                </div>
+                <div>
+                  <p class="rl-testi__name">{{ block.settings.name }}</p>
+                  {%- if block.settings.role != blank -%}<p class="rl-testi__role">{{ block.settings.role }}</p>{%- endif -%}
+                </div>
+              </div>
+            </article>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if s.show_stepper -%}
+    <div class="rl-car__stepper-wrap"><div class="rl-car__stepper" role="presentation"><span class="rl-car__thumb"></span></div></div>
+  {%- endif -%}
+</section>
+
+<script src="{{ 'rl-carousel.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "RL Testimonials",
+  "tag": "div",
+  "class": "section-rl-testimonials",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Testimonials" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "What Our Customers Say?" },
+
+    { "type": "header", "content": "Slider" },
+    { "type": "range", "id": "slides_desktop", "label": "Cards on desktop", "min": 1, "max": 4, "step": 1, "default": 3 },
+    { "type": "range", "id": "slides_tablet", "label": "Cards on tablet", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows (desktop & tablet)", "default": true },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-scroll", "default": false },
+    { "type": "range", "id": "autoplay_speed", "label": "Seconds per slide", "min": 2, "max": 10, "step": 1, "default": 5 },
+
+    { "type": "header", "content": "Stepper line (bottom)" },
+    { "type": "checkbox", "id": "show_stepper", "label": "Show stepper line", "default": true },
+    { "type": "range", "id": "stepper_width", "label": "Stepper line width", "min": 80, "max": 600, "step": 10, "unit": "px", "default": 240 },
+    { "type": "color", "id": "track_color", "label": "Line color (grey)", "default": "#eeeeee" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent (title, icon, stepper)", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Heading & name", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Quote text", "default": "#222222" },
+    { "type": "color", "id": "muted_color", "label": "Label under name", "default": "#666666" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e3e3e3" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 24 }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        { "type": "textarea", "id": "quote", "label": "Review text", "default": "Very happy with my experience. The team was helpful and my order arrived on time." },
+        { "type": "text", "id": "name", "label": "Customer name", "default": "Amanda S." },
+        { "type": "text", "id": "role", "label": "Label under name", "default": "Happy customer" },
+        { "type": "image_picker", "id": "avatar", "label": "Photo (optional)", "info": "Empty = red person icon." },
+        { "type": "range", "id": "rating", "label": "Star rating (0 = hide)", "min": 0, "max": 5, "step": 1, "default": 0 }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "RL Testimonials",
+      "blocks": [
+        { "type": "testimonial", "settings": { "quote": "Very happy with my experience at Redline. The team was helpful, the ordering process was easy, and my appliance was delivered on time. I would definitely shop here again.", "name": "Amanda S." } },
+        { "type": "testimonial", "settings": { "quote": "Redline has a great range of quality brands and appliances. The staff helped me choose the right product for my kitchen and answered all my questions clearly.", "name": "Jessica L." } },
+        { "type": "testimonial", "settings": { "quote": "From purchase to delivery, everything went smoothly. The team was professional and responsive, and the product arrived in perfect condition.", "name": "Rachel K." } },
+        { "type": "testimonial", "settings": { "quote": "Easy to order, fast delivery and great after-sales support. Highly recommended.", "name": "Sarah M." } },
+        { "type": "testimonial", "settings": { "quote": "The delivery team was on time and careful with my appliance. Great service from start to finish.", "name": "Emily R." } },
+        { "type": "testimonial", "settings": { "quote": "Fair prices, helpful staff and a smooth checkout. I will be back for my next purchase.", "name": "Laura T." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

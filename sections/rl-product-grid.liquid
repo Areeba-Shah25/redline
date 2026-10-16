@@ -1,0 +1,390 @@
+{%- comment -%}
+  rl-product-grid — products as a GRID or an infinite CAROUSEL (setting "Display as").
+  ONE section, use it as many times as you like (New Arrivals, RedLine Exclusive, Deals, ...).
+  Needs assets: rl-base.css, rl-product-card.css, rl-product-grid.css   Needs snippet: rl-product-card
+  Carousel also needs: rl-carousel.css, rl-carousel.js
+  Pick a collection OR choose products by hand (hand-picked products win).
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'rl-product-grid.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign is_car = false -%}
+{%- if s.layout == 'carousel' -%}
+  {%- assign is_car = true -%}
+  {{ 'rl-carousel.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+{%- if s.product_list.size > 0 -%}
+  {%- assign items = s.product_list -%}
+{%- elsif s.collection != blank -%}
+  {%- assign items = s.collection.products -%}
+{%- else -%}
+  {%- assign items = collections.all.products -%}
+{%- endif -%}
+
+{%- assign view_all = s.link_url -%}
+{%- if view_all == blank and s.collection != blank -%}{%- assign view_all = s.collection.url -%}{%- endif -%}
+
+{%- case s.image_shape -%}
+  {%- when 'square' -%}
+    {%- assign ratio = '1 / 1' -%}
+  {%- when 'tall' -%}
+    {%- assign ratio = '4 / 5' -%}
+  {%- else -%}
+    {%- assign ratio = '10 / 9' -%}
+{%- endcase -%}
+
+<section
+  class="rl-section rl-grid{% if is_car %} rl-grid--car rl-car{% endif %}{% if s.mobile_swipe and is_car == false %} rl-grid--swipe{% endif %}"
+  {%- if is_car %}
+    data-rl-carousel data-autoplay="{{ s.autoplay }}" data-speed="{{ s.autoplay_speed | times: 1000 }}"
+  {% endif %}
+  style="
+    --rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-card:{{ s.card_bg }};--rl-border:{{ s.border_color }};--rl-bg:{{ s.section_bg }};--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--cols-d:{{ s.cols_desktop }};--cols-t:{{ s.cols_tablet }};--cols-m:{{ s.cols_mobile }};--grid-gap:{{ s.gap }}px;--grid-ratio:{{ ratio }};
+    {%- if is_car -%}--car-pv-d:{{ s.car_desktop }};--car-pv-t:{{ s.car_tablet }};--car-pv-m:{{ s.car_mobile }};--car-gap-d:{{ s.gap }}px;--car-gap-t:{{ s.gap }}px;--car-gap-m:12px;--stepper-w:{{ s.stepper_width }}px;{%- endif -%}
+  "
+>
+  <div class="rl-container">
+    <div class="rl-head">
+      <div>
+        {%- if s.eyebrow != blank -%}
+          <p class="rl-eyebrow">{{ s.eyebrow }}</p>
+        {%- endif -%}
+        {%- if s.heading != blank -%}
+          <h2 class="rl-heading">{{ s.heading }}</h2>
+        {%- endif -%}
+      </div>
+      <div class="rl-grid__tools">
+        {%- if s.link_text != blank and view_all != blank -%}
+          <a class="rl-link rl-grid__link" href="{{ view_all }}">
+            {{- s.link_text }}
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6"/>
+            </svg>
+          </a>
+        {%- endif -%}
+        {%- if is_car and s.show_arrows -%}
+          <div class="rl-grid__arrows">
+            <button type="button" class="rl-arrow" data-car-prev aria-label="Previous products">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M15 5l-7 7 7 7"/>
+              </svg>
+            </button>
+            <button type="button" class="rl-arrow" data-car-next aria-label="Next products">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if items.size > 0 -%}
+      {%- if is_car -%}
+        <div
+          class="rl-car__viewport"
+          tabindex="0"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="{{ s.heading | escape }}"
+        >
+          <div class="rl-car__track">
+      {%- else -%}
+        <div class="rl-grid__list" role="list">
+      {%- endif -%}
+
+      {%- for product in items limit: s.product_limit -%}
+        <div class="{% if is_car %}rl-car__slide{% else %}rl-grid__item{% endif %}" role="listitem">
+          {%- render 'rl-product-card',
+            product: product,
+            show_vendor: s.show_vendor,
+            show_rating: s.show_rating,
+            badge_style: s.badge_style,
+            badge_text: s.badge_text,
+            sold_out_text: s.sold_out_text,
+            button_label: s.button_label,
+            strike: s.strike_old_price
+          -%}
+        </div>
+      {%- endfor -%}
+
+      {%- if is_car -%}
+        </div>
+        </div>
+      {%- else -%}
+        </div>
+      {%- endif -%}
+
+      {%- if is_car and s.show_stepper -%}
+        <div class="rl-car__stepper-wrap">
+          <div class="rl-car__stepper" role="presentation"><span class="rl-car__thumb"></span></div>
+        </div>
+      {%- endif -%}
+    {%- elsif request.design_mode -%}
+      <p class="rl-grid__empty">Pick a collection or choose products in this section's settings.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- if is_car -%}<script src="{{ 'rl-carousel.js' | asset_url }}" defer></script>{%- endif -%}
+
+{% schema %}
+{
+  "name": "RL products",
+  "tag": "div",
+  "class": "section-rl-product-grid",
+  "settings": [
+    { "type": "header", "content": "1. Products" },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Products show in the collection's own order, so sort it in Shopify admin (e.g. “Newest first”)."
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Or choose products by hand",
+      "limit": 24,
+      "info": "If you pick products here, they are used instead of the collection."
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Max products",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "default": 8,
+      "info": "Carousel looks best with at least 2 more products than cards shown."
+    },
+
+    { "type": "header", "content": "2. Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Discover what’s new!" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "New Arrivals" },
+    { "type": "text", "id": "link_text", "label": "Link text", "default": "Shop More" },
+    { "type": "url", "id": "link_url", "label": "Link", "info": "Empty = opens the selected collection." },
+
+    { "type": "header", "content": "3. Display" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Display as",
+      "options": [
+        { "value": "carousel", "label": "Carousel (slides, loops forever)" },
+        { "value": "grid", "label": "Grid" }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "image_shape",
+      "label": "Photo area",
+      "options": [
+        { "value": "standard", "label": "Standard (as in design)" },
+        { "value": "square", "label": "Square" },
+        { "value": "tall", "label": "Tall" }
+      ],
+      "default": "standard"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between cards",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 900,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+
+    { "type": "header", "content": "4. Carousel options" },
+    {
+      "type": "select",
+      "id": "car_desktop",
+      "label": "Cards on desktop",
+      "options": [
+        { "value": "3", "label": "3" },
+        { "value": "3.5", "label": "3.5 (peek next card)" },
+        { "value": "4", "label": "4 (as in design)" },
+        { "value": "4.5", "label": "4.5 (peek next card)" },
+        { "value": "5", "label": "5" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "car_tablet",
+      "label": "Cards on tablet",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "2.5", "label": "2.5 (peek)" },
+        { "value": "3", "label": "3" }
+      ],
+      "default": "2.5"
+    },
+    {
+      "type": "select",
+      "id": "car_mobile",
+      "label": "Cards on mobile",
+      "options": [
+        { "value": "1.3", "label": "1.3 (peek)" },
+        { "value": "1.6", "label": "1.6 (peek)" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1.6"
+    },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrow buttons (desktop & tablet)", "default": true },
+    { "type": "checkbox", "id": "show_stepper", "label": "Show progress line under the cards", "default": false },
+    {
+      "type": "range",
+      "id": "stepper_width",
+      "label": "Progress line width",
+      "min": 80,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "default": 240
+    },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-scroll", "default": false },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Seconds per slide",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+
+    { "type": "header", "content": "5. Grid options" },
+    {
+      "type": "range",
+      "id": "cols_desktop",
+      "label": "Cards per row (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    
+{
+  "type": "select",
+  "id": "cols_tablet",
+  "label": "Cards per row (tablet)",
+  "options": [
+    { "value": "2", "label": "2 cards" },
+    { "value": "3", "label": "3 cards" }
+  ],
+  "default": "2"
+},
+    
+{
+  "type": "select",
+  "id": "cols_mobile",
+  "label": "Cards per row (mobile)",
+  "options": [
+    { "value": "1", "label": "1 card" },
+    { "value": "2", "label": "2 cards" }
+  ],
+  "default": "2"
+},
+    { "type": "checkbox", "id": "mobile_swipe", "label": "Mobile: single row you can swipe", "default": false },
+
+    { "type": "header", "content": "6. Card content" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Brand name", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Star rating", "default": true },
+    {
+      "type": "select",
+      "id": "badge_style",
+      "label": "Sale badge",
+      "options": [
+        { "value": "amount", "label": "Amount saved (Save $30)" },
+        { "value": "percent", "label": "Percent saved (Save 20%)" },
+        { "value": "none", "label": "Hide badge" }
+      ],
+      "default": "amount"
+    },
+    { "type": "text", "id": "badge_text", "label": "Badge word", "default": "Save" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold-out badge", "default": "Sold out" },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "View Product" },
+    { "type": "checkbox", "id": "strike_old_price", "label": "Line through old price", "default": false },
+
+    { "type": "header", "content": "7. Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent (red)", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Headings & titles", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#444444" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e6e6e6" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "8. Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top space",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom space",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "RL Products_New Arrivals",
+      "settings": { "eyebrow": "Discover what’s new!", "heading": "New Arrivals", "link_text": "Shop More" }
+    },
+    {
+      "name": "RL Products_Exclusive",
+      "settings": { "eyebrow": "Featured Products", "heading": "RedLine Exclusive", "link_text": "Explore All Offers" }
+    }
+  ]
+}
+{% endschema %}

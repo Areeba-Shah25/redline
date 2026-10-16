@@ -1,0 +1,150 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "redline_trust_features_LnEKwH": {
+      "type": "redline-trust-features",
+      "blocks": {
+        "feature_dDYpgx": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/secure.png",
+            "title": "Secure Payments",
+            "description": "Your information is always protected"
+          }
+        },
+        "feature_PjAcaE": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/free.png",
+            "title": "Free Delivery on Selected Products",
+            "description": "Across Mauritius"
+          }
+        },
+        "feature_i6qgeb": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/Offical.png",
+            "title": "Official Brand Warranty",
+            "description": "Genuine products, local support"
+          }
+        },
+        "feature_zbAmMk": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/Dedicated.png",
+            "title": "Dedicated After-Sales Support",
+            "description": "Here when you need us"
+          }
+        }
+      },
+      "block_order": [
+        "feature_dDYpgx",
+        "feature_PjAcaE",
+        "feature_i6qgeb",
+        "feature_zbAmMk"
+      ],
+      "name": "Trust features",
+      "settings": {
+        "background_color": "#1a1e21",
+        "title_color": "#ffffff",
+        "text_color": "#b8b8b8",
+        "divider_color": "#3a3f44",
+        "icon_size": 48,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand_information": {
+          "type": "brand_information",
+          "settings": {
+            "logo": "shopify://shop_images/image_1905_1.png",
+            "logo_width": 220,
+            "tagline": "<p>Technology and home essentials, carefully selected for Mauritius.</p>",
+            "show_social": true
+          }
+        },
+        "shop_menu": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Shop",
+            "menu": "footer-menu-shop"
+          }
+        },
+        "customer_care_menu": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Customer Care",
+            "menu": "footer-menu-customer-care"
+          }
+        },
+        "visit_us": {
+          "type": "visit_us",
+          "settings": {
+            "heading": "Visit Us",
+            "location_1": "Bagatelle Motor City",
+            "location_2": "Grand Baie – Chemin Vingt Pieds",
+            "show_divider": true,
+            "support_label": "Customer Support:",
+            "support_phones": "5250 2503 / 211 6060",
+            "support_link": "",
+            "aftersales_label": "After-Sales:",
+            "aftersales_phones": "5941 6225",
+            "aftersales_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_information",
+        "shop_menu",
+        "customer_care_menu",
+        "visit_us"
+      ],
+      "settings": {
+        "background_color": "#1a1e21",
+        "text_color": "#ffffff",
+        "muted_text_color": "#b8b8b8",
+        "color_scheme": "scheme-1",
+        "newsletter_enable": true,
+        "newsletter_heading": "Stay Ahead Of What’s New",
+        "newsletter_subtext": "New arrivals, exclusive offers and product updates—straight to your inbox.",
+        "newsletter_placeholder": "Enter your email address",
+        "newsletter_panel_color": "#22272b",
+        "newsletter_button_icon": "shopify://shop_images/Search.png",
+        "icon_facebook": "shopify://shop_images/Facebook.png",
+        "icon_twitter": "shopify://shop_images/Facebook_1.png",
+        "icon_instagram": "shopify://shop_images/Facebook_2.png",
+        "icon_linkedin": "shopify://shop_images/Facebook_3.png",
+        "enable_follow_on_shop": false,
+        "show_social": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "copyright_text": "© 2026 Redline Mauritius. All rights reserved.",
+        "copyright_menu": "copyright-menu",
+        "show_policy": false,
+        "payment_enable": false,
+        "copyright_slogan": "A smarter home\nfor a brighter Mauritius.",
+        "show_slogan_accent": true,
+        "margin_top": 0,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "redline_trust_features_LnEKwH",
+    "footer"
+  ]
+}
