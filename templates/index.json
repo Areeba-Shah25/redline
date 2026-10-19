@@ -1,0 +1,1035 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rl_hero_banner_TmqRPE": {
+      "type": "rl-hero-banner",
+      "blocks": {
+        "slide_b3wpkd": {
+          "type": "slide",
+          "settings": {
+            "text_side": "left",
+            "image": "shopify://shop_images/banner-image.png",
+            "image_alt": "",
+            "eyebrow": "Smarter appliances . Brighter living",
+            "heading_1": "A better home",
+            "heading_2": "A better everyday.",
+            "description": "<p>Discover home appliances and technology designed for modern Mauritian homes.</p>",
+            "button_1_label": "Explore our new collection",
+            "button_1_link": "",
+            "button_2_label": "Browse all products",
+            "button_2_link": "",
+            "feature_1_icon": "badge",
+            "feature_1_image": "shopify://shop_images/Official_brands.svg",
+            "feature_1_text": "<p>Official brands & genuine products</p>",
+            "feature_2_icon": "delivery",
+            "feature_2_image": "shopify://shop_images/Fast_reliable.svg",
+            "feature_2_text": "<p>Fast & reliable</p><p>delivery across Mauritius</p>",
+            "feature_3_icon": "advice",
+            "feature_3_image": "shopify://shop_images/expert_advice.svg",
+            "feature_3_text": "<p>Expert advice</p><p>in-store & online</p>",
+            "feature_4_icon": "support",
+            "feature_4_image": "shopify://shop_images/support.svg",
+            "feature_4_text": "<p>After-sales support</p><p>you can count on</p>"
+          }
+        },
+        "slide_qCnGbW": {
+          "type": "slide",
+          "settings": {
+            "text_side": "right",
+            "image": "shopify://shop_images/banner-image.jpg",
+            "image_alt": "",
+            "eyebrow": "Smarter appliances . Brighter living",
+            "heading_1": "A better home",
+            "heading_2": "A better everyday.",
+            "description": "<p>Discover home appliances and technology designed for modern Mauritian homes.</p>",
+            "button_1_label": "Explore our new collection",
+            "button_1_link": "",
+            "button_2_label": "Browse all products",
+            "button_2_link": "",
+            "feature_1_icon": "badge",
+            "feature_1_image": "shopify://shop_images/Official_brands.svg",
+            "feature_1_text": "<p>Official brands & genuine products</p>",
+            "feature_2_icon": "delivery",
+            "feature_2_image": "shopify://shop_images/Fast_reliable.svg",
+            "feature_2_text": "<p>Fast & reliable</p><p>delivery across Mauritius</p>",
+            "feature_3_icon": "advice",
+            "feature_3_image": "shopify://shop_images/expert_advice.svg",
+            "feature_3_text": "<p>Expert advice</p><p>in-store & online</p>",
+            "feature_4_icon": "support",
+            "feature_4_image": "shopify://shop_images/support.svg",
+            "feature_4_text": "<p>After-sales support</p><p>you can count on</p>"
+          }
+        }
+      },
+      "block_order": [
+        "slide_b3wpkd",
+        "slide_qCnGbW"
+      ],
+      "name": "RL Hero banner",
+      "settings": {
+        "transition": "slide",
+        "autoplay": true,
+        "autoplay_speed": 5,
+        "show_dots": true,
+        "show_arrows": true,
+        "carousel_label": "Hero",
+        "height": 760,
+        "text_width": 600,
+        "max_width": 1400,
+        "fade_strength": 90,
+        "mobile_image_height": 260,
+        "accent_color": "#c8001a",
+        "heading_color": "#1a1a1a",
+        "text_color": "#55565d",
+        "eyebrow_color": "#55565d",
+        "fade_color": "#f7f5f2",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rl_ticker_eULdCN": {
+      "type": "rl-ticker",
+      "blocks": {
+        "message_X7FQWD": {
+          "type": "message",
+          "settings": {
+            "text": "Customer support available",
+            "link": ""
+          }
+        },
+        "message_FJwc4E": {
+          "type": "message",
+          "settings": {
+            "text": "After-sales service",
+            "link": ""
+          }
+        },
+        "message_tUVHdd": {
+          "type": "message",
+          "settings": {
+            "text": "Top appliance brands",
+            "link": ""
+          }
+        },
+        "message_JcXnJY": {
+          "type": "message",
+          "settings": {
+            "text": "Delivery available",
+            "link": ""
+          }
+        },
+        "message_DkrT6E": {
+          "type": "message",
+          "settings": {
+            "text": "Secure & convenient payments",
+            "link": ""
+          }
+        },
+        "message_jqVJcm": {
+          "type": "message",
+          "settings": {
+            "text": "Returns are free within 7 days",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "message_X7FQWD",
+        "message_FJwc4E",
+        "message_tUVHdd",
+        "message_JcXnJY",
+        "message_DkrT6E",
+        "message_jqVJcm"
+      ],
+      "name": "RL Ticker",
+      "settings": {
+        "speed": 5,
+        "direction": "left",
+        "pause_on_hover": true,
+        "icon": "bolt",
+        "uppercase": true,
+        "height": 66,
+        "font_size": 17,
+        "bg_color": "#c8001a",
+        "text_color": "#ffffff",
+        "icon_color": "#ffffff",
+        "aria_label": "Store highlights"
+      }
+    },
+    "rl_collection_J6YeCg": {
+      "type": "rl-collection",
+      "blocks": {
+        "category_4JajdD": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Built-in Kitchen",
+            "link": "",
+            "image": "shopify://shop_images/Built-in_Kitchen.png"
+          }
+        },
+        "category_ciU96a": {
+          "type": "category",
+          "settings": {
+            "collection": "41l-50l-oven",
+            "name": "Refrigeration",
+            "link": "",
+            "image": "shopify://shop_images/Refrigeration.png"
+          }
+        },
+        "category_aKJJAN": {
+          "type": "category",
+          "settings": {
+            "collection": "41l-50l-oven",
+            "name": "Laundry",
+            "link": "",
+            "image": "shopify://shop_images/Laundry.png"
+          }
+        },
+        "category_4BQ3ci": {
+          "type": "category",
+          "settings": {
+            "collection": "61l-70l-oven",
+            "name": "Small Appliances",
+            "link": "",
+            "image": "shopify://shop_images/Small_Appliances.png"
+          }
+        },
+        "category_TX63gy": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "TV & Audio",
+            "link": "",
+            "image": "shopify://shop_images/TV_Audio.png"
+          }
+        },
+        "category_zpwVhf": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Built-in Kitchen",
+            "link": "",
+            "image": "shopify://shop_images/Built-in_Kitchen.png"
+          }
+        },
+        "category_3VXyxe": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Air Conditioning",
+            "link": "",
+            "image": "shopify://shop_images/Air_Conditioning.png"
+          }
+        },
+        "category_Pwci6z": {
+          "type": "category",
+          "settings": {
+            "collection": "61l-70l-oven",
+            "name": "Small Appliances",
+            "link": "",
+            "image": "shopify://shop_images/Small_Appliances.png"
+          }
+        },
+        "category_w3AeF7": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Kitchen Appliances",
+            "link": "",
+            "image": "shopify://shop_images/Kitchen.png"
+          }
+        },
+        "category_9BcwCh": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "TV & Audio",
+            "link": "",
+            "image": "shopify://shop_images/TV_Audio.png"
+          }
+        }
+      },
+      "block_order": [
+        "category_4JajdD",
+        "category_ciU96a",
+        "category_aKJJAN",
+        "category_4BQ3ci",
+        "category_TX63gy",
+        "category_zpwVhf",
+        "category_3VXyxe",
+        "category_Pwci6z",
+        "category_w3AeF7",
+        "category_9BcwCh"
+      ],
+      "name": "RL Collection",
+      "settings": {
+        "eyebrow": "Explore Our Range",
+        "heading": "Shop By Category",
+        "link_text": "View all categories",
+        "link_url": "#",
+        "tiles_desktop": "6",
+        "tiles_tablet": "4",
+        "tiles_mobile": "2",
+        "image_height": 170,
+        "gap": 14,
+        "radius": 8,
+        "bleed": false,
+        "show_arrows": true,
+        "max_width": 1400,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "tile_bg": "#f3f3f0",
+        "section_bg": "#ffffff",
+        "padding_top": 52,
+        "padding_bottom": 40
+      }
+    },
+    "rl_product_grid_aQd9VT": {
+      "type": "rl-product-grid",
+      "name": "RL Product grid – New Arrivals",
+      "settings": {
+        "collection": "special-offer",
+        "product_list": [],
+        "product_limit": 4,
+        "eyebrow": "",
+        "heading": "Special Offers",
+        "link_text": "Shop More",
+        "link_url": "#",
+        "layout": "carousel",
+        "image_shape": "standard",
+        "gap": 18,
+        "max_width": 1400,
+        "car_desktop": "4",
+        "car_tablet": "2.5",
+        "car_mobile": "1.6",
+        "show_arrows": true,
+        "show_stepper": false,
+        "stepper_width": 240,
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "cols_desktop": 4,
+        "cols_tablet": "2",
+        "cols_mobile": "2",
+        "mobile_swipe": false,
+        "show_vendor": true,
+        "show_rating": true,
+        "badge_style": "amount",
+        "badge_text": "Save",
+        "sold_out_text": "Sold out",
+        "button_label": "View Product",
+        "strike_old_price": false,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "card_bg": "#ffffff",
+        "border_color": "#e6e6e6",
+        "section_bg": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    },
+    "rl_product_grid_46Lqxn": {
+      "type": "rl-product-grid",
+      "name": "RL Product grid – Exclusive",
+      "settings": {
+        "collection": "blender",
+        "product_list": [],
+        "product_limit": 24,
+        "eyebrow": "Featured Products",
+        "heading": "RedLine Exclusive",
+        "link_text": "Explore All Offers",
+        "link_url": "shopify://products/aeg-36cm-ceramic-domino-hob-with-2-cooking-zones",
+        "layout": "carousel",
+        "image_shape": "standard",
+        "gap": 18,
+        "max_width": 1400,
+        "car_desktop": "4",
+        "car_tablet": "2.5",
+        "car_mobile": "1.6",
+        "show_arrows": true,
+        "show_stepper": false,
+        "stepper_width": 240,
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "cols_desktop": 4,
+        "cols_tablet": "2",
+        "cols_mobile": "2",
+        "mobile_swipe": false,
+        "show_vendor": true,
+        "show_rating": true,
+        "badge_style": "amount",
+        "badge_text": "Save",
+        "sold_out_text": "Sold out",
+        "button_label": "View Product",
+        "strike_old_price": false,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "card_bg": "#ffffff",
+        "border_color": "#e6e6e6",
+        "section_bg": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    },
+    "rl_split_banners_wTgfcB": {
+      "type": "rl-split-banners",
+      "blocks": {
+        "banner_i3YF67": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/instant_pot.png",
+            "image_alt": "",
+            "heading": "Instant Pot®:\nAmerica’s No.1 Air\nFryer Brand",
+            "description": "<p>The Instant™ Vortex® Plus 6-quart Clear Cook Air Fryer is now Available!<br/>Using an Instant Vortex is everyday magic and is good for your health!<br/>We have several models in store to choose from!</p>",
+            "button_label": "Discover more info",
+            "button_link": "shopify://products/aeg-508l-side-by-side-refrigerator-rxb57011nx",
+            "button_style": "fill",
+            "theme": "light",
+            "text_side": "left",
+            "fade_strength": 60
+          }
+        },
+        "banner_aXYJNH": {
+          "type": "banner",
+          "settings": {
+            "image": "shopify://shop_images/Ecovacs.png",
+            "image_alt": "",
+            "heading": "Ecovacs | Auto\nCleaning Robots",
+            "description": "<p>To empower and inspire you to live a more convenient, connected lifestyle, we design intelligent robotic solutions that seamlessly integrate into your everyday life, so you have more time to do what you love.</p>",
+            "button_label": "Our Products",
+            "button_link": "shopify://products/aeg-6000-series-26l-glossy-black-built-in-microwave-grill-ob6gm261ub",
+            "button_style": "outline",
+            "theme": "dark",
+            "text_side": "left",
+            "fade_strength": 25
+          }
+        }
+      },
+      "block_order": [
+        "banner_i3YF67",
+        "banner_aXYJNH"
+      ],
+      "name": "RL Split banners",
+      "settings": {
+        "height": 260,
+        "gap": 14,
+        "radius": 8,
+        "max_width": 1400,
+        "mobile_image_height": 200,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1e21",
+        "text_color": "#1a1e21",
+        "section_bg": "#ffffff",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "rl_product_grid_kddnPY": {
+      "type": "rl-product-grid",
+      "name": "RL Product grid – New Arrivals",
+      "settings": {
+        "collection": "black-and-white-monochrome",
+        "product_list": [],
+        "product_limit": 4,
+        "eyebrow": "Discover what’s new!",
+        "heading": "New Arrivals",
+        "link_text": "Shop More",
+        "link_url": "#",
+        "layout": "carousel",
+        "image_shape": "standard",
+        "gap": 18,
+        "max_width": 1400,
+        "car_desktop": "4",
+        "car_tablet": "2.5",
+        "car_mobile": "1.6",
+        "show_arrows": true,
+        "show_stepper": false,
+        "stepper_width": 240,
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "cols_desktop": 4,
+        "cols_tablet": "2",
+        "cols_mobile": "2",
+        "mobile_swipe": false,
+        "show_vendor": true,
+        "show_rating": true,
+        "badge_style": "amount",
+        "badge_text": "Save",
+        "sold_out_text": "Sold out",
+        "button_label": "View Product",
+        "strike_old_price": false,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "card_bg": "#ffffff",
+        "border_color": "#e6e6e6",
+        "section_bg": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    },
+    "rl_deals_tkgrpc": {
+      "type": "rl-deals",
+      "blocks": {
+        "card_c4ALiB": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Kitchen_Appliances.png",
+            "image_alt": "",
+            "eyebrow": "Kitchen Appliances",
+            "heading": "Cook\nCreate\nEnjoy More",
+            "highlight_line": "2",
+            "text": "Save on premium kitchen essentials for every home.",
+            "button_label": "Shop Kitchen Deals",
+            "button_link": "#"
+          }
+        },
+        "card_XjRnPt": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Home_Comfort.png",
+            "image_alt": "",
+            "eyebrow": "Home Comfort",
+            "heading": "Cooler\nSmarter\nLiving",
+            "highlight_line": "3",
+            "text": "Great offers on air conditioning for a more comfortable home.",
+            "button_label": "Shop AC Deals",
+            "button_link": "#"
+          }
+        },
+        "card_aPeKXW": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Laundry_Solutions.png",
+            "image_alt": "",
+            "eyebrow": "Laundry Solutions",
+            "heading": "Fresh\nCare\nEveryday",
+            "highlight_line": "3",
+            "text": "Reliable washing machines for cleaner, brighter days.",
+            "button_label": "Shop Laundry Deals",
+            "button_link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "card_c4ALiB",
+        "card_XjRnPt",
+        "card_aPeKXW"
+      ],
+      "name": "RL Deals",
+      "settings": {
+        "eyebrow": "Deals & Promotion",
+        "heading": "Upgrade Your Home For Less",
+        "description": "Discover limited-time offers on the best appliances, home solutions and more.",
+        "link_text": "View All Deals",
+        "link_url": "#",
+        "card_height": 300,
+        "text_width": 55,
+        "overlay_opacity": 100,
+        "gap": 20,
+        "radius": 8,
+        "mobile_swipe": true,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "button_color": "#d0021b",
+        "button_text_color": "#ffffff",
+        "button_gradient": true,
+        "overlay_color": "#FFFEFE",
+        "section_bg": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "rl_brand_feature_fUTr6i": {
+      "type": "rl-brand-feature",
+      "name": "RL Brand feature",
+      "settings": {
+        "logo": "shopify://shop_images/brand-logo.png",
+        "brand_name": "Promate",
+        "description": "<p>The worldwide leader in consumer electronic accessories with a focus on Mobile, Tablet and Computer accessories is on www.redline.mu ! We are the only brand giving 2 years manufacturing warranty in Mauritius. Enjoy your favourite Promate products here!</p>",
+        "button_label": "Shop New Arrival",
+        "button_link": "#",
+        "collection": "",
+        "product_limit": 10,
+        "show_vendor": true,
+        "show_rating": true,
+        "badge_style": "amount",
+        "badge_text": "Save",
+        "sold_out_text": "Sold out",
+        "card_button_label": "View Product",
+        "left_width": 320,
+        "logo_width": 210,
+        "radius": 8,
+        "cards_desktop": "4.5",
+        "cards_tablet": "2.5",
+        "cards_mobile": "1.8",
+        "show_arrows": false,
+        "panel_color": "#b0000f",
+        "panel_text_color": "#ffffff",
+        "button_color": "#ffffff",
+        "button_text_color": "#1a1a1a",
+        "button_gradient": false,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "card_bg": "#ffffff",
+        "border_color": "#e6e6e6",
+        "section_bg": "#ffffff",
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "rl_category_cards_gqEwTh": {
+      "type": "rl-category-cards",
+      "blocks": {
+        "card_XFgW4N": {
+          "type": "card",
+          "settings": {
+            "collection": "affinity",
+            "title": "Pizza Accessories",
+            "image": "shopify://shop_images/pizza-asse.png",
+            "link": ""
+          }
+        },
+        "card_xPDqqn": {
+          "type": "card",
+          "settings": {
+            "collection": "",
+            "title": "Pizza Ovens",
+            "image": "shopify://shop_images/Pizza_Ovens.png",
+            "link": ""
+          }
+        },
+        "card_HxWkn4": {
+          "type": "card",
+          "settings": {
+            "collection": "black-and-white-monochrome",
+            "title": "Outdoor Cookware",
+            "image": "shopify://shop_images/Outdoor_Cookware.png",
+            "link": ""
+          }
+        },
+        "card_XUJRXe": {
+          "type": "card",
+          "settings": {
+            "collection": "",
+            "title": "Grills & BBQ Essentials",
+            "image": "shopify://shop_images/Grills_BBQ_Essentials.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_XFgW4N",
+        "card_xPDqqn",
+        "card_HxWkn4",
+        "card_XUJRXe"
+      ],
+      "name": "RL Category cards",
+      "settings": {
+        "eyebrow": "Outdoor Living",
+        "heading": "We Are Ooni Pizza Ovens",
+        "link_text": "Explore More",
+        "link_url": "#",
+        "cols_desktop": 4,
+        "cols_tablet": 2,
+        "cols_mobile": "1",
+        "mobile_swipe": false,
+        "image_shape": "landscape",
+        "gap": 16,
+        "radius": 10,
+        "max_width": 1400,
+        "title_position": "top",
+        "show_arrow": true,
+        "overlay": 45,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "section_bg": "#ffffff",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "best_sellers_cUfa4c": {
+      "type": "rl-best-sellers",
+      "name": "Best sellers",
+      "settings": {
+        "collection": "additional-accessories",
+        "product_limit": 12,
+        "eyebrow": "Customer Favorites",
+        "heading": "Best Sellers",
+        "link_text": "View All Best Seller",
+        "link_url": "#",
+        "show_vendor": true,
+        "show_rating": true,
+        "badge_style": "percent",
+        "badge_text": "Save",
+        "sold_out_text": "Sold out",
+        "button_label": "View Product",
+        "cards_desktop": 6,
+        "cards_tablet": "3.5",
+        "cards_mobile": "1.8",
+        "gap": 12,
+        "autoplay": true,
+        "autoplay_speed": 4,
+        "show_arrows": false,
+        "show_dots": false,
+        "max_width": 1400,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "card_bg": "#ffffff",
+        "border_color": "#e6e6e6",
+        "section_bg": "#ffffff",
+        "padding_top": 36,
+        "padding_bottom": 16
+      }
+    },
+    "promo_banner_Vx7a9f": {
+      "type": "rl-promo-banner",
+      "name": "Promo banner",
+      "settings": {
+        "image": "shopify://shop_images/banner-image.jpg",
+        "image_alt": "",
+        "eyebrow": "Ecovacs at Redline",
+        "heading": "Less cleaning.\nMore living.",
+        "description": "<p>Discover smarter ways to care for your home, with time-saving technology made beautifully simple.</p>",
+        "button_label": "Explore Ecovacs",
+        "button_link": "",
+        "text_position": "right",
+        "heading_size": "medium",
+        "height": 330,
+        "text_width": 420,
+        "overlay_opacity": 80,
+        "full_width": false,
+        "radius": 12,
+        "show_border": true,
+        "mobile_text_over_image": false,
+        "mobile_image_height": 240,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "button_color": "#d0021b",
+        "button_text_color": "#ffffff",
+        "button_gradient": true,
+        "overlay_color": "#ffffff",
+        "border_color": "#e3e3e3",
+        "section_bg": "#ffffff",
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "brandsgrid_NPiLmV": {
+      "type": "rl-brands",
+      "blocks": {
+        "brand_nRxTBU": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_25.png",
+            "name": "RedLine",
+            "link": ""
+          }
+        },
+        "brand_CmpATd": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_26_1.png",
+            "name": "Sharp",
+            "link": ""
+          }
+        },
+        "brand_4eW3f3": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_27.png",
+            "name": "Instant",
+            "link": ""
+          }
+        },
+        "brand_jMj3TG": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_28.png",
+            "name": "Nutricook",
+            "link": ""
+          }
+        },
+        "brand_QkVq9C": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_29.png",
+            "name": "Ooni",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_nRxTBU",
+        "brand_CmpATd",
+        "brand_4eW3f3",
+        "brand_jMj3TG",
+        "brand_QkVq9C"
+      ],
+      "name": "Brands grid",
+      "settings": {
+        "eyebrow": "Trusted Worldwide",
+        "heading": "Our Brands",
+        "link_text": "View All Brands",
+        "link_url": "#",
+        "items_desktop": "5",
+        "items_tablet": "4",
+        "items_mobile": "2",
+        "autoplay": true,
+        "autoplay_speed": 8,
+        "show_arrows": true,
+        "show_dots": false,
+        "max_width": 1400,
+        "cell_height": 120,
+        "grayscale": false,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "border_color": "#e5e5e5",
+        "cell_bg": "#ffffff",
+        "section_bg": "#ffffff",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "static_image_Gb494b": {
+      "type": "static-image",
+      "name": "Static Image",
+      "settings": {
+        "st__heading": "Redline Logistics, Technical & After-Sales Team",
+        "st__image": "shopify://shop_images/image_1900_1.png",
+        "max_width": 1400,
+        "image_height": 500,
+        "image_height_mobile": 260,
+        "padding_top": 0,
+        "padding_bottom": 32
+      }
+    },
+    "instagram_feed_BUAHq3": {
+      "type": "rl-instagram",
+      "blocks": {
+        "post_WnUDew": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/happier-Days.png",
+            "link": "",
+            "alt": ""
+          }
+        },
+        "post_CgMHyQ": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/biger.png",
+            "link": "https://www.instagram.com/redline.mu/p/DXGeu7YGJJt/",
+            "alt": ""
+          }
+        },
+        "post_NDT6b4": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_RAHgTi": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/brighter-room.png",
+            "link": "https://www.instagram.com/redline.mu/p/DXGeu7YGJJt/",
+            "alt": ""
+          }
+        },
+        "post_6Fcnz6": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_9xyERc": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/craete.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_WxNf6j": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_xYUQHD": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_dm6xgT": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_eQtfEc": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_dQAFHT": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "post_WnUDew",
+        "post_CgMHyQ",
+        "post_NDT6b4",
+        "post_RAHgTi",
+        "post_6Fcnz6",
+        "post_9xyERc",
+        "post_WxNf6j",
+        "post_xYUQHD",
+        "post_dm6xgT",
+        "post_eQtfEc",
+        "post_dQAFHT"
+      ],
+      "name": "Instagram feed",
+      "settings": {
+        "heading": "We’re on Gram",
+        "handle": "redline.mu",
+        "profile_url": "https://www.instagram.com/redline.mu/p/DXGeu7YGJJt/",
+        "link_text": "@Redline.Mu",
+        "feed_endpoint": "",
+        "feed_limit": 12,
+        "slides_desktop": "4.5",
+        "slides_tablet": "2.5",
+        "slides_mobile": "1.3",
+        "autoplay": true,
+        "autoplay_speed": 2,
+        "section_bg": "#f4f4f1",
+        "heading_color": "#000000",
+        "card_bg": "#ffffff",
+        "text_color": "#111111",
+        "padding_top": 64,
+        "padding_bottom": 48
+      }
+    },
+    "testimonials_slider_ehmQKW": {
+      "type": "rl-testimonials",
+      "blocks": {
+        "testimonial_ihQDqp": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Very happy with my experience at Redline. The team was helpful, the ordering process was easy, and my appliance was delivered on time. I would definitely shop here again.",
+            "name": "Amanda S.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        },
+        "testimonial_BnxbAk": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Redline has a great range of quality brands and appliances. The staff helped me choose the right product for my kitchen and answered all my questions clearly.",
+            "name": "Jessica L.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        },
+        "testimonial_djnygt": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "From purchase to delivery, everything went smoothly. The team was professional and responsive, and the product arrived in perfect condition.",
+            "name": "Rachel K.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        },
+        "testimonial_jUqfL9": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Easy to order, fast delivery and great after-sales support. Highly recommended.",
+            "name": "Sarah M.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_ihQDqp",
+        "testimonial_BnxbAk",
+        "testimonial_djnygt",
+        "testimonial_jUqfL9"
+      ],
+      "name": "Testimonials slider",
+      "settings": {
+        "eyebrow": "Testimonials",
+        "heading": "What Our Customers Say?",
+        "slides_desktop": 3,
+        "slides_tablet": 2,
+        "show_arrows": true,
+        "autoplay": false,
+        "autoplay_speed": 5,
+        "show_stepper": true,
+        "stepper_width": 600,
+        "track_color": "#eeeeee",
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#222222",
+        "muted_color": "#666666",
+        "card_bg": "#ffffff",
+        "border_color": "#e3e3e3",
+        "section_bg": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "rl_hero_banner_TmqRPE",
+    "rl_ticker_eULdCN",
+    "rl_collection_J6YeCg",
+    "rl_product_grid_aQd9VT",
+    "rl_product_grid_46Lqxn",
+    "rl_split_banners_wTgfcB",
+    "rl_product_grid_kddnPY",
+    "rl_deals_tkgrpc",
+    "rl_brand_feature_fUTr6i",
+    "rl_category_cards_gqEwTh",
+    "best_sellers_cUfa4c",
+    "promo_banner_Vx7a9f",
+    "brandsgrid_NPiLmV",
+    "static_image_Gb494b",
+    "instagram_feed_BUAHq3",
+    "testimonials_slider_ehmQKW"
+  ]
+}

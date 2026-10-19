@@ -1,0 +1,561 @@
+{%- comment -%}
+  rl-hero-banner — home page hero slider (photo, 2-colour heading, 2 buttons, feature icons).
+  Needs assets: rl-base.css, rl-hero-banner.css, rl-hero-banner.js
+  Tip: put the "RL Ticker" section right under it — they join with no gap (padding is 0 by default).
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-hero-banner.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign a_strong = s.fade_strength | divided_by: 100.0 -%}
+{%- assign a_mid = a_strong | times: 0.55 -%}
+{%- assign c_strong = s.fade_color | color_modify: 'alpha', a_strong -%}
+{%- assign c_mid = s.fade_color | color_modify: 'alpha', a_mid -%}
+{%- assign c_zero = s.fade_color | color_modify: 'alpha', 0 -%}
+{%- if section.index == 1 -%}{%- assign h_tag = 'h1' -%}{%- else -%}{%- assign h_tag = 'h2' -%}{%- endif -%}
+
+{%- assign slide_blocks = section.blocks | where: 'type', 'slide' -%}
+{%- assign slide_count = slide_blocks.size -%}
+{%- assign transition = s.transition | default: 'fade' -%}
+
+<section
+  class="rl-section rl-hero"
+  style="--rl-bg:{{ s.fade_color }};--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--hr-h:{{ s.height }}px;--hr-mh:{{ s.mobile_image_height }}px;--hr-tw:{{ s.text_width }}px;--hr-eyebrow:{{ s.eyebrow_color }};--hr-fade:{{ s.fade_color }};--hr-strong:{{ c_strong }};--hr-mid:{{ c_mid }};--hr-zero:{{ c_zero }};"
+>
+  <rl-hero-slider
+    class="rl-hero-slider rl-hero-slider--{{ transition }}{% if slide_count <= 1 %} rl-hero-slider--single{% endif %}"
+    data-autoplay="{{ s.autoplay }}"
+    data-speed="{{ s.autoplay_speed | times: 1000 }}"
+    data-transition="{{ transition }}"
+    aria-roledescription="carousel"
+    aria-label="{{ s.carousel_label | default: 'Hero' | escape }}"
+  >
+    <div class="rl-hero__slides">
+      {%- if slide_count == 0 -%}
+        <div class="rl-hero__slide rl-hero__slide--left is-active" data-rl-hero-slide role="group" aria-roledescription="slide" aria-label="1 of 1" aria-hidden="false">
+          <div class="rl-hero__box">
+            <div class="rl-hero__media">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+            <div class="rl-hero__overlay"></div>
+            <div class="rl-hero__inner">
+              <div class="rl-hero__text">
+                <p class="rl-hero__eyebrow">Add a Slide block</p>
+                <{{ h_tag }} class="rl-hero__heading">
+                  <span>A better home</span>
+                  <span class="rl-hero__accent">A better everyday.</span>
+                </{{ h_tag }}>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        {%- for block in slide_blocks -%}
+          {%- assign b = block.settings -%}
+          {%- assign slide_side = b.text_side | default: 'left' -%}
+          {%- assign focal = b.image.presentation.focal_point | default: '50% 50%' -%}
+          {%- assign focal_style = 'object-position:' | append: focal -%}
+          <div
+            class="rl-hero__slide rl-hero__slide--{{ slide_side }}{% if forloop.first %} is-active{% endif %}"
+            data-rl-hero-slide
+            role="group"
+            aria-roledescription="slide"
+            aria-label="{{ forloop.index }} of {{ slide_count }}"
+            aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="rl-hero__box">
+              <div class="rl-hero__media">
+                {%- if b.image != blank -%}
+                  {%- if forloop.first -%}
+                    {%- capture img -%}{{ b.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', widths: '900, 1400, 1800, 2400', sizes: '100vw', alt: b.image_alt, style: focal_style }}{%- endcapture -%}
+                  {%- else -%}
+                    {%- capture img -%}{{ b.image | image_url: width: 2400 | image_tag: loading: 'lazy', widths: '900, 1400, 1800, 2400', sizes: '100vw', alt: b.image_alt, style: focal_style }}{%- endcapture -%}
+                  {%- endif -%}
+                  {%- if b.mobile_image != blank -%}
+                    <picture>
+                      <source
+                        media="(max-width: 749px)"
+                        srcset="{{ b.mobile_image | image_url: width: 900 }} 900w, {{ b.mobile_image | image_url: width: 1400 }} 1400w"
+                        sizes="100vw"
+                      >
+                      {{ img }}
+                    </picture>
+                  {%- else -%}
+                    {{ img }}
+                  {%- endif -%}
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag }}
+                {%- endif -%}
+              </div>
+              <div class="rl-hero__overlay"></div>
+
+              <div class="rl-hero__inner">
+                <div class="rl-hero__text">
+                  {%- if b.eyebrow != blank -%}
+                    <p class="rl-hero__eyebrow">{{ b.eyebrow }}</p>
+                  {%- endif -%}
+                  {%- if b.heading_1 != blank or b.heading_2 != blank -%}
+                    <{{ h_tag }} class="rl-hero__heading">
+                      {%- if b.heading_1 != blank -%}
+                        <span>{{ b.heading_1 }}</span>
+                      {%- endif -%}
+                      {%- if b.heading_2 != blank -%}
+                        <span class="rl-hero__accent">{{ b.heading_2 }}</span>
+                      {%- endif -%}
+                    </{{ h_tag }}>
+                  {%- endif -%}
+                  {%- if b.description != blank -%}
+                    <div class="rl-hero__desc">{{ b.description }}</div>
+                  {%- endif -%}
+
+                  {%- if b.button_1_link != blank or b.button_2_link != blank -%}
+                    <div class="rl-hero__btns">
+                      {%- if b.button_1_label != blank and b.button_1_link != blank -%}
+                        <a class="rl-hero__btn rl-hero__btn--fill" href="{{ b.button_1_link }}">
+                          {{- b.button_1_label }}
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                          >
+                            <path d="M5 12h14M13 6l6 6-6 6"/>
+                          </svg>
+                        </a>
+                      {%- endif -%}
+                      {%- if b.button_2_label != blank and b.button_2_link != blank -%}
+                        <a class="rl-hero__btn rl-hero__btn--light" href="{{ b.button_2_link }}">{{ b.button_2_label }}</a>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+
+                  {%- liquid
+                    assign has_feats = false
+                    if b.feature_1_text != blank or b.feature_1_image != blank
+                      assign has_feats = true
+                    endif
+                    if b.feature_2_text != blank or b.feature_2_image != blank
+                      assign has_feats = true
+                    endif
+                    if b.feature_3_text != blank or b.feature_3_image != blank
+                      assign has_feats = true
+                    endif
+                    if b.feature_4_text != blank or b.feature_4_image != blank
+                      assign has_feats = true
+                    endif
+                  -%}
+                  {%- if has_feats -%}
+                    <ul class="rl-hero__features" role="list">
+                      {%- for i in (1..4) -%}
+                        {%- liquid
+                          case i
+                            when 1
+                              assign f_icon = b.feature_1_icon
+                              assign f_image = b.feature_1_image
+                              assign f_text = b.feature_1_text
+                            when 2
+                              assign f_icon = b.feature_2_icon
+                              assign f_image = b.feature_2_image
+                              assign f_text = b.feature_2_text
+                            when 3
+                              assign f_icon = b.feature_3_icon
+                              assign f_image = b.feature_3_image
+                              assign f_text = b.feature_3_text
+                            when 4
+                              assign f_icon = b.feature_4_icon
+                              assign f_image = b.feature_4_image
+                              assign f_text = b.feature_4_text
+                          endcase
+                        -%}
+                        {%- if f_text != blank or f_image != blank -%}
+                          <li class="rl-hero__feature">
+                            <div class="rl-hero__ficon" aria-hidden="true">
+                              {%- if f_image != blank -%}
+                                {{ f_image | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}
+                              {%- else -%}
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="1"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  {%- case f_icon -%}
+                                    {%- when 'delivery' -%}<path d="M2 6h11v9H2z"/><path d="M13 9h4l3 3v3h-7"/><circle cx="6.5" cy="17" r="1.8"/><circle cx="16.5" cy="17" r="1.8"/>
+                                    {%- when 'advice' -%}<path d="M4 5h16v10H10l-4 4v-4H4z"/><path d="M8 9h8M8 12h5"/>
+                                    {%- when 'support' -%}<path d="M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z"/>
+                                    {%- when 'payment' -%}<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/>
+                                    {%- when 'star' -%}<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>
+                                    {%- else -%}<circle cx="12" cy="10" r="6"/><path d="M9.5 10l1.8 1.8 3.2-3.4M8.5 15l-1.5 6 5-2.5 5 2.5-1.5-6"/>
+                                  {%- endcase -%}
+                                </svg>
+                              {%- endif -%}
+                            </div>
+                            {%- if f_text != blank -%}
+                              <div class="rl-hero__ftext">{{ f_text }}</div>
+                            {%- endif -%}
+                          </li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {%- if slide_count > 1 -%}
+      {%- if s.show_arrows -%}
+        <button type="button" class="rl-hero__arrow rl-hero__arrow--prev" data-rl-hero-prev aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14.5 6.5L9 12l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="rl-hero__arrow rl-hero__arrow--next" data-rl-hero-next aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9.5 6.5L15 12l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {%- endif -%}
+
+      {%- if s.show_dots -%}
+        <div class="rl-hero__dots" role="tablist" aria-label="Slides">
+          {%- for i in (1..slide_count) -%}
+            <button
+              type="button"
+              class="rl-hero__dot{% if forloop.first %} is-active{% endif %}"
+              data-rl-hero-dot
+              role="tab"
+              aria-label="Go to slide {{ forloop.index }}"
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+            >
+              <span class="rl-hero__dot-track" aria-hidden="true">
+                <span class="rl-hero__dot-progress" data-rl-hero-progress></span>
+              </span>
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </rl-hero-slider>
+</section>
+
+<script src="{{ 'rl-hero-banner.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "RL Hero banner",
+  "tag": "div",
+  "class": "section-rl-hero-banner",
+  "settings": [
+    { "type": "header", "content": "Slider" },
+    {
+      "type": "select",
+      "id": "transition",
+      "label": "Transition",
+      "options": [
+        { "value": "fade", "label": "Fade in / out" },
+        { "value": "slide", "label": "Slide" },
+        { "value": "cut", "label": "Hide and show" }
+      ],
+      "default": "fade"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Speed",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "carousel_label",
+      "label": "Slider accessibility label",
+      "default": "Hero"
+    },
+
+    { "type": "header", "content": "Layout" },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Hero height (desktop)",
+      "min": 360,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 520
+    },
+    {
+      "type": "range",
+      "id": "text_width",
+      "label": "Text width",
+      "min": 380,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content max width",
+      "min": 900,
+      "max": 1800,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "fade_strength",
+      "label": "Fade strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 90,
+      "info": "Soft fade behind the text. 0 = no fade."
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Mobile photo height",
+      "min": 160,
+      "max": 420,
+      "step": 10,
+      "unit": "px",
+      "default": 260
+    },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Red (line 2 & button)", "default": "#c8001a" },
+    { "type": "color", "id": "heading_color", "label": "Heading line 1", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Description", "default": "#555555" },
+    { "type": "color", "id": "eyebrow_color", "label": "Small title", "default": "#444444" },
+    { "type": "color", "id": "fade_color", "label": "Fade color", "default": "#f7f5f2" },
+
+    { "type": "header", "content": "Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top space",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom space",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "info": "Keep 0 so a ticker placed underneath joins the hero."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "header", "content": "0. Layout" },
+        {
+          "type": "select",
+          "id": "text_side",
+          "label": "Text side",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left",
+          "info": "Left = text + overlay on the left. Right = text right-aligned + overlay on the right."
+        },
+
+        { "type": "header", "content": "1. Photo" },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Hero photo",
+          "info": "Wide photo, about 2400 × 1100 px. Set the focus point so nothing important is cropped."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile photo (optional)",
+          "info": "Empty = reuse the hero photo."
+        },
+        { "type": "text", "id": "image_alt", "label": "Photo description" },
+
+        { "type": "header", "content": "2. Text" },
+        { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Smarter appliances . Brighter living" },
+        { "type": "text", "id": "heading_1", "label": "Heading line 1 (dark)", "default": "A better home" },
+        { "type": "text", "id": "heading_2", "label": "Heading line 2 (red)", "default": "A better everyday." },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Discover home appliances and technology designed for modern Mauritian homes.</p>"
+        },
+
+        { "type": "header", "content": "3. Buttons" },
+        { "type": "text", "id": "button_1_label", "label": "Red button text", "default": "Explore our new collection" },
+        { "type": "url", "id": "button_1_link", "label": "Red button link" },
+        { "type": "text", "id": "button_2_label", "label": "White button text", "default": "Browse all products" },
+        { "type": "url", "id": "button_2_link", "label": "White button link" },
+
+        { "type": "header", "content": "4. Features (max 4)" },
+        { "type": "paragraph", "content": "Leave feature text empty to hide that slot. Use two paragraphs for title + small line." },
+
+        { "type": "header", "content": "Feature 1" },
+        {
+          "type": "select",
+          "id": "feature_1_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "badge", "label": "Official / badge" },
+            { "value": "delivery", "label": "Delivery truck" },
+            { "value": "advice", "label": "Chat / advice" },
+            { "value": "support", "label": "Tools / support" },
+            { "value": "payment", "label": "Payment card" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "badge"
+        },
+        { "type": "image_picker", "id": "feature_1_image", "label": "Or upload your own icon" },
+        {
+          "type": "richtext",
+          "id": "feature_1_text",
+          "label": "Text",
+          "default": "<p>Official brands & genuine products</p>"
+        },
+
+        { "type": "header", "content": "Feature 2" },
+        {
+          "type": "select",
+          "id": "feature_2_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "badge", "label": "Official / badge" },
+            { "value": "delivery", "label": "Delivery truck" },
+            { "value": "advice", "label": "Chat / advice" },
+            { "value": "support", "label": "Tools / support" },
+            { "value": "payment", "label": "Payment card" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "delivery"
+        },
+        { "type": "image_picker", "id": "feature_2_image", "label": "Or upload your own icon" },
+        {
+          "type": "richtext",
+          "id": "feature_2_text",
+          "label": "Text",
+          "default": "<p>Fast & reliable</p><p>delivery across Mauritius</p>"
+        },
+
+        { "type": "header", "content": "Feature 3" },
+        {
+          "type": "select",
+          "id": "feature_3_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "badge", "label": "Official / badge" },
+            { "value": "delivery", "label": "Delivery truck" },
+            { "value": "advice", "label": "Chat / advice" },
+            { "value": "support", "label": "Tools / support" },
+            { "value": "payment", "label": "Payment card" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "advice"
+        },
+        { "type": "image_picker", "id": "feature_3_image", "label": "Or upload your own icon" },
+        {
+          "type": "richtext",
+          "id": "feature_3_text",
+          "label": "Text",
+          "default": "<p>Expert advice</p><p>in-store & online</p>"
+        },
+
+        { "type": "header", "content": "Feature 4" },
+        {
+          "type": "select",
+          "id": "feature_4_icon",
+          "label": "Icon",
+          "options": [
+            { "value": "badge", "label": "Official / badge" },
+            { "value": "delivery", "label": "Delivery truck" },
+            { "value": "advice", "label": "Chat / advice" },
+            { "value": "support", "label": "Tools / support" },
+            { "value": "payment", "label": "Payment card" },
+            { "value": "star", "label": "Star" }
+          ],
+          "default": "support"
+        },
+        { "type": "image_picker", "id": "feature_4_image", "label": "Or upload your own icon" },
+        {
+          "type": "richtext",
+          "id": "feature_4_text",
+          "label": "Text",
+          "default": "<p>After-sales support</p><p>you can count on</p>"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "RL Hero banner",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Smarter appliances . Brighter living",
+            "heading_1": "A better home",
+            "heading_2": "A better everyday.",
+            "description": "<p>Discover home appliances and technology designed for modern Mauritian homes.</p>",
+            "button_1_label": "Explore our new collection",
+            "button_2_label": "Browse all products",
+            "feature_1_icon": "badge",
+            "feature_1_text": "<p>Official brands & genuine products</p>",
+            "feature_2_icon": "delivery",
+            "feature_2_text": "<p>Fast & reliable</p><p>delivery across Mauritius</p>",
+            "feature_3_icon": "advice",
+            "feature_3_text": "<p>Expert advice</p><p>in-store & online</p>",
+            "feature_4_icon": "support",
+            "feature_4_text": "<p>After-sales support</p><p>you can count on</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

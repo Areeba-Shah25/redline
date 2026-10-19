@@ -1,0 +1,12 @@
+{%- comment -%}
+  rl-pdp-price-extras — "Save Rs 3,000  [11% OFF]" under the price.
+  Render it INSIDE Dawn's price block so it refreshes together with the price when a variant changes. Params: product
+{%- endcomment -%}
+{%- assign v = product.selected_or_first_available_variant -%}
+{%- if v.compare_at_price > v.price -%}
+  {%- assign saving = v.compare_at_price | minus: v.price -%}
+  <p class="rl-pextra">
+    <span>Save {{ saving | money_without_trailing_zeros }}</span>
+    <span class="rl-pextra__off">{{ saving | times: 100 | divided_by: v.compare_at_price }}% OFF</span>
+  </p>
+{%- endif -%}

@@ -1,0 +1,115 @@
+/* Redline announcement bar */
+
+.redline-announcement {
+  background: var(--ra-bg, #1a1e21);
+  color: var(--ra-text, #ffffff);
+  width: 100%;
+}
+
+.redline-announcement__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  min-height: 5rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+  box-sizing: border-box;
+}
+
+.redline-announcement__message {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.redline-announcement__message-text,
+.redline-announcement__message-link,
+.redline-announcement__link,
+.redline-announcement__text {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  letter-spacing: 0;
+  text-transform: capitalize;
+  color: var(--ra-text, #ffffff);
+}
+
+.redline-announcement__message-link,
+.redline-announcement__link {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.redline-announcement__message-link:hover,
+.redline-announcement__link:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.redline-announcement__utilities {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.redline-announcement__list {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.redline-announcement__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.redline-announcement__item:not(:last-child)::after {
+  content: '|';
+  display: inline-block;
+  margin: 0 1.2rem;
+  color: var(--ra-text, #ffffff);
+  font-family: 'Manrope', sans-serif;
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  opacity: 0.9;
+}
+
+@media screen and (max-width: 749px) {
+  .redline-announcement__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .redline-announcement__utilities {
+    width: 100%;
+  }
+
+  .redline-announcement__list {
+    justify-content: flex-start;
+  }
+
+  .redline-announcement__message-text,
+  .redline-announcement__message-link,
+  .redline-announcement__link,
+  .redline-announcement__text,
+  .redline-announcement__item:not(:last-child)::after {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+  }
+
+  .redline-announcement__item:not(:last-child)::after {
+    margin: 0 0.8rem;
+  }
+}

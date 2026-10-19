@@ -1,0 +1,118 @@
+{%- comment -%}
+  rl-faq — "Your Questions, Answered": left intro + right accordion. No JavaScript (native <details>).
+  Needs assets: rl-base.css, rl-faq.css
+  Each question = one block. Adds FAQ structured data for Google when "SEO" is on.
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-faq.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign right_share = 10 | minus: s.left_share -%}
+
+<section
+  class="rl-section rl-faq{% if s.sticky_intro %} rl-faq--sticky{% endif %}"
+style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-border:{{ s.line_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--fq-left:{{ s.left_share }}fr;--fq-right:{{ right_share }}fr;--fq-gap:{{ s.column_gap }}px;"
+>
+  <div class="rl-container faq-container">
+    <div class="rl-faq__layout">
+
+      <div class="rl-faq__intro">
+        {%- if s.eyebrow != blank -%}<p class="rl-eyebrow rl-faq__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="rl-heading rl-faq__heading">{{ s.heading | newline_to_br }}</h2>{%- endif -%}
+        {%- if s.description != blank -%}<div class="rl-faq__desc">{{ s.description }}</div>{%- endif -%}
+        {%- if s.button_label != blank and s.button_link != blank -%}
+          <a class="rl-link rl-faq__more" href="{{ s.button_link }}">{{ s.button_label }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="rl-faq__list">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <details class="rl-faq__item"{% if s.one_at_a_time %} name="faq-{{ section.id }}"{% endif %}{% if s.first_open and forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
+            <summary class="rl-faq__q">
+              <span class="rl-faq__qtext">{{ b.question }}</span>
+              <span class="rl-faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="rl-faq__a">{{ b.answer }}</div>
+          </details>
+        {%- else -%}
+          {%- if request.design_mode -%}<p>Add “Question” blocks.</p>{%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+
+  {%- if s.seo and section.blocks.size > 0 -%}
+    <script type="application/ld+json">
+      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+      {%- for block in section.blocks -%}
+        {"@type":"Question","name":{{ block.settings.question | json }},"acceptedAnswer":{"@type":"Answer","text":{{ block.settings.answer | json }}}}{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+      ]}
+    </script>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "RL FAQ",
+  "tag": "div",
+  "class": "section-rl-faq",
+  "max_blocks": 20,
+  "settings": [
+    { "type": "header", "content": "1. Left side" },
+    { "type": "text", "id": "eyebrow", "label": "Small title", "default": "FAQs" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Your Questions,\nAnswered.", "info": "Press Enter for a new line." },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Find answers to the most frequently asked questions about our products, services, and policies. We're here to make your experience simple, clear, and hassle-free." },
+    { "type": "text", "id": "button_label", "label": "Link text (optional)", "info": "e.g. “Contact support”" },
+    { "type": "url", "id": "button_link", "label": "Link" },
+
+    { "type": "header", "content": "2. Behaviour" },
+    { "type": "checkbox", "id": "one_at_a_time", "label": "Only one answer open at a time", "default": true },
+    { "type": "checkbox", "id": "first_open", "label": "Open the first question", "default": false },
+    { "type": "checkbox", "id": "sticky_intro", "label": "Keep the left side visible while scrolling (desktop)", "default": false },
+    { "type": "checkbox", "id": "seo", "label": "Add FAQ data for Google (SEO)", "default": true, "info": "Helps your questions show as rich results." },
+
+    { "type": "header", "content": "3. Layout" },
+    { "type": "range", "id": "left_share", "label": "Left side width", "min": 3, "max": 6, "step": 1, "default": 4, "info": "Out of 10 parts; the accordion gets the rest." },
+    { "type": "range", "id": "column_gap", "label": "Space between the two sides", "min": 24, "max": 140, "step": 4, "unit": "px", "default": 80 },
+
+    { "type": "header", "content": "4. Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent (red)", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Headings & questions", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#444444" },
+    { "type": "color", "id": "line_color", "label": "Divider lines", "default": "#e8e6e3" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#fdfcfa" },
+
+    { "type": "header", "content": "5. Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 140, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Your question here?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Add your answer here.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "RL FAQ",
+      "blocks": [
+        { "type": "question", "settings": { "question": "How much storage does this refrigerator have?" } },
+        { "type": "question", "settings": { "question": "Does this model have No Frost cooling?" } },
+        { "type": "question", "settings": { "question": "What are the product dimensions?" } },
+        { "type": "question", "settings": { "question": "What warranty is included?" } },
+        { "type": "question", "settings": { "question": "What are my delivery options?" } },
+        { "type": "question", "settings": { "question": "Can I buy with hire purchase?" } },
+        { "type": "question", "settings": { "question": "Who do I contact for after-sales support?" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

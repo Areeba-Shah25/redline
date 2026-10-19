@@ -1,0 +1,71 @@
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="rl-star" viewBox="0 0 24 24"><path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.2 1.2-6.5L2.5 9.5l6.6-.9z" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="rl-rev">
+  <div class="rl-rev__main">
+    <h2 class="rl-rev__title">Customer Reviews</h2>
+
+    <!-- SUMMARY: REPLACE 5.0, "1 review", the 5 counts and the --pct widths (count ÷ total × 100) -->
+    <div class="rl-rev__card rl-rev__summary">
+      <div class="rl-rev__score">
+        <span class="rl-rev__big">5.0</span>
+        <span class="rl-rev__stars" role="img" aria-label="5 out of 5 stars">
+          <svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg>
+        </span>
+        <span class="rl-rev__based">Based on 1 review</span>
+      </div>
+      <ul class="rl-rev__bars" role="list">
+        <li class="rl-rev__row"><span class="rl-rev__lvl">5 <svg><use href="#rl-star"/></svg></span><span class="rl-rev__bar"><i style="--pct:100%"></i></span><span class="rl-rev__n">1</span></li>
+        <li class="rl-rev__row"><span class="rl-rev__lvl">4 <svg><use href="#rl-star"/></svg></span><span class="rl-rev__bar"><i style="--pct:0%"></i></span><span class="rl-rev__n">0</span></li>
+        <li class="rl-rev__row"><span class="rl-rev__lvl">3 <svg><use href="#rl-star"/></svg></span><span class="rl-rev__bar"><i style="--pct:0%"></i></span><span class="rl-rev__n">0</span></li>
+        <li class="rl-rev__row"><span class="rl-rev__lvl">2 <svg><use href="#rl-star"/></svg></span><span class="rl-rev__bar"><i style="--pct:0%"></i></span><span class="rl-rev__n">0</span></li>
+        <li class="rl-rev__row"><span class="rl-rev__lvl">1 <svg><use href="#rl-star"/></svg></span><span class="rl-rev__bar"><i style="--pct:0%"></i></span><span class="rl-rev__n">0</span></li>
+      </ul>
+    </div>
+
+    <!-- REVIEW LIST: repeat one <li> per review. REPLACE initial, name, date, text, stars. Remove the "Verified buyer" span if not verified. -->
+    <ul class="rl-rev__list" role="list">
+      <li class="rl-rev__card rl-rev__item">
+        <div class="rl-rev__head">
+          <span class="rl-rev__avatar" aria-hidden="true">A</span>
+          <div class="rl-rev__who">
+            <p class="rl-rev__name">John deo</p>
+            <p class="rl-rev__date">September 7, 2026</p>
+          </div>
+          <span class="rl-rev__verified">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#d0021b"/><path d="M7 12.5l3.3 3.3L17 9" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Verified buyer
+          </span>
+          <span class="rl-rev__stars" role="img" aria-label="5 out of 5 stars">
+            <svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg><svg class="rl-rev__star"><use href="#rl-star"/></svg>
+          </span>
+        </div>
+        <p class="rl-rev__text">great product recomended</p>
+      </li>
+    </ul>
+  </div>
+
+  <!-- WRITE A REVIEW (point action at your review system) -->
+  <form class="rl-rev__card rl-rev__form" action="#" method="post">
+    <h3 class="rl-rev__form-title">Write a review</h3>
+    <p class="rl-rev__form-sub">Share your experience with this product.</p>
+
+    <fieldset class="rl-rev__field" style="border:0;padding:0;margin:0 0 20px">
+      <legend class="rl-rev__label">Your rating <span class="rl-rev__req" aria-hidden="true">*</span></legend>
+      <div class="rl-rev__pick">
+        <input type="radio" name="rating" id="rl-r5" value="5" required><label for="rl-r5" title="5 stars"><svg viewBox="0 0 24 24"><use href="#rl-star"/></svg><span class="rl-vh">5 stars</span></label>
+        <input type="radio" name="rating" id="rl-r4" value="4"><label for="rl-r4" title="4 stars"><svg viewBox="0 0 24 24"><use href="#rl-star"/></svg><span class="rl-vh">4 stars</span></label>
+        <input type="radio" name="rating" id="rl-r3" value="3"><label for="rl-r3" title="3 stars"><svg viewBox="0 0 24 24"><use href="#rl-star"/></svg><span class="rl-vh">3 stars</span></label>
+        <input type="radio" name="rating" id="rl-r2" value="2"><label for="rl-r2" title="2 stars"><svg viewBox="0 0 24 24"><use href="#rl-star"/></svg><span class="rl-vh">2 stars</span></label>
+        <input type="radio" name="rating" id="rl-r1" value="1"><label for="rl-r1" title="1 star"><svg viewBox="0 0 24 24"><use href="#rl-star"/></svg><span class="rl-vh">1 star</span></label>
+      </div>
+    </fieldset>
+
+    <div class="rl-rev__field">
+      <label class="rl-rev__label" for="rl-review-text">Your review <span class="rl-rev__req" aria-hidden="true">*</span></label>
+      <textarea class="rl-rev__textarea" id="rl-review-text" name="review" required placeholder="Tell us what you liked about this product..."></textarea>
+    </div>
+    <button type="submit" class="rl-rev__submit">Submit Review</button>
+  </form>
+</div>

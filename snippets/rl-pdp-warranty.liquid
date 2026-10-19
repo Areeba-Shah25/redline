@@ -1,0 +1,22 @@
+{%- comment -%} rl-pdp-warranty — "Official RedLine Warranty" card. Params: block {%- endcomment -%}
+{%- assign b = block.settings -%}
+<div class="rl-war" {{ block.shopify_attributes }}>
+  <div class="rl-war__top">
+    <span class="rl-war__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3 8-7.5 9.5-4.5-1.5-7.5-5-7.5-9.5V6L12 3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+    <div>
+      {%- if b.eyebrow != blank -%}<p class="rl-war__eyebrow">{{ b.eyebrow }}</p>{%- endif -%}
+      {%- if b.title != blank -%}<p class="rl-war__title">{{ b.title }}</p>{%- endif -%}
+    </div>
+  </div>
+  <div class="rl-war__cols">
+    {%- if b.term1_value != blank -%}<div class="rl-war__col"><strong>{{ b.term1_value }}</strong><span>{{ b.term1_label }}</span></div>{%- endif -%}
+    {%- if b.term2_value != blank -%}<div class="rl-war__col"><strong>{{ b.term2_value }}</strong><span>{{ b.term2_label }}</span></div>{%- endif -%}
+  </div>
+  {%- if b.foot_text != blank or b.link_text != blank -%}
+    <div class="rl-war__foot">
+      <span>{{ b.foot_text }}</span>  
+      <a href="#warranty" class="waranty_details">View warranty details →<a>
+      {%- if b.link_text != blank and b.link_url != blank -%}<a href="{{ b.link_url }}">{{ b.link_text }} ›</a>{%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,227 @@
+{%- comment -%}
+  rl-best-sellers — product slider from a collection (prices, badges, static 4★ rating).
+  Needs assets: rl-base.css, rl-carousel.css, rl-best-sellers.css, rl-carousel.js
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-carousel.css' | asset_url | stylesheet_tag }}
+{{ 'rl-best-sellers.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign src = s.collection | default: collections.all -%}
+{%- assign view_all = s.link_url | default: src.url -%}
+{%- assign show_count = s.product_limit -%}
+{%- if src.products_count < s.product_limit -%}{%- assign show_count = src.products_count -%}{%- endif -%}
+{%- comment -%} Full cards from setting + half of the next one peeking {%- endcomment -%}
+{%- assign cards_d_peek = s.cards_desktop | plus: 0.5 -%}
+
+<section
+  class="rl-section rl-bs rl-car"
+  data-rl-carousel
+  data-autoplay="{{ s.autoplay }}"
+  data-speed="{{ s.autoplay_speed | times: 1000 }}"
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-card:{{ s.card_bg }};--rl-border:{{ s.border_color }};--rl-bg:{{ s.section_bg }};--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--car-pv-d:{{ cards_d_peek }};--car-pv-t:{{ s.cards_tablet }};--car-pv-m:{{ s.cards_mobile }};--car-gap-d:{{ s.gap }}px;--car-gap-t:{{ s.gap }}px;--car-gap-m:12px;"
+>
+  <div class="rl-container">
+    <div class="rl-head rl-bs__head">
+      <div>
+        {%- if s.eyebrow != blank -%}<p class="rl-eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="rl-heading">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+      {%- if s.link_text != blank and view_all != blank -%}
+        <a class="rl-link" href="{{ view_all }}">{{ s.link_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if src.products_count > 0 -%}
+      <div class="rl-bs__stage">
+        <div class="rl-car__viewport" tabindex="0" role="region" aria-roledescription="carousel" aria-label="{{ s.heading | default: 'Best sellers' | escape }}">
+          <div class="rl-car__track">
+            {%- for product in src.products limit: s.product_limit -%}
+              {%- assign saving = 0 -%}
+              {%- assign on_sale = false -%}
+              {%- if product.compare_at_price > product.price and product.available -%}
+                {%- assign on_sale = true -%}
+                {%- assign saving = product.compare_at_price | minus: product.price -%}
+              {%- endif -%}
+              <div class="rl-car__slide">
+                <a class="rl-bs__card" href="{{ product.url }}" draggable="false">
+                  {%- if product.available == false -%}
+                    <span class="rl-bs__badge rl-bs__badge--sold">{{ s.sold_out_text }}</span>
+                  {%- elsif on_sale and s.badge_style != 'none' -%}
+                    <span class="rl-bs__badge">
+                      {%- if s.badge_style == 'percent' -%}{{ s.badge_text }} {{ saving | times: 100 | divided_by: product.compare_at_price }}%
+                      {%- else -%}{{ s.badge_text }} {{ saving | money_without_trailing_zeros }}{%- endif -%}
+                    </span>
+                  {%- endif -%}
+
+                  <div class="rl-bs__media">
+                    {%- if product.featured_media -%}
+                      {{ product.featured_media | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200, 300, 400, 500', sizes: '(min-width: 990px) 16vw, 45vw', alt: product.featured_media.alt | default: product.title }}
+                    {%- else -%}
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    {%- endif -%}
+                  </div>
+
+                  <div class="rl-bs__body">
+                    {%- if s.show_vendor and product.vendor != blank -%}<p class="rl-bs__vendor">{{ product.vendor }}</p>{%- endif -%}
+                    <h3 class="rl-bs__title">{{ product.title }}</h3>
+
+                    {%- if s.show_rating -%}
+                      <div class="rl-bs__rating">
+                        {% render 'rl-static-stars', class: 'rl-bs__stars', count_class: 'rl-bs__count' %}
+                      </div>
+                    {%- endif -%}
+
+                    <div class="rl-bs__price">
+                      {%- if on_sale -%}
+                        <span class="rl-vh">Sale price</span><span class="rl-bs__now rl-bs__now--sale">{{ product.price | money_without_trailing_zeros }}</span>
+                        <span class="rl-vh">Regular price</span><span class="rl-bs__was">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+                      {%- else -%}
+                        <span class="rl-bs__now">{{ product.price | money_without_trailing_zeros }}</span>
+                      {%- endif -%}
+                    </div>
+                    <span class="rl-bs__btn">{{ s.button_label }}</span>
+                  </div>
+                </a>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- if show_count > 1 and s.show_arrows -%}
+          <button type="button" class="rl-bs__arrow rl-bs__arrow--prev" data-car-prev aria-label="Previous products">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <button type="button" class="rl-bs__arrow rl-bs__arrow--next" data-car-next aria-label="Next products">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        {%- endif -%}
+      </div>
+
+      {%- if show_count > 1 and s.show_dots -%}
+        <div class="rl-bs__dots" role="tablist" aria-label="Product slides">
+          {%- for product in src.products limit: s.product_limit -%}
+            <button
+              type="button"
+              class="rl-bs__dot{% if forloop.first %} is-active{% endif %}"
+              data-car-dot
+              aria-label="Go to product {{ forloop.index }}"
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+            ></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="rl-bs__empty">{%- if request.design_mode -%}Pick a collection that has products in this section's settings.{%- endif -%}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'rl-carousel.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "RL Best sellers",
+  "tag": "div",
+  "class": "section-rl-best-sellers",
+  "settings": [
+    { "type": "header", "content": "1. Products" },
+    { "type": "collection", "id": "collection", "label": "Collection", "info": "e.g. “Best Sellers”. Empty = all products." },
+    { "type": "range", "id": "product_limit", "label": "Number of products", "min": 4, "max": 24, "step": 1, "default": 12 },
+
+    { "type": "header", "content": "2. Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Customer Favorites" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Best Sellers" },
+    { "type": "text", "id": "link_text", "label": "Link text", "default": "View All Best Seller" },
+    { "type": "url", "id": "link_url", "label": "Link", "info": "Empty = opens the selected collection." },
+
+    { "type": "header", "content": "3. Card content" },
+    { "type": "checkbox", "id": "show_vendor", "label": "Brand name", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Star rating", "default": true },
+    { "type": "select", "id": "badge_style", "label": "Sale badge", "options": [ { "value": "amount", "label": "Amount saved (Save $6)" }, { "value": "percent", "label": "Percent saved (Save 20%)" }, { "value": "none", "label": "Hide badge" } ], "default": "amount" },
+    { "type": "text", "id": "badge_text", "label": "Badge word", "default": "Save" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold-out badge", "default": "Sold out" },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "View Product" },
+
+    { "type": "header", "content": "4. Slider" },
+    {
+      "type": "range",
+      "id": "cards_desktop",
+      "label": "Cards on desktop",
+      "min": 5,
+      "max": 12,
+      "step": 1,
+      "default": 6,
+      "info": "Shows that many full cards, plus half of the next one."
+    },
+    {
+      "type": "select",
+      "id": "cards_tablet",
+      "label": "Cards on tablet",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "cards_mobile",
+      "label": "Cards on mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Space between cards",
+      "min": 8,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    { "type": "checkbox", "id": "autoplay", "label": "Autoplay", "default": true },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    { "type": "checkbox", "id": "show_arrows", "label": "Show arrows", "default": false },
+    { "type": "checkbox", "id": "show_dots", "label": "Show dots", "default": false },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Container max width",
+      "min": 900,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+
+    { "type": "header", "content": "5. Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent (red)", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Headings & titles", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#444444" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e6e6e6" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "6. Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 16 }
+  ],
+  "presets": [{ "name": "RL Best sellers" }]
+}
+{% endschema %}

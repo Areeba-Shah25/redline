@@ -1,0 +1,144 @@
+{%- comment -%}
+  static-image — heading + full-width image inside a centered container (1400px default).
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+
+<section
+  class="rl-section st-image"
+  id="st-image-{{ section.id }}"
+  style="--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;"
+>
+  <div class="rl-container">
+    {%- if s.st__heading != blank -%}
+      <div class="st__heading-wrapper">
+        <h2 class="st__heading">{{ s.st__heading }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="st__image">
+      {%- if s.st__image != blank -%}
+        {{
+          s.st__image
+          | image_url: width: 1600
+          | image_tag:
+            loading: 'lazy',
+            widths: '350, 500, 700, 1000, 1400, 1600',
+            sizes: '(min-width: 990px) min(100vw, var(--rl-maxw, 1400px)), 100vw',
+            alt: s.st__image.alt
+        }}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #st-image-{{ section.id }} {
+    padding: var(--rl-pt, 0) 0 var(--rl-pb, 30px);
+  }
+  #st-image-{{ section.id }} .st__heading-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  #st-image-{{ section.id }} .st__heading {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 400;
+    font-family: 'Manrope', sans-serif;
+    text-align: center;
+  }
+  #st-image-{{ section.id }} .st__image {
+    width: 100%;
+    height: {{ s.image_height }}px;
+  }
+  #st-image-{{ section.id }} .st__image img,
+  #st-image-{{ section.id }} .st__image svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 749px) {
+    #st-image-{{ section.id }} .st__heading { font-size: 24px; }
+    #st-image-{{ section.id }} .st__image { height: {{ s.image_height_mobile }}px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Static Image",
+  "tag": "div",
+  "class": "section-static-image",
+  "settings": [
+    {
+      "type": "text",
+      "id": "st__heading",
+      "label": "Heading"
+    },
+    {
+      "type": "image_picker",
+      "id": "st__image",
+      "label": "Image",
+      "info": "Add image here."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Container max width",
+      "min": 900,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height (desktop)",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image height (mobile)",
+      "min": 140,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 260
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top space",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom space",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Static Image"
+    }
+  ]
+}
+{% endschema %}

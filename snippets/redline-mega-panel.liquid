@@ -1,0 +1,128 @@
+{%- comment -%}
+  Redline mega-menu panel (desktop).
+  Params: block (header mega_menu block), link (nav link that triggered it)
+{%- endcomment -%}
+{%- liquid
+  assign b = block.settings
+  assign col_count = b.columns | default: 4 | plus: 0
+  if col_count < 1
+    assign col_count = 1
+  endif
+  if col_count > 4
+    assign col_count = 4
+  endif
+-%}
+<div
+  id="RedlineMega-{{ block.id }}"
+  class="rl-mega color-{{ section.settings.menu_color_scheme }} motion-reduce"
+  tabindex="-1"
+  {{ block.shopify_attributes }}
+>
+  <div class="rl-mega__inner page-width">
+    <div class="rl-mega__main" style="--rl-mega-cols: {{ col_count }};">
+      <div class="rl-mega__columns">
+        {%- for i in (1..4) -%}
+          {%- if i > col_count -%}{%- break -%}{%- endif -%}
+          {%- liquid
+            case i
+              when 1
+                assign col_image = b.column_1_image
+                assign col_title = b.column_1_title
+                assign col_products = b.column_1_products
+              when 2
+                assign col_image = b.column_2_image
+                assign col_title = b.column_2_title
+                assign col_products = b.column_2_products
+              when 3
+                assign col_image = b.column_3_image
+                assign col_title = b.column_3_title
+                assign col_products = b.column_3_products
+              else
+                assign col_image = b.column_4_image
+                assign col_title = b.column_4_title
+                assign col_products = b.column_4_products
+            endcase
+          -%}
+          <div class="rl-mega__col">
+            {%- if col_image != blank -%}
+              <div class="rl-mega__col-media">
+                {{
+                  col_image
+                  | image_url: width: 480
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '206, 320, 480',
+                    sizes: '(min-width: 990px) 207px, 40vw',
+                    alt: col_title | default: col_image.alt | escape
+                }}
+              </div>
+            {%- endif -%}
+            {%- if col_title != blank -%}
+              <p class="rl-mega__col-title">{{ col_title | escape }}</p>
+            {%- endif -%}
+            {%- if col_products != blank and col_products.size > 0 -%}
+              <ul class="rl-mega__links" role="list">
+                {%- for product in col_products -%}
+                  <li>
+                    <a class="rl-mega__link" href="{{ product.url }}">{{ product.title | escape }}</a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if b.banner_image != blank or b.banner_title != blank or b.banner_richtext != blank -%}
+        <aside class="rl-mega__banner">
+          {%- if b.banner_image != blank -%}
+            <div class="rl-mega__banner-media">
+              {{
+                b.banner_image
+                | image_url: width: 800
+                | image_tag:
+                  loading: 'lazy',
+                  widths: '370, 540, 800',
+                  sizes: '(min-width: 990px) 370px, 80vw',
+                  alt: b.banner_image.alt | escape
+              }}
+            </div>
+          {%- endif -%}
+          <div class="rl-mega__banner-content">
+            {%- if b.banner_title != blank -%}
+              <p class="rl-mega__banner-title">{{ b.banner_title | escape | newline_to_br }}</p>
+            {%- endif -%}
+            {%- if b.banner_richtext != blank -%}
+              <div class="rl-mega__banner-rich">{{ b.banner_richtext }}</div>
+            {%- endif -%}
+            {%- if b.banner_button_label != blank and b.banner_button_link != blank -%}
+              <a class="rl-mega__banner-btn" href="{{ b.banner_button_link }}">
+                {{ b.banner_button_label | escape }}
+                <span aria-hidden="true">→</span>
+              </a>
+            {%- endif -%}
+          </div>
+        </aside>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="rl-mega__foot">
+    <div class="rl-mega__foot-inner">
+      <div class="rl-mega__foot-left">
+        {%- if b.view_all_label != blank and b.view_all_link != blank -%}
+          <a class="rl-mega__view-all" href="{{ b.view_all_link }}">
+            {{ b.view_all_label | escape }}
+            <span aria-hidden="true">→</span>
+          </a>
+        {%- endif -%}
+      </div>
+      <div class="rl-mega__brands">
+        {%- if b.brand_1 != blank -%}<span class="rl-mega__brand">{{ b.brand_1 | escape }}</span>{%- endif -%}
+        {%- if b.brand_2 != blank -%}<span class="rl-mega__brand">{{ b.brand_2 | escape }}</span>{%- endif -%}
+        {%- if b.brand_3 != blank -%}<span class="rl-mega__brand">{{ b.brand_3 | escape }}</span>{%- endif -%}
+        {%- if b.brand_4 != blank -%}<span class="rl-mega__brand">{{ b.brand_4 | escape }}</span>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

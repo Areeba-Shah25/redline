@@ -1,0 +1,41 @@
+/* rl-product-grid.css — product grid layout (card = rl-product-card.css). Pure CSS.
+   Use the same section twice on a page (New Arrivals, Exclusive, ...). Modifiers: --swipe (mobile single row) */
+.rl-grid .rl-head { margin-bottom: 24px; }
+.rl-grid__link { padding-bottom: 4px; white-space: nowrap; }
+
+.rl-grid__list { --cols: var(--cols-d, 4); display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--grid-gap, 20px); margin: 0; padding: 0; list-style: none; }
+.rl-grid__item { margin: 0; min-width: 0; list-style: none; }
+.rl-grid__empty { margin: 0; }
+
+/* roomier card than the carousel version */
+.rl-grid .rl-pc { padding: 14px 14px 16px; border-radius: 10px; box-shadow: 0 6px 24px rgba(0, 0, 0, .06); }
+.rl-grid .rl-pc__media { aspect-ratio: var(--grid-ratio, 10 / 9); padding: 30px 4px 6px; height: 280px;
+  object-fit: cover; }
+.rl-grid .rl-pc__vendor { font-size: 14px; 
+font-weight:700;
+font-family: 'Manrope';}
+.rl-grid .rl-pc__title { font-size: 15px; }
+.rl-grid .rl-pc__now { font-size: 24px; font-family: 'Manrope';}
+.rl-grid .rl-pc__was { font-size: 15px; }
+.rl-grid .rl-pc__btn { padding: 12px 8px; font-size: 14px;
+    font-family: 'Manrope'; }
+.rl-grid__arrows {
+  display: flex;
+  justify-content: space-evenly;}
+@media (max-width: 989px) {
+  .rl-grid__list { --cols: var(--cols-t, 2); }
+}
+@media (max-width: 749px) {
+  .rl-grid__list { --cols: var(--cols-m, 2); gap: calc(var(--grid-gap, 20px) * .6); }
+  .rl-grid .rl-pc { padding: 10px 10px 12px; }
+  .rl-grid .rl-pc__vendor { font-size: 12px; }
+  .rl-grid .rl-pc__title { font-size: 13px; }
+  .rl-grid .rl-pc__now { font-size: 19px; }
+  .rl-grid .rl-pc__was { font-size: 13px; }
+  .rl-grid .rl-pc__btn { padding: 9px 6px; font-size: 13px; }
+
+  /* modifier: single swipeable row on mobile (pure CSS scroll-snap) */
+  .rl-grid--swipe .rl-grid__list { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin-right: -20px; padding: 4px 20px 16px 0; }
+  .rl-grid--swipe .rl-grid__list::-webkit-scrollbar { display: none; }
+  .rl-grid--swipe .rl-grid__item { flex: 0 0 calc(100% / var(--cols-m, 2) - 12%); scroll-snap-align: start; }
+}

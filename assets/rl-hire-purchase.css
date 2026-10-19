@@ -1,0 +1,57 @@
+/* rl-hire-purchase.css — instalment calculator card. Options are real radio buttons (keyboard + screen-reader friendly). */
+*{
+  font-family:'Manrope'
+}
+.rl-hp[hidden] { display: none; }
+.rl-hp .rl-container { max-width: var(--hp-maxw, 600px); margin-inline: 0; padding-inline: 0; }
+.rl-hp__card { background: #fff; border: 1px solid #ececec; border-radius: var(--hp-radius, 10px); padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,.03); }
+
+.rl-hp__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.rl-hp__titlewrap { display: flex; gap: 14px; align-items: flex-start; min-width: 0;font-family:'Manrope' }
+.rl-hp__icon { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 3px; color: var(--rl-heading, #1a1a1a); }
+.rl-hp__title { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.3; color: var(--rl-heading, #1a1a1a); }
+.rl-hp__sub { margin: 6px 0 0; font-size: 13px; color: var(--rl-text, #555); }
+.rl-hp__toggle { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 10px; padding: 4px 0; border: 0; background: none; font: inherit; font-size: 13.5px; font-weight: 600; color: var(--rl-accent, #d0021b); cursor: pointer; font-family:'Manrope' }
+.rl-hp__toggle svg { width: 18px; height: 18px; transition: transform .25s ease; }
+.rl-hp__toggle[aria-expanded="false"] svg { transform: rotate(180deg); }
+.rl-hp__toggle:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 3px; border-radius: 4px; }
+
+.rl-hp__body { margin-top: 18px; }
+.rl-hp__body[hidden] { display: none; }
+.rl-hp__group { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
+.rl-hp__label { padding: 0; margin: 0 0 10px; font-size: 14.5px; font-weight: 600; color: var(--rl-heading, #1a1a1a); }
+
+.rl-hp__options { display: grid; gap: 10px; }
+.rl-hp__options--deposit { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.rl-hp__options--period { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.rl-hp__opt { position: relative; }
+.rl-hp__opt input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.rl-hp__opt label { display: flex; align-items: center; justify-content: center; height: 100%; min-height: 42px; padding: 8px 6px; font-size: 14px; font-weight: 500; text-align: center; color: var(--rl-heading, #1a1a1a); background: #fff; border: 1px solid #e4e4e4; border-radius: 4px; transition: background .2s, border-color .2s, color .2s; }
+.rl-hp__opt input:hover + label { border-color: #c9c9c9; }
+.rl-hp__opt input:checked + label { background: var(--hp-soft, #fde8ea); border-color: var(--rl-accent, #d0021b); color: var(--rl-accent, #d0021b); }
+.rl-hp__opt input:focus-visible + label { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 2px; }
+
+.rl-hp__break { border: 1px solid #ececec; border-radius: calc(var(--hp-radius, 10px) + 2px); padding: 18px 18px 18px; margin-top: 4px; }
+.rl-hp__breaktitle { margin: 0 0 6px; font-size: 18px; font-weight: 600; color: var(--rl-heading, #1a1a1a); }
+.rl-hp__rows { margin: 0 0 16px; }
+.rl-hp__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 0; border-bottom: 1px solid #ececec; }
+.rl-hp__row dt { font-size: 15px; color: var(--rl-text, #666); margin: 0; }
+.rl-hp__row dd { margin: 0; font-size: 15px; font-weight: 600; color: var(--rl-heading, #1a1a1a); text-align: right; white-space: nowrap; }
+.rl-hp__row dd.rl-hp__red { color: var(--rl-accent, #d0021b); }
+.rl-hp__row--total { border-bottom: 0; padding-bottom: 4px; }
+.rl-hp__row--total dt { font-weight: 600; color: var(--rl-heading, #1a1a1a); }
+
+.rl-hp__note { display: flex; gap: 12px; align-items: flex-start; background: var(--hp-soft, #fde8ea); border-radius: 6px; padding: 14px 16px; margin-top: 12px; }
+.rl-hp__note svg { flex: 0 0 auto; width: 22px; height: 22px; margin-top: 1px; color: var(--rl-accent, #d0021b); }
+.rl-hp__notetitle { margin: 0 0 4px; font-size: 13.5px; font-weight: 700; font-style: italic; color: var(--rl-accent, #d0021b); }
+.rl-hp__notetext { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--rl-text, #666); }
+
+@media (max-width: 749px) {
+  .rl-hp .rl-container { padding-inline: 16px; }
+  .rl-hp__card { padding: 16px; }
+  .rl-hp__top { flex-direction: column; gap: 12px; }
+  .rl-hp__options--deposit { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .rl-hp__options--period { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rl-hp__break { padding: 14px; }
+  .rl-hp__row dt, .rl-hp__row dd { font-size: 14px; }
+}

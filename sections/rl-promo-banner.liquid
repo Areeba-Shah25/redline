@@ -1,0 +1,238 @@
+{%- comment -%}
+  rl-promo-banner — photo + soft fade + text + button. Pure CSS, no JavaScript.
+  Needs assets: rl-base.css, rl-promo-banner.css
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-promo-banner.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign a_strong = s.overlay_opacity | divided_by: 100.0 -%}
+{%- assign a_mid = a_strong | times: 0.8 -%}
+{%- assign c_strong = s.overlay_color | color_modify: 'alpha', a_strong -%}
+{%- assign c_mid = s.overlay_color | color_modify: 'alpha', a_mid -%}
+{%- assign c_zero = s.overlay_color | color_modify: 'alpha', 0 -%}
+{%- assign focal = s.image.presentation.focal_point | default: '50% 50%' -%}
+{%- assign focal_style = 'object-position:' | append: focal -%}
+
+<section
+  class="rl-section rl-promo rl-promo--{{ s.text_position }} rl-promo--h-{{ s.heading_size }}{% if s.full_width %} rl-promo--full{% endif %}{% if s.show_border %} rl-promo--border{% endif %}{% if s.button_gradient %} rl-promo--grad{% endif %}{% if s.mobile_text_over_image %} rl-promo--m-over{% endif %}"
+  style="--rl-bg:{{ s.section_bg }};--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--pr-btn:{{ s.button_color }};--pr-btn-text:{{ s.button_text_color }};--pr-border:{{ s.border_color }};--pr-fade:{{ s.overlay_color }};--pr-fade-strong:{{ c_strong }};--pr-fade-mid:{{ c_mid }};--pr-fade-zero:{{ c_zero }};--pr-h:{{ s.height }}px;--pr-mh:{{ s.mobile_image_height }}px;--pr-tw:{{ s.text_width }}px;--pr-radius:{{ s.radius }}px;"
+>
+  <div class="rl-promo__wrap">
+    <div class="rl-promo__box">
+      <div class="rl-promo__media">
+        {%- if s.image != blank -%}
+          {%- capture img -%}{{ s.image | image_url: width: 2200 | image_tag: loading: 'lazy', widths: '800, 1200, 1600, 2200', sizes: '100vw', alt: s.image_alt, style: focal_style }}{%- endcapture -%}
+          {%- if s.mobile_image != blank -%}
+            <picture>
+              <source
+                media="(max-width: 749px)"
+                srcset="{{ s.mobile_image | image_url: width: 900 }} 900w, {{ s.mobile_image | image_url: width: 1400 }} 1400w"
+                sizes="100vw"
+              >
+              {{ img }}
+            </picture>
+          {%- else -%}
+            {{ img }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'lifestyle-1' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+      <div class="rl-promo__overlay"></div>
+
+      <div class="rl-promo__content">
+        <div class="rl-promo__text">
+          {%- if s.eyebrow != blank -%}
+            <p class="rl-promo__eyebrow">{{ s.eyebrow }}</p>
+          {%- endif -%}
+          {%- if s.heading != blank -%}
+            <h2 class="rl-heading rl-promo__heading">{{ s.heading | escape | newline_to_br }}</h2>
+          {%- endif -%}
+          {%- if s.description != blank -%}
+            <div class="rl-promo__desc">{{ s.description }}</div>
+          {%- endif -%}
+          {%- if s.button_label != blank and s.button_link != blank -%}
+            <a class="rl-promo__btn" href="{{ s.button_link }}">
+              {{- s.button_label }}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RL Promo banner",
+  "tag": "div",
+  "class": "section-rl-promo-banner",
+  "settings": [
+    { "type": "header", "content": "1. Photo" },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner photo",
+      "info": "Wide photo, about 2200 × 520 px. Set the focus point so nothing important is cropped."
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile photo (optional)",
+      "info": "Empty = reuse the banner photo."
+    },
+    { "type": "text", "id": "image_alt", "label": "Photo description", "info": "For screen readers and SEO." },
+
+    { "type": "header", "content": "2. Text" },
+    { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Ecovacs at Redline" },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Less cleaning.\nMore living.",
+      "info": "Press Enter to start a new line."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Discover smarter ways to care for your home, with time-saving technology made beautifully simple.</p>"
+    },
+
+    { "type": "header", "content": "3. Button" },
+    { "type": "text", "id": "button_label", "label": "Button text", "default": "Explore Ecovacs" },
+    { "type": "url", "id": "button_link", "label": "Button link", "info": "Button is hidden if there is no link." },
+
+    { "type": "header", "content": "4. Layout" },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Banner height (desktop)",
+      "min": 240,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "default": 330
+    },
+    {
+      "type": "range",
+      "id": "text_width",
+      "label": "Text width",
+      "min": 280,
+      "max": 640,
+      "step": 10,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "White fade strength",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 80,
+      "info": "0 = no fade."
+    },
+    { "type": "checkbox", "id": "full_width", "label": "Edge-to-edge (no side margins)", "default": false },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Rounded corners",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    { "type": "checkbox", "id": "show_border", "label": "Thin border", "default": true },
+
+    { "type": "header", "content": "5. Mobile" },
+    {
+      "type": "checkbox",
+      "id": "mobile_text_over_image",
+      "label": "Put text over the photo",
+      "default": false,
+      "info": "Off = photo on top, text below."
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Photo height",
+      "min": 160,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 240
+    },
+
+    { "type": "header", "content": "6. Colors" },
+    { "type": "color", "id": "accent_color", "label": "Small title", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Description", "default": "#444444" },
+    { "type": "color", "id": "button_color", "label": "Button", "default": "#d0021b" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "checkbox", "id": "button_gradient", "label": "Soft gradient on button", "default": true },
+    { "type": "color", "id": "overlay_color", "label": "Fade color", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Border", "default": "#e3e3e3" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "7. Spacing" },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top space",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom space",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [{ "name": "RL Promo banner" }]
+}
+{% endschema %}

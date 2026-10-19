@@ -1,0 +1,66 @@
+/* rl-faq.css — two-column FAQ with native <details> accordion. No JS. Modifier on the section: --sticky (left side stays in view). */
+.rl-faq__layout {
+  display: grid;
+  grid-template-columns: minmax(0, var(--fq-left, 4fr)) minmax(0, var(--fq-right, 6fr));
+  gap: var(--fq-gap, 80px);
+  align-items: start;
+}
+.rl-container.faq-container {
+    background: #FFFCFC;
+    padding: 50px;
+    border: 1px solid #F6CACF;
+    border-radius:10px;
+  max-width: calc(var(--rl-maxw) - 40px);}
+/* ---------- Left ---------- */
+.rl-faq--sticky .rl-faq__intro { position: sticky; top: 110px; }
+.rl-faq__eyebrow { font-size: 17px; font-weight: 700; letter-spacing: .06em; margin: 0 0 14px; }
+.rl-faq__heading { font-size: clamp(30px, 3.4vw, 46px); line-height: 1.2; margin: 0 0 18px; }
+.rl-faq__desc { font-size: 14px; line-height: 1.7; color: var(--rl-text, #444); max-width: 440px; }
+.rl-faq__desc p { margin: 0; }
+.rl-faq__more { display: inline-flex; margin-top: 22px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 11px 22px;
+  border-radius: 4px;
+  display: inline-block;
+  background-color: var(--dl-btn, #d0021b);
+  color: var(--dl-btn-text, #fff) !important;
+  box-shadow: 0 6px 14px -6px var(--dl-btn, #d0021b);
+  transition: transform .2s ease,filter .2s ease; }
+
+/* ---------- Accordion ---------- */
+.rl-faq__list { border-top: 0; }
+.rl-faq__item { border-bottom: 1px solid var(--rl-border, #e8e6e3); }
+.rl-faq__q { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 22px 0; cursor: pointer; list-style: none; color: var(--rl-heading, #1a1a1a); -webkit-tap-highlight-color: transparent; }
+.rl-faq__q::-webkit-details-marker { display: none; }
+.rl-faq__q::marker { content: ""; }
+.rl-faq__qtext { font-size: 17px; font-weight: 500; line-height: 1.4; transition: color .2s ease; }
+.rl-faq__q:hover .rl-faq__qtext, .rl-faq__item[open] .rl-faq__qtext { color: var(--rl-accent, #d0021b); }
+.rl-faq__q:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 4px; border-radius: 4px; }
+
+/* + icon that turns into − when open */
+.rl-faq__icon { position: relative; flex: 0 0 auto; width: 14px; height: 14px; }
+.rl-faq__icon::before, .rl-faq__icon::after { content: ""; position: absolute; left: 0; top: 50%; width: 100%; height: 1.5px; margin-top: -.75px; background: currentColor; transition: transform .3s ease, opacity .3s ease; }
+.rl-faq__icon::after { transform: rotate(90deg); }
+.rl-faq__item[open] .rl-faq__icon::after { transform: rotate(0); opacity: 0; }
+.rl-faq__item[open] .rl-faq__icon { color: var(--rl-accent, #d0021b); }
+
+.rl-faq__a { padding: 0 40px 24px 0; font-size: 14.5px; line-height: 1.7; color: var(--rl-text, #444); animation: rl-faq-in .3s ease; }
+.rl-faq__a > :first-child { margin-top: 0; }
+.rl-faq__a > :last-child { margin-bottom: 0; }
+.rl-faq__a a { color: var(--rl-accent, #d0021b); }
+@keyframes rl-faq-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) { .rl-faq__a { animation: none; } .rl-faq__icon::before, .rl-faq__icon::after { transition: none; } }
+
+@media (max-width: 989px) {
+  .rl-faq__layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .rl-faq--sticky .rl-faq__intro { position: static; }
+  .rl-faq__desc { max-width: 560px; }
+}
+@media (max-width: 749px) {
+  .rl-faq__eyebrow { font-size: 15px; margin-bottom: 10px; }
+  .rl-faq__q { padding: 18px 0; }
+  .rl-faq__qtext { font-size: 15.5px; }
+  .rl-faq__a { padding-right: 8px; }
+}

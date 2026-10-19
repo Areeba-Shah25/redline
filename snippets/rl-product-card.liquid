@@ -1,0 +1,52 @@
+{%- comment -%}
+  rl-product-card — one product card (whole card is a link).
+  Params: product, show_vendor, show_rating, badge_style (amount|percent|none), badge_text, sold_out_text, button_label, strike (true = line through old price)
+  Stars are static (4 yellow + 1 grey) via rl-static-stars.
+  Needs asset: rl-product-card.css
+{%- endcomment -%}
+{%- liquid
+  assign on_sale = false
+  assign saving = 0
+  if product.compare_at_price > product.price and product.available
+    assign on_sale = true
+    assign saving = product.compare_at_price | minus: product.price
+  endif
+  assign b_style = badge_style | default: 'amount'
+-%}
+<a class="rl-pc{% if strike %} rl-pc--strike{% endif %}" href="{{ product.url }}" draggable="false">
+  {%- if product.available == false -%}
+    <span class="rl-pc__badge rl-pc__badge--sold">{{ sold_out_text | default: 'Sold out' }}</span>
+  {%- elsif on_sale and b_style != 'none' -%}
+    <span class="rl-pc__badge">
+      {%- if b_style == 'percent' -%}{{ badge_text | default: 'Save' }} {{ saving | times: 100 | divided_by: product.compare_at_price }}%
+      {%- else -%}{{ badge_text | default: 'Save' }} {{ saving | money_without_trailing_zeros }}{%- endif -%}
+    </span>
+  {%- endif -%}
+
+  <div class="rl-pc__media">
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200, 300, 400, 500', sizes: '(min-width: 990px) 16vw, 45vw', alt: product.featured_media.alt | default: product.title }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag }}
+    {%- endif -%}
+  </div>
+
+  <div class="rl-pc__body">
+    {%- if show_vendor and product.vendor != blank -%}<p class="rl-pc__vendor">{{ product.vendor }}</p>{%- endif -%}
+    <h3 class="rl-pc__title">{{ product.title }}</h3>
+    {%- if show_rating -%}
+      <div class="rl-pc__rating">
+        {% render 'rl-static-stars', class: 'rl-pc__stars', count_class: 'rl-pc__count' %}
+      </div>
+    {%- endif -%}
+    <div class="rl-pc__price">
+      {%- if on_sale -%}
+        <span class="rl-vh">Sale price</span><span class="rl-pc__now rl-pc__now--sale">{{ product.price | money_without_trailing_zeros }}</span>
+        <span class="rl-vh">Regular price</span><span class="rl-pc__was">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+      {%- else -%}
+        <span class="rl-pc__now">{{ product.price | money_without_trailing_zeros }}</span>
+      {%- endif -%}
+    </div>
+    <span class="rl-pc__btn">{{ button_label | default: 'View Product' }}</span>
+  </div>
+</a>

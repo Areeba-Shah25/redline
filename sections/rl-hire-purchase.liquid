@@ -1,0 +1,304 @@
+{%- comment -%}
+  rl-hire-purchase — "Hire Purchase Available" instalment calculator for the product page.
+  Needs assets: rl-base.css, rl-hire-purchase.css, rl-hire-purchase.js
+  Use ONLY in the Product template. Price comes from the selected variant and updates when the variant changes.
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-hire-purchase.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign deposits = s.deposits | remove: ' ' | remove: '%' | split: ',' -%}
+{%- assign periods = s.periods | remove: ' ' | split: ',' -%}
+{%- assign uid = section.id -%}
+
+{%- if product -%}
+  <section
+    class="rl-section rl-hp"
+    data-rl-hp
+    data-prefix="{{ s.currency_prefix | escape }}"
+    data-decimals="{{ s.decimals }}"
+    data-rate="{{ s.interest_rate }}"
+    data-min="{{ s.min_price }}"
+    data-start="{{ product.selected_or_first_available_variant.id }}"
+    style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--hp-maxw:{{ s.max_width }}px;--hp-radius:{{ s.radius }}px;--hp-soft:{{ s.soft_color }};"
+  >
+    <script type="application/json" data-hp-variants>
+      { {%- for v in product.variants -%}"{{ v.id }}":{{ v.price }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} }
+    </script>
+
+    <div class="rl-container">
+      <div class="rl-hp__card">
+        <div class="rl-hp__top">
+          <div class="rl-hp__titlewrap">
+            <svg
+              class="rl-hp__icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/>
+            </svg>
+            <div>
+              <h2 class="rl-hp__title">{{ s.title }}</h2>
+              {%- if s.subtitle != blank -%}
+                <p class="rl-hp__sub">{{ s.subtitle }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+          <button
+            type="button"
+            class="rl-hp__toggle"
+            data-hp-toggle
+            aria-expanded="{{ s.open_by_default }}"
+            aria-controls="hp-body-{{ uid }}"
+          >
+            <span>{{ s.toggle_text }}</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 15l6-6 6 6"/>
+            </svg>
+          </button>
+        </div>
+
+        <div
+          class="rl-hp__body"
+          id="hp-body-{{ uid }}"
+          data-hp-body
+          {% unless s.open_by_default %}
+            hidden
+          {% endunless %}
+        >
+          <fieldset class="rl-hp__group">
+            <legend class="rl-hp__label">{{ s.deposit_label }}</legend>
+            <div class="rl-hp__options rl-hp__options--deposit">
+              {%- for d in deposits -%}
+                <div class="rl-hp__opt">
+                  <input
+                    type="radio"
+                    name="hp-dep-{{ uid }}"
+                    id="hp-dep-{{ uid }}-{{ d }}"
+                    value="{{ d }}"
+                    data-hp-deposit
+                    {% if forloop.first %}
+                      checked
+                    {% endif %}
+                  >
+                  <label for="hp-dep-{{ uid }}-{{ d }}">{{ d }}%</label>
+                </div>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <fieldset class="rl-hp__group">
+            <legend class="rl-hp__label">{{ s.period_label }}</legend>
+            <div class="rl-hp__options rl-hp__options--period">
+              {%- for m in periods -%}
+                <div class="rl-hp__opt">
+                  <input
+                    type="radio"
+                    name="hp-per-{{ uid }}"
+                    id="hp-per-{{ uid }}-{{ m }}"
+                    value="{{ m }}"
+                    data-hp-period
+                    {% if forloop.first %}
+                      checked
+                    {% endif %}
+                  >
+                  <label for="hp-per-{{ uid }}-{{ m }}">{{ m }} Months</label>
+                </div>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+
+          <div class="rl-hp__break" aria-live="polite">
+            <h3 class="rl-hp__breaktitle">{{ s.breakdown_title }}</h3>
+            <dl class="rl-hp__rows">
+              <div class="rl-hp__row">
+                <dt>{{ s.price_label }}</dt>
+                <dd data-hp-price></dd>
+              </div>
+              <div class="rl-hp__row">
+                <dt>{{ s.deposit_row_label }} (<span data-hp-deposit-pct>0</span>%)</dt>
+                <dd class="rl-hp__red" data-hp-deposit-amt></dd>
+              </div>
+              {%- if s.interest_rate > 0 -%}
+                <div class="rl-hp__row">
+                  <dt>{{ s.interest_label }}</dt>
+                  <dd data-hp-interest></dd>
+                </div>
+              {%- endif -%}
+              <div class="rl-hp__row">
+                <dt>{{ s.monthly_label }}</dt>
+                <dd class="rl-hp__red" data-hp-monthly></dd>
+              </div>
+              <div class="rl-hp__row rl-hp__row--total">
+                <dt>{{ s.total_label }}</dt>
+                <dd data-hp-total></dd>
+              </div>
+            </dl>
+
+            {%- if s.note_text != blank -%}
+              <div class="rl-hp__note">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>
+                </svg>
+                <div>
+                  {%- if s.note_title != blank -%}
+                    <p class="rl-hp__notetitle">{{ s.note_title }}</p>
+                  {%- endif -%}
+                  <p class="rl-hp__notetext">{{ s.note_text }}</p>
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="{{ 'rl-hire-purchase.js' | asset_url }}" defer></script>
+{%- elsif request.design_mode -%}
+  <div class="rl-container"><p>RL Hire purchase only works on the Product template.</p></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "RL Hire purchase",
+  "tag": "div",
+  "class": "section-rl-hire-purchase",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "header", "content": "1. Header" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Hire Purchase Available" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Calculate your estimated monthly payment." },
+    { "type": "text", "id": "toggle_text", "label": "Toggle text", "default": "Calculate Installments" },
+    { "type": "checkbox", "id": "open_by_default", "label": "Open by default", "default": true },
+
+    { "type": "header", "content": "2. Calculation" },
+    {
+      "type": "text",
+      "id": "deposits",
+      "label": "Deposit options (%)",
+      "default": "0,10,20,30,40",
+      "info": "Separate with commas."
+    },
+    {
+      "type": "text",
+      "id": "periods",
+      "label": "Installment periods (months)",
+      "default": "6,12,24,30",
+      "info": "Separate with commas."
+    },
+    {
+      "type": "range",
+      "id": "interest_rate",
+      "label": "Interest (% per year, flat)",
+      "min": 0,
+      "max": 30,
+      "step": 0.5,
+      "default": 0,
+      "info": "0 = no interest (price ÷ months). Interest row is shown only when above 0."
+    },
+    { "type": "text", "id": "currency_prefix", "label": "Currency prefix", "default": "Rs" },
+    {
+      "type": "select",
+      "id": "decimals",
+      "label": "Decimals",
+      "options": [
+        { "value": "0", "label": "None (Rs 3,998)" },
+        { "value": "2", "label": "Two (Rs 3,998.00)" }
+      ],
+      "default": "0"
+    },
+    {
+      "type": "number",
+      "id": "min_price",
+      "label": "Hide below this price",
+      "default": 0,
+      "info": "Whole currency units. 0 = always show."
+    },
+
+    { "type": "header", "content": "3. Labels" },
+    { "type": "text", "id": "deposit_label", "label": "Deposit heading", "default": "Deposit Percentage" },
+    { "type": "text", "id": "period_label", "label": "Period heading", "default": "Installment Period" },
+    { "type": "text", "id": "breakdown_title", "label": "Breakdown title", "default": "Estimated Payment Breakdown" },
+    { "type": "text", "id": "price_label", "label": "Price row", "default": "Product Price" },
+    { "type": "text", "id": "deposit_row_label", "label": "Deposit row", "default": "Deposit" },
+    { "type": "text", "id": "interest_label", "label": "Interest row", "default": "Interest" },
+    { "type": "text", "id": "monthly_label", "label": "Monthly row", "default": "Estimated Monthly" },
+    { "type": "text", "id": "total_label", "label": "Total row", "default": "Total Payable Amount" },
+    { "type": "text", "id": "note_title", "label": "Notice title", "default": "Estimated instalment amount" },
+    {
+      "type": "textarea",
+      "id": "note_text",
+      "label": "Notice text",
+      "default": "This is an indicative calculation only. Final terms, eligibility and approval are subject to the chosen hire purchase provider's assessment."
+    },
+
+    { "type": "header", "content": "4. Style" },
+    { "type": "color", "id": "accent_color", "label": "Accent (red)", "default": "#d0021b" },
+    { "type": "color", "id": "soft_color", "label": "Selected / notice tint", "default": "#fde8ea" },
+    { "type": "color", "id": "heading_color", "label": "Headings", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#555555" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Rounded corners",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 360,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top space",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom space",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "presets": [{ "name": "RL Hire purchase" }]
+}
+{% endschema %}

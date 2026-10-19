@@ -1,0 +1,12 @@
+{%- comment -%} rl-pdp-follow — "Follow Us" row with coloured social icons. Params: block (icons with no link are hidden) {%- endcomment -%}
+{%- assign b = block.settings -%}
+<div class="rl-fol" {{ block.shopify_attributes }}>
+  <div class="rl-fol__t"><strong>{{ b.heading }}</strong><span>{{ b.text }}</span></div>
+  <div class="rl-fol__icons">
+    {%- if b.facebook != blank -%}<a class="fb" href="{{ b.facebook }}" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8z"/></svg></a>{%- endif -%}
+    {%- if b.pinterest != blank -%}<a class="pi" href="{{ b.pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest"><svg viewBox="0 0 24 24"><text x="12" y="17.5" text-anchor="middle" font-size="16" font-weight="700" font-family="Arial,sans-serif" fill="currentColor">P</text></svg></a>{%- endif -%}
+    {%- if b.instagram != blank -%}<a class="ig" href="{{ b.instagram }}" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg></a>{%- endif -%}
+    {%- if b.linkedin != blank -%}<a class="li" href="{{ b.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="9" width="2.6" height="9"/><circle cx="6.3" cy="6" r="1.6"/><path d="M10 9h2.5v1.3c.5-.9 1.5-1.5 2.9-1.5 2.4 0 3.1 1.5 3.1 3.7V18h-2.6v-4.6c0-1.1-.3-1.9-1.4-1.9-1.2 0-1.8.8-1.8 2V18H10z"/></svg></a>{%- endif -%}
+    {%- if b.youtube != blank -%}<a class="yt" href="{{ b.youtube }}" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3z"/></svg></a>{%- endif -%}
+  </div>
+</div>

@@ -1,0 +1,60 @@
+{%- comment -%}
+  rl-pdp-hp — Hire Purchase estimate (DISPLAY ONLY). Params: block, product
+  Staff edit the deposit % options and the month options in the Theme Editor (comma-separated lists).
+  Maths (in rl-pdp.js, in the browser): monthly = (price − deposit) ÷ months. No interest, no fees, no provider, no network call.
+{%- endcomment -%}
+{%- assign b = block.settings -%}
+{%- assign deposits = b.deposit_options | split: ',' -%}
+{%- assign terms = b.term_options | split: ',' -%}
+{%- if deposits.size > 0 and terms.size > 0 -%}
+  {%- assign v = product.selected_or_first_available_variant -%}
+  {%- assign p = v.price -%}
+  {%- assign min_cents = b.min_price | times: 100 -%}
+  {%- assign d0 = deposits.first | strip | plus: 0 -%}
+  {%- assign m0 = terms.first | strip | plus: 0 -%}
+  {%- if m0 < 1 -%}{%- assign m0 = 1 -%}{%- endif -%}
+  {%- assign dep_c = p | times: d0 | divided_by: 100.0 | round -%}
+  {%- assign mo_c = p | minus: dep_c | times: 1.0 | divided_by: m0 | divided_by: 100.0 | round | times: 100 -%}
+
+  <details class="rl-hpx" data-rl-hpx data-format="{{ shop.money_format | escape }}" data-min="{{ min_cents }}" {% if b.start_open %}open{% endif %}{% if min_cents > 0 and p < min_cents %} hidden{% endif %} {{ block.shopify_attributes }}>
+    <summary class="rl-hpx__head">
+      <span class="rl-hpx__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M8 15h3"/></svg></span>
+      <span class="rl-hpx__t"><strong>{{ b.heading }}</strong><small>{{ b.subtitle }}</small></span>
+      <span class="rl-hpx__toggle">{{ b.toggle_text }} <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span>
+    </summary>
+
+    <div class="rl-hpx__body">
+      <p class="rl-hpx__label" id="hp-dep-{{ block.id }}">{{ b.deposit_label }}</p>
+      <div class="rl-hpx__pills" role="radiogroup" aria-labelledby="hp-dep-{{ block.id }}" data-hp-group="dep">
+        {%- for d in deposits -%}
+          {%- assign dv = d | strip | plus: 0 -%}
+          <button type="button" role="radio" class="rl-hpx__pill" aria-checked="{% if forloop.first %}true{% else %}false{% endif %}" data-value="{{ dv }}">{{ dv }}%</button>
+        {%- endfor -%}
+      </div>
+
+      <p class="rl-hpx__label" id="hp-term-{{ block.id }}">{{ b.period_label }}</p>
+      <div class="rl-hpx__pills" role="radiogroup" aria-labelledby="hp-term-{{ block.id }}" data-hp-group="months">
+        {%- for t in terms -%}
+          {%- assign tv = t | strip | plus: 0 -%}
+          <button type="button" role="radio" class="rl-hpx__pill" aria-checked="{% if forloop.first %}true{% else %}false{% endif %}" data-value="{{ tv }}">{{ tv }} Months</button>
+        {%- endfor -%}
+      </div>
+
+      <div class="rl-hpx__break">
+        <p class="rl-hpx__bt">{{ b.breakdown_title }}</p>
+        <dl class="rl-hpx__rows">
+          <div class="rl-hpx__row"><dt>Product price</dt><dd data-hp-price>{{ p | money }}</dd></div>
+          <div class="rl-hpx__row"><dt>Deposit (<span data-hp-deplabel>{{ d0 }}%</span>)</dt><dd data-hp-dep>{{ dep_c | money }}</dd></div>
+          <div class="rl-hpx__row rl-hpx__row--em"><dt>Estimated monthly (<span data-hp-months>{{ m0 }}</span> months)</dt><dd data-hp-monthly>{{ mo_c | money }}</dd></div>
+          <div class="rl-hpx__row"><dt>Total payable amount</dt><dd data-hp-total>{{ p | money }}</dd></div>
+        </dl>
+      </div>
+
+      <div class="rl-hpx__notice" role="note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.01"/></svg>
+        <div><strong>{{ b.notice_title }}</strong><p>{{ b.notice_text }}</p></div>
+      </div>
+    </div>
+    <script type="application/json" data-hp-data>{"price":{{ p }},"map":{ {%- for pv in product.variants -%}"{{ pv.id }}":{{ pv.price }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} }}</script>
+  </details>
+{%- endif -%}

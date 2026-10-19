@@ -1,0 +1,49 @@
+/* rl-category-cards.css — image cards with title + arrow. Pure CSS.
+   Modifiers on the section: --bottom (title at bottom), --noarrow, --swipe (mobile single row) */
+.rl-cats .rl-head { margin-bottom: 22px; }
+
+.rl-cats__grid {
+  --cols: var(--cols-d, 4);
+  display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--cat-gap, 16px);
+  margin: 0; padding: 0; list-style: none;
+}
+.rl-cats__item { margin: 0; min-width: 0; }
+
+.rl-cats__card {
+  position: relative; display: block; overflow: hidden; aspect-ratio: var(--cat-ratio, 5 / 4);
+  border-radius: var(--cat-radius, 10px); background: #e9e9e4; color: #fff; text-decoration: none;
+}
+.rl-cats__media, .rl-cats__media img, .rl-cats__media svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.rl-cats__media img, .rl-cats__media svg { object-fit: cover; display: block; transition: transform .6s cubic-bezier(.22, .61, .36, 1); }
+a.rl-cats__card:hover img, a.rl-cats__card:focus-visible img { transform: scale(1.06); }
+a.rl-cats__card:focus-visible { outline: 2px solid var(--rl-accent, #d0021b); outline-offset: 3px; }
+
+/* soft dark fade so the white title is always readable */
+.rl-cats__card::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, rgba(0, 0, 0, var(--cat-ov, .45)) 0%, rgba(0, 0, 0, 0) 55%); }
+.rl-cats--bottom .rl-cats__card::after { background: linear-gradient(to top, rgba(0, 0, 0, var(--cat-ov, .45)) 0%, rgba(0, 0, 0, 0) 55%); }
+
+.rl-cats__bar { position: absolute; left: 0; right: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; top: 0; }
+.rl-cats--bottom .rl-cats__bar { top: auto; bottom: 0; }
+.rl-cats__title { font-size: 17px; font-weight: 600; line-height: 1.25; margin: 0; text-shadow: 0 1px 8px rgba(0, 0, 0, .35); font-family: 'Manrope';}
+
+.rl-cats__arrow {
+  flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .9);
+  background: rgba(0, 0, 0, .25); display: flex; align-items: center; justify-content: center; transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.rl-cats__arrow svg { width: 14px; height: 14px; }
+a.rl-cats__card:hover .rl-cats__arrow, a.rl-cats__card:focus-visible .rl-cats__arrow { background: #fff; color: #1a1a1a; transform: translateX(2px); }
+.rl-cats--noarrow .rl-cats__arrow { display: none; }
+
+@media (max-width: 989px) {
+  .rl-cats__grid { --cols: var(--cols-t, 2); }
+}
+@media (max-width: 749px) {
+  .rl-cats__grid { --cols: var(--cols-m, 1); gap: calc(var(--cat-gap, 16px) * .75); }
+  .rl-cats__bar { padding: 12px 14px; }
+  .rl-cats__title { font-size: 15px; }
+
+  /* modifier: single swipeable row on mobile (pure CSS scroll-snap) */
+  .rl-cats--swipe .rl-cats__grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin-right: -20px; padding-right: 20px; }
+  .rl-cats--swipe .rl-cats__grid::-webkit-scrollbar { display: none; }
+  .rl-cats--swipe .rl-cats__item { flex: 0 0 72%; scroll-snap-align: start; }
+}

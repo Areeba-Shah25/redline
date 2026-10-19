@@ -1,0 +1,177 @@
+{%- comment -%}
+  rl-ticker — scrolling message bar ("CUSTOMER SUPPORT AVAILABLE ⚡ AFTER-SALES SERVICE ⚡ ...").
+  Add it on ANY page: Theme Editor > page > Add section > "RL Ticker". Each message is a block.
+  Needs asset: rl-ticker.css only (no JavaScript).
+{%- endcomment -%}
+{{ 'rl-ticker.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign duration = s.speed | times: section.blocks.size | at_least: 12 -%}
+
+
+
+{%- if section.blocks.size > 0 -%}
+  <section
+    class="rl-tick{% if s.direction == 'right' %} rl-tick--right{% endif %}{% if s.pause_on_hover %} rl-tick--pause{% endif %}{% unless s.uppercase %} rl-tick--normal{% endunless %}"
+    aria-label="{{ s.aria_label | escape }}"
+    style="--tk-bg:{{ s.bg_color }};--tk-text:{{ s.text_color }};--tk-icon:{{ s.icon_color }};--tk-h:{{ s.height }}px;--tk-fs:{{ s.font_size }}px;--tk-dur:{{ duration }}s;"
+  >
+    <div class="rl-tick__track">
+      {%- for copy in (1..2) -%}
+        <ul
+          class="rl-tick__group"
+          role="list"
+          {% if copy == 2 %}
+            aria-hidden="true"
+          {% endif %}
+        >
+        
+{%- for block in section.blocks -%}
+  <li
+    class="rl-tick__item"
+    {% if copy == 1 %}
+      {{ block.shopify_attributes }}
+    {% endif %}
+  >
+    {%- if block.settings.custom_icon != blank -%}
+      {{
+        block.settings.custom_icon
+        | image_url: width: 80
+        | image_tag:
+          class: 'rl-tick__icon',
+          width: block.settings.icon_size,
+          height: block.settings.icon_size,
+          alt: '',
+          loading: 'eager'
+      }}
+    {%- endif -%}
+
+    {%- if block.settings.link != blank -%}
+      <a
+        href="{{ block.settings.link }}"
+        {% if copy == 2 %}tabindex="-1"{% endif %}
+      >
+        {{ block.settings.text | escape }}
+      </a>
+    {%- else -%}
+      <span>{{ block.settings.text | escape }}</span>
+    {%- endif -%}
+  </li>
+{%- endfor -%}
+
+        </ul>
+      {%- endfor -%}
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <p style="padding:12px 20px;margin:0">Add a message block to the ticker.</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "RL Ticker",
+  "tag": "div",
+  "class": "section-rl-ticker",
+  "settings": [
+    { "type": "header", "content": "Motion" },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Seconds per message",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 5,
+      "info": "Higher = slower. Speed stays the same however many messages you add."
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Direction",
+      "options": [
+        { "value": "left", "label": "Right to left" },
+        { "value": "right", "label": "Left to right" }
+      ],
+      "default": "left"
+    },
+    { "type": "checkbox", "id": "pause_on_hover", "label": "Pause when hovered", "default": true },
+
+    { "type": "header", "content": "Look" },
+    
+    { "type": "checkbox", "id": "uppercase", "label": "UPPERCASE text", "default": true },
+    {
+      "type": "range",
+      "id": "height",
+      "label": "Bar height",
+      "min": 30,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    { "type": "color", "id": "bg_color", "label": "Bar color", "default": "#c8001a" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },
+    { "type": "color", "id": "icon_color", "label": "Icon color", "default": "#ffffff" },
+
+    { "type": "header", "content": "Accessibility" },
+    { "type": "text", "id": "aria_label", "label": "Screen-reader label", "default": "Store highlights" }
+  ],
+ "blocks": [
+  {
+    "type": "message",
+    "name": "Message",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text",
+        "default": "Customer support available"
+      },
+      {
+        "type": "image_picker",
+        "id": "custom_icon",
+        "label": "Custom icon (SVG or PNG)"
+      },
+      {
+        "type": "range",
+        "id": "icon_size",
+        "label": "Icon size",
+        "min": 12,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 18
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link (optional)"
+      }
+    ]
+  }
+],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "RL Ticker",
+      "blocks": [
+        { "type": "message", "settings": { "text": "Customer support available" } },
+        { "type": "message", "settings": { "text": "After-sales service" } },
+        { "type": "message", "settings": { "text": "Top appliance brands" } },
+        { "type": "message", "settings": { "text": "Delivery available" } },
+        { "type": "message", "settings": { "text": "Secure & convenient payments" } },
+        { "type": "message", "settings": { "text": "Returns are free within 7 days" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
