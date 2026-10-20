@@ -282,16 +282,17 @@
 
 .header--redline .header__utility--cart .cart-count-bubble {
   position: absolute;
-  top: 0;
-  left: 2.4rem;
-  min-width: 0.8rem;
-  height: 0.8rem;
-  padding: 0;
-  background: var(--redline-header-accent);
-  border: 0;
-  color: transparent;
-  font-size: 0;
-  line-height: 0;
+    top: 0;
+    left: 1.4rem;
+    min-width: auto;
+    height: 1.8rem;
+    padding: 0;
+    background: var(--redline-header-accent);
+    border: 0;
+    color: transparent;
+    font-size: 0;
+    line-height: 0;
+    z-index: -12;
 }
 
 .header--redline .header__utility--cart .cart-count-bubble span[aria-hidden='true'] {

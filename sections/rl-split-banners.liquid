@@ -9,28 +9,30 @@
 
 <section
   class="rl-section rl-split"
-  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-bg:{{ s.section_bg }};--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--sb-gap:{{ s.gap }}px;--sb-h:{{ s.height }}px;--sb-mh:{{ s.mobile_image_height }}px;--sb-radius:{{ s.radius }}px;"
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-bg:{{ s.section_bg }};--rl-maxw:{{ s.max_width }}px;--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--sb-gap:{{ s.gap }}px;--sb-h:{{ s.height }}px;--sb-mh:{{ s.mobile_image_height }}px;--sb-radius:{{ s.radius }}px;--sb-tw:{{ s.text_width }}%;"
 >
   <div class="rl-container">
     {%- if section.blocks.size > 0 -%}
       <ul class="rl-split__grid" role="list">
         {%- for block in section.blocks limit: 3 -%}
           {%- assign b = block.settings -%}
-          {%- if b.overlay_color != blank -%}
-            {%- assign fade = b.overlay_color -%}
-          {%- elsif b.theme == 'dark' -%}
+          {%- if b.theme == 'dark' -%}
             {%- assign fade = '#14110f' -%}
           {%- else -%}
             {%- assign fade = '#ffffff' -%}
           {%- endif -%}
-          {%- assign overlay_opacity = b.fade_strength | divided_by: 100.0 -%}
+          {%- assign a_strong = b.fade_strength | divided_by: 100.0 -%}
+          {%- assign a_mid = a_strong | times: 0.75 -%}
+          {%- assign c_strong = fade | color_modify: 'alpha', a_strong -%}
+          {%- assign c_mid = fade | color_modify: 'alpha', a_mid -%}
+          {%- assign c_zero = fade | color_modify: 'alpha', 0 -%}
           {%- assign focal = b.image.presentation.focal_point | default: '50% 50%' -%}
           {%- assign focal_style = 'object-position:' | append: focal -%}
 
           <li class="rl-split__item" {{ block.shopify_attributes }}>
             <div
-              class="rl-split__card rl-split__card--{{ b.theme }} rl-split__card--{{ b.text_side }}{% if b.overlay_type == 'tint' %} rl-split__card--tint{% endif %}"
-              style="--sb-fade:{{ fade }};--sb-op:{{ overlay_opacity }};--sb-tw:{{ b.text_width }}%;"
+              class="rl-split__card rl-split__card--{{ b.theme }} rl-split__card--{{ b.text_side }}"
+              style="--sb-fade:{{ fade }};--sb-strong:{{ c_strong }};--sb-mid:{{ c_mid }};--sb-zero:{{ c_zero }};"
             >
               <div class="rl-split__media">
                 {%- if b.image != blank -%}
@@ -50,7 +52,6 @@
                 {%- else -%}
                   {{ 'lifestyle-1' | placeholder_svg_tag }}
                 {%- endif -%}
-                {%- if b.overlay_type == 'tint' -%}<span class="rl-split__tint"></span>{%- endif -%}
               </div>
               <div class="rl-split__overlay"></div>
 
@@ -95,6 +96,17 @@
       "step": 10,
       "unit": "px",
       "default": 260
+    },
+    {
+      "type": "range",
+      "id": "text_width",
+      "label": "Text width",
+      "min": 40,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 60,
+      "info": "Share of the banner the text may use."
     },
     {
       "type": "range",
@@ -223,17 +235,6 @@
           "default": "light"
         },
         {
-          "type": "range",
-          "id": "text_width",
-          "label": "Text width",
-          "min": 30,
-          "max": 90,
-          "step": 5,
-          "unit": "%",
-          "default": 60,
-          "info": "How much of the banner the text may use. The overlay always covers the text area."
-        },
-        {
           "type": "select",
           "id": "text_side",
           "label": "Text side",
@@ -244,31 +245,15 @@
           "default": "left"
         },
         {
-          "type": "color",
-          "id": "overlay_color",
-          "label": "Image overlay color",
-          "info": "Your choice. Leave empty = automatic (white for Light, dark for Dark). Pick the Dark style if your color is dark so the text stays readable."
-        },
-        {
-          "type": "select",
-          "id": "overlay_type",
-          "label": "Overlay type",
-          "options": [
-            { "value": "fade", "label": "Fade from the text side" },
-            { "value": "tint", "label": "Tint the whole photo" }
-          ],
-          "default": "fade"
-        },
-        {
           "type": "range",
           "id": "fade_strength",
-          "label": "Overlay strength",
+          "label": "Fade strength",
           "min": 0,
           "max": 100,
           "step": 5,
           "unit": "%",
           "default": 85,
-          "info": "How strong the overlay is. 0 = no overlay. For “Tint the whole photo” try 30–60."
+          "info": "Makes the text readable over the photo. 0 = no fade."
         }
       ]
     }

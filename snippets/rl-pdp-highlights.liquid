@@ -1,0 +1,47 @@
+{%- comment -%}
+  rl-pdp-highlights — "Product highlights" grid under the gallery. Params: product, title (optional)
+  Data: product metafield  custom.highlights  (multi-line text). One highlight per line, optional icon first:
+      capacity | 323L Net Capacity
+      snow | No Frost Technology
+      display | LED Touch Display
+  Icons: capacity · snow · display · fresh · energy · eco · warranty · wifi · speed · size · weight · check (default)
+{%- endcomment -%}
+{%- assign raw = product.metafields.custom.highlights.value -%}
+{%- if raw != blank -%}
+  <div class="rl-hl">
+    <h2 class="rl-hl__title">{{ title | default: 'Product highlights' }}</h2>
+    <ul class="rl-hl__grid" role="list">
+      {%- assign lines = raw | escape | newline_to_br | split: '<br />' -%}
+      {%- for l in lines -%}
+        {%- assign line = l | strip -%}
+        {%- if line == blank -%}{%- continue -%}{%- endif -%}
+        {%- assign icon = 'check' -%}
+        {%- assign text = line -%}
+        {%- if line contains '|' -%}
+          {%- assign parts = line | split: '|' -%}
+          {%- assign icon = parts[0] | strip | downcase -%}
+          {%- assign text = line | remove_first: parts[0] | remove_first: '|' | strip -%}
+        {%- endif -%}
+        <li class="rl-hl__item">
+          <svg class="rl-hl__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            {%- case icon -%}
+              {%- when 'capacity' -%}<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 10h14M9 6v2M9 13v3"/>
+              {%- when 'snow' -%}<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="M9.5 4.5L12 6.5l2.5-2M9.5 19.5L12 17.5l2.5 2"/>
+              {%- when 'display' -%}<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/>
+              {%- when 'fresh' -%}<path d="M5 19c0-8 5-13 14-14 0 9-5 14-14 14z"/><path d="M5 19l7-7"/>
+              {%- when 'energy' -%}<path d="M13 2L5 14h6l-1 8 8-12h-6z"/>
+              {%- when 'eco' -%}<circle cx="12" cy="12" r="8"/><path d="M8 12.5l3 3 5-6"/>
+              {%- when 'warranty' -%}<path d="M12 3l7.5 3v5.5c0 4.5-3 8-7.5 9.5-4.5-1.5-7.5-5-7.5-9.5V6L12 3z"/><path d="M9 12l2.2 2.2L15.5 10"/>
+              {%- when 'wifi' -%}<path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.7 16a5 5 0 0 1 6.6 0"/><circle cx="12" cy="19" r=".8"/>
+              {%- when 'speed' -%}<path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4-5"/>
+              {%- when 'size' -%}<path d="M3 7h18v10H3z"/><path d="M7 7v4M11 7v3M15 7v4M19 7v3"/>
+              {%- when 'weight' -%}<path d="M6 8h12l2 12H4z"/><circle cx="12" cy="5.5" r="2.5"/>
+              {%- else -%}<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>
+            {%- endcase -%}
+          </svg>
+          <span>{{ text }}</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+{%- endif -%}

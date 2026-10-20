@@ -17,11 +17,170 @@
         "color_scheme": "scheme-1"
       }
     },
+    "rl_collection_jCcfgf": {
+      "type": "rl-collection",
+      "blocks": {
+        "category_T6KdAg": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Built-in Kitchen",
+            "link": "",
+            "image": "shopify://shop_images/Built-in_Kitchen.png"
+          }
+        },
+        "category_JkiDf4": {
+          "type": "category",
+          "settings": {
+            "collection": "41l-50l-oven",
+            "name": "Refrigeration",
+            "link": "",
+            "image": "shopify://shop_images/Refrigeration.png"
+          }
+        },
+        "category_EACNWe": {
+          "type": "category",
+          "settings": {
+            "collection": "41l-50l-oven",
+            "name": "Laundry",
+            "link": "",
+            "image": "shopify://shop_images/Laundry.png"
+          }
+        },
+        "category_qTxCc8": {
+          "type": "category",
+          "settings": {
+            "collection": "61l-70l-oven",
+            "name": "Small Appliances",
+            "link": "",
+            "image": "shopify://shop_images/Small_Appliances.png"
+          }
+        },
+        "category_pAnz9g": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "TV & Audio",
+            "link": "",
+            "image": "shopify://shop_images/TV_Audio.png"
+          }
+        },
+        "category_DXgCRq": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Built-in Kitchen",
+            "link": "",
+            "image": "shopify://shop_images/Built-in_Kitchen.png"
+          }
+        },
+        "category_Ljy4aX": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Air Conditioning",
+            "link": "",
+            "image": "shopify://shop_images/Air_Conditioning.png"
+          }
+        },
+        "category_XP7Ek4": {
+          "type": "category",
+          "settings": {
+            "collection": "61l-70l-oven",
+            "name": "Small Appliances",
+            "link": "",
+            "image": "shopify://shop_images/Small_Appliances.png"
+          }
+        },
+        "category_cx7HAA": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "Kitchen Appliances",
+            "link": "",
+            "image": "shopify://shop_images/Kitchen.png"
+          }
+        },
+        "category_4m8rCh": {
+          "type": "category",
+          "settings": {
+            "collection": "",
+            "name": "TV & Audio",
+            "link": "",
+            "image": "shopify://shop_images/TV_Audio.png"
+          }
+        }
+      },
+      "block_order": [
+        "category_T6KdAg",
+        "category_JkiDf4",
+        "category_EACNWe",
+        "category_qTxCc8",
+        "category_pAnz9g",
+        "category_DXgCRq",
+        "category_Ljy4aX",
+        "category_XP7Ek4",
+        "category_cx7HAA",
+        "category_4m8rCh"
+      ],
+      "name": "RL Collection",
+      "settings": {
+        "eyebrow": "Home / All Products",
+        "heading": "Shop By Category",
+        "link_text": "View all categories",
+        "link_url": "#",
+        "tiles_desktop": "6",
+        "tiles_tablet": "4",
+        "tiles_mobile": "2",
+        "image_height": 170,
+        "gap": 14,
+        "radius": 8,
+        "bleed": false,
+        "show_arrows": true,
+        "max_width": 1400,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "tile_bg": "#f3f3f0",
+        "section_bg": "#ffffff",
+        "padding_top": 52,
+        "padding_bottom": 40
+      }
+    },
+    "featured_collection_MREW7T": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "collection": "affinity",
+        "products_to_show": 4,
+        "title": "Featured collection",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
         "products_per_page": 16,
         "columns_desktop": 4,
+        "columns_mobile": "2",
         "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
@@ -32,14 +191,142 @@
         "enable_filtering": true,
         "filter_type": "horizontal",
         "enable_sorting": true,
-        "columns_mobile": "2",
         "padding_top": 36,
         "padding_bottom": 36
+      }
+    },
+    "rl_instagram_8FrXVn": {
+      "type": "rl-instagram",
+      "blocks": {
+        "post_VwNzAa": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/happier-Days.png",
+            "link": "",
+            "alt": ""
+          }
+        },
+        "post_3iM9Pe": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/biger.png",
+            "link": "https://www.instagram.com/redline.mu/p/DXGeu7YGJJt/",
+            "alt": ""
+          }
+        },
+        "post_7aN8dD": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_4wJx6b": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/brighter-room.png",
+            "link": "https://www.instagram.com/redline.mu/p/DXGeu7YGJJt/",
+            "alt": ""
+          }
+        },
+        "post_acVNJT": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_jLNePB": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/craete.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_wgjeaV": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_RCexPn": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_FeNpLP": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_8Hx97E": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_ek3Tta": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "post_VwNzAa",
+        "post_3iM9Pe",
+        "post_7aN8dD",
+        "post_4wJx6b",
+        "post_acVNJT",
+        "post_jLNePB",
+        "post_wgjeaV",
+        "post_RCexPn",
+        "post_FeNpLP",
+        "post_8Hx97E",
+        "post_ek3Tta"
+      ],
+      "name": "Instagram feed",
+      "settings": {
+        "heading": "We’re on Gram",
+        "handle": "redline.mu",
+        "profile_url": "https://www.instagram.com/redline.mu/p/DXGeu7YGJJt/",
+        "link_text": "@Redline.Mu",
+        "feed_endpoint": "",
+        "feed_limit": 12,
+        "slides_desktop": "4.5",
+        "slides_tablet": "2.5",
+        "slides_mobile": "1.3",
+        "autoplay": true,
+        "autoplay_speed": 2,
+        "section_bg": "#f4f4f1",
+        "heading_color": "#000000",
+        "card_bg": "#ffffff",
+        "text_color": "#111111",
+        "padding_top": 64,
+        "padding_bottom": 48
       }
     }
   },
   "order": [
     "banner",
-    "product-grid"
+    "rl_collection_jCcfgf",
+    "featured_collection_MREW7T",
+    "product-grid",
+    "rl_instagram_8FrXVn"
   ]
 }

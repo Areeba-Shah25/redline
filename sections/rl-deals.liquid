@@ -2,44 +2,30 @@
   rl-deals — "Deals & Promotion": heading row + photo cards with text, red highlight line and button. Pure CSS, no JavaScript.
   Needs assets: rl-base.css, rl-deals.css
   Each card = one block (add / remove / reorder in the Theme Editor).
-  Image overlay: pick type (fade behind text / whole photo), colour and opacity in "3. Image overlay".
 {%- endcomment -%}
 {{ 'rl-base.css' | asset_url | stylesheet_tag }}
 {{ 'rl-deals.css' | asset_url | stylesheet_tag }}
 {%- assign s = section.settings -%}
-{%- assign overlay_op = s.overlay_opacity | divided_by: 100.0 -%}
+{%- assign a_strong = s.overlay_opacity | divided_by: 100.0 -%}
+{%- assign a_mid = a_strong | times: 0.75 -%}
+{%- assign c_strong = s.overlay_color | color_modify: 'alpha', a_strong -%}
+{%- assign c_mid = s.overlay_color | color_modify: 'alpha', a_mid -%}
+{%- assign c_zero = s.overlay_color | color_modify: 'alpha', 0 -%}
 
 <section
-  class="rl-section rl-deals{% if s.mobile_swipe %} rl-deals--swipe{% endif %}{% if s.button_gradient %} rl-deals--grad{% endif %}{% if s.overlay_type == 'tint' %} rl-deals--tint{% endif %}{% if s.light_text %} rl-deals--lighttext{% endif %}"
-  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--dl-btn:{{ s.button_color }};--dl-btn-text:{{ s.button_text_color }};--dl-fade:{{ s.overlay_color }};--dl-op:{{ overlay_op }};--dl-h:{{ s.card_height }}px;--dl-radius:{{ s.radius }}px;--dl-gap:{{ s.gap }}px;--dl-tw:{{ s.text_width }}%;"
+  class="rl-section rl-deals{% if s.mobile_swipe %} rl-deals--swipe{% endif %}{% if s.button_gradient %} rl-deals--grad{% endif %}"
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--dl-btn:{{ s.button_color }};--dl-btn-text:{{ s.button_text_color }};--dl-fade:{{ s.overlay_color }};--dl-fade-strong:{{ c_strong }};--dl-fade-mid:{{ c_mid }};--dl-fade-zero:{{ c_zero }};--dl-h:{{ s.card_height }}px;--dl-radius:{{ s.radius }}px;--dl-gap:{{ s.gap }}px;--dl-tw:{{ s.text_width }}%;"
 >
   <div class="rl-container">
     <div class="rl-head rl-deals__head">
       <div class="rl-deals__intro">
-        {%- if s.eyebrow != blank -%}
-          <p class="rl-eyebrow">{{ s.eyebrow }}</p>
-        {%- endif -%}
-        {%- if s.heading != blank -%}
-          <h2 class="rl-heading">{{ s.heading }}</h2>
-        {%- endif -%}
-        {%- if s.description != blank -%}
-          <p class="rl-deals__sub">{{ s.description }}</p>
-        {%- endif -%}
+        {%- if s.eyebrow != blank -%}<p class="rl-eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="rl-heading">{{ s.heading }}</h2>{%- endif -%}
+        {%- if s.description != blank -%}<p class="rl-deals__sub">{{ s.description }}</p>{%- endif -%}
       </div>
       {%- if s.link_text != blank and s.link_url != blank -%}
-        <a class="rl-link rl-deals__link" href="{{ s.link_url }}">
-          {{- s.link_text }}
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M5 12h14M13 6l6 6-6 6"/>
-          </svg>
+        <a class="rl-link rl-deals__link" href="{{ s.link_url }}">{{ s.link_text }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
       {%- endif -%}
     </div>
@@ -56,16 +42,7 @@
             <article class="rl-deals__card">
               <div class="rl-deals__media">
                 {%- if b.image != blank -%}
-                  {{
-                    b.image
-                    | image_url: width: 1200
-                    | image_tag:
-                      loading: 'lazy',
-                      widths: '400, 600, 800, 1200',
-                      sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 85vw',
-                      alt: alt_text,
-                      style: focal_style
-                  }}
+                  {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 800, 1200', sizes: '(min-width: 990px) 33vw, (min-width: 750px) 50vw, 85vw', alt: alt_text, style: focal_style }}
                 {%- else -%}
                   {{ 'lifestyle-1' | placeholder_svg_tag }}
                 {%- endif -%}
@@ -73,25 +50,17 @@
               <div class="rl-deals__overlay"></div>
 
               <div class="rl-deals__content">
-                {%- if b.eyebrow != blank -%}
-                  <p class="rl-deals__eyebrow">{{ b.eyebrow }}</p>
-                {%- endif -%}
+                {%- if b.eyebrow != blank -%}<p class="rl-deals__eyebrow">{{ b.eyebrow }}</p>{%- endif -%}
                 {%- if b.heading != blank -%}
                   {%- assign lines = b.heading | escape | newline_to_br | split: '<br />' -%}
                   <h3 class="rl-deals__title">
                     {%- for line in lines -%}
                       {%- assign clean = line | strip -%}
-                      {%- if clean != blank -%}
-                        <span class="rl-deals__line{% if forloop.index == hl %} rl-deals__line--hl{% endif %}">
-                          {{- clean -}}
-                        </span>
-                      {%- endif -%}
+                      {%- if clean != blank -%}<span class="rl-deals__line{% if forloop.index == hl %} rl-deals__line--hl{% endif %}">{{ clean }}</span>{%- endif -%}
                     {%- endfor -%}
                   </h3>
                 {%- endif -%}
-                {%- if b.text != blank -%}
-                  <p class="rl-deals__text">{{ b.text }}</p>
-                {%- endif -%}
+                {%- if b.text != blank -%}<p class="rl-deals__text">{{ b.text }}</p>{%- endif -%}
                 {%- if b.button_label != blank and b.button_link != blank -%}
                   <a class="rl-deals__btn" href="{{ b.button_link }}">{{ b.button_label }}</a>
                 {%- endif -%}
@@ -116,161 +85,43 @@
     { "type": "header", "content": "1. Heading" },
     { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Deals & Promotion" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Upgrade Your Home For Less" },
-    {
-      "type": "text",
-      "id": "description",
-      "label": "Description",
-      "default": "Discover limited-time offers on the best appliances, home solutions and more."
-    },
+    { "type": "text", "id": "description", "label": "Description", "default": "Discover limited-time offers on the best appliances, home solutions and more." },
     { "type": "text", "id": "link_text", "label": "Link text", "default": "View All Deals" },
     { "type": "url", "id": "link_url", "label": "Link", "info": "Hidden if empty." },
 
     { "type": "header", "content": "2. Layout" },
-    {
-      "type": "range",
-      "id": "card_height",
-      "label": "Card height (desktop)",
-      "min": 200,
-      "max": 460,
-      "step": 10,
-      "unit": "px",
-      "default": 300
-    },
-    {
-      "type": "range",
-      "id": "text_width",
-      "label": "Text width",
-      "min": 40,
-      "max": 80,
-      "step": 5,
-      "unit": "%",
-      "default": 55,
-      "info": "Share of the card taken by the text."
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "Space between cards",
-      "min": 8,
-      "max": 40,
-      "step": 2,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "radius",
-      "label": "Rounded corners",
-      "min": 0,
-      "max": 24,
-      "step": 2,
-      "unit": "px",
-      "default": 8
-    },
-    {
-      "type": "checkbox",
-      "id": "mobile_swipe",
-      "label": "Swipe cards sideways on mobile",
-      "default": false,
-      "info": "Off = cards stack under each other."
-    },
+    { "type": "range", "id": "card_height", "label": "Card height (desktop)", "min": 200, "max": 460, "step": 10, "unit": "px", "default": 300 },
+    { "type": "range", "id": "text_width", "label": "Text width", "min": 40, "max": 80, "step": 5, "unit": "%", "default": 55, "info": "Share of the card taken by the text." },
+    { "type": "range", "id": "overlay_opacity", "label": "Fade strength (behind text)", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 70 },
+    { "type": "range", "id": "gap", "label": "Space between cards", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 20 },
+    { "type": "range", "id": "radius", "label": "Rounded corners", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 8 },
+    { "type": "checkbox", "id": "mobile_swipe", "label": "Swipe cards sideways on mobile", "default": false, "info": "Off = cards stack under each other." },
 
-    { "type": "header", "content": "3. Image overlay" },
-    {
-      "type": "select",
-      "id": "overlay_type",
-      "label": "Overlay type",
-      "options": [
-        { "value": "fade", "label": "Fade behind the text (left side)" },
-        { "value": "tint", "label": "Cover the whole photo" }
-      ],
-      "default": "fade",
-      "info": "“Cover the whole photo” puts the color over the entire image on every card."
-    },
-    { "type": "color", "id": "overlay_color", "label": "Image overlay color", "default": "#f4f1ee" },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "label": "Overlay opacity",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 70,
-      "info": "0 = no overlay, 100 = solid color."
-    },
-    { "type": "checkbox", "id": "light_text", "label": "White text (use with dark overlays)", "default": false },
-
-    { "type": "header", "content": "4. Colors" },
+    { "type": "header", "content": "3. Colors" },
     { "type": "color", "id": "accent_color", "label": "Accent (red)", "default": "#d0021b" },
     { "type": "color", "id": "heading_color", "label": "Headings", "default": "#1a1a1a" },
     { "type": "color", "id": "text_color", "label": "Body text", "default": "#444444" },
     { "type": "color", "id": "button_color", "label": "Button", "default": "#d0021b" },
     { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#ffffff" },
     { "type": "checkbox", "id": "button_gradient", "label": "Soft gradient on button", "default": true },
+    { "type": "color", "id": "overlay_color", "label": "Fade color", "default": "#f4f1ee" },
     { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
 
-    { "type": "header", "content": "5. Spacing" },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top space",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom space",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "default": 40
-    }
+    { "type": "header", "content": "4. Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
   ],
   "blocks": [
     {
       "type": "card",
       "name": "Deal card",
       "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Photo",
-          "info": "About 900 × 600 px. Keep the left side calm — the text sits there. Set the focus point."
-        },
+        { "type": "image_picker", "id": "image", "label": "Photo", "info": "About 900 × 600 px. Keep the left side calm — the text sits there. Set the focus point." },
         { "type": "text", "id": "image_alt", "label": "Photo description" },
         { "type": "text", "id": "eyebrow", "label": "Small title", "default": "Kitchen Appliances" },
-        {
-          "type": "textarea",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Cook\nCreate\nEnjoy More",
-          "info": "One word or phrase per line."
-        },
-        {
-          "type": "select",
-          "id": "highlight_line",
-          "label": "Red line",
-          "options": [
-            { "value": "0", "label": "None" },
-            { "value": "1", "label": "Line 1" },
-            { "value": "2", "label": "Line 2" },
-            { "value": "3", "label": "Line 3" },
-            { "value": "4", "label": "Line 4" }
-          ],
-          "default": "2"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Description",
-          "default": "Save on premium kitchen essentials for every home."
-        },
+        { "type": "textarea", "id": "heading", "label": "Heading", "default": "Cook\nCreate\nEnjoy More", "info": "One word or phrase per line." },
+        { "type": "select", "id": "highlight_line", "label": "Red line", "options": [ { "value": "0", "label": "None" }, { "value": "1", "label": "Line 1" }, { "value": "2", "label": "Line 2" }, { "value": "3", "label": "Line 3" }, { "value": "4", "label": "Line 4" } ], "default": "2" },
+        { "type": "textarea", "id": "text", "label": "Description", "default": "Save on premium kitchen essentials for every home." },
         { "type": "text", "id": "button_label", "label": "Button text", "default": "Shop Kitchen Deals" },
         { "type": "url", "id": "button_link", "label": "Button link", "info": "Button is hidden if there is no link." }
       ]
@@ -280,36 +131,9 @@
     {
       "name": "RL Deals",
       "blocks": [
-        {
-          "type": "card",
-          "settings": {
-            "eyebrow": "Kitchen Appliances",
-            "heading": "Cook\nCreate\nEnjoy More",
-            "highlight_line": "2",
-            "text": "Save on premium kitchen essentials for every home.",
-            "button_label": "Shop Kitchen Deals"
-          }
-        },
-        {
-          "type": "card",
-          "settings": {
-            "eyebrow": "Home Comfort",
-            "heading": "Cooler\nSmarter\nLiving",
-            "highlight_line": "3",
-            "text": "Great offers on air conditioning for a more comfortable home.",
-            "button_label": "Shop AC Deals"
-          }
-        },
-        {
-          "type": "card",
-          "settings": {
-            "eyebrow": "Laundry Solutions",
-            "heading": "Fresh\nCare\nEveryday",
-            "highlight_line": "3",
-            "text": "Reliable washing machines for cleaner, brighter days.",
-            "button_label": "Shop Laundry Deals"
-          }
-        }
+        { "type": "card", "settings": { "eyebrow": "Kitchen Appliances", "heading": "Cook\nCreate\nEnjoy More", "highlight_line": "2", "text": "Save on premium kitchen essentials for every home.", "button_label": "Shop Kitchen Deals" } },
+        { "type": "card", "settings": { "eyebrow": "Home Comfort", "heading": "Cooler\nSmarter\nLiving", "highlight_line": "3", "text": "Great offers on air conditioning for a more comfortable home.", "button_label": "Shop AC Deals" } },
+        { "type": "card", "settings": { "eyebrow": "Laundry Solutions", "heading": "Fresh\nCare\nEveryday", "highlight_line": "3", "text": "Reliable washing machines for cleaner, brighter days.", "button_label": "Shop Laundry Deals" } }
       ]
     }
   ]

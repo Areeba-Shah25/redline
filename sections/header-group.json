@@ -1,1 +1,139 @@
-{"name":"t:sections.header.name","type":"header","sections":{"announcement-bar":{"type":"announcement-bar","blocks":{"utility_find_store":{"type":"utility_link","settings":{"text":"Find A Store","link":""}},"utility_help":{"type":"utility_link","settings":{"text":"Help & Support","link":""}},"utility_phones":{"type":"utility_link","settings":{"text":"5250 2503 ,5941 6225","link":""}}},"block_order":["utility_find_store","utility_help","utility_phones"],"settings":{"message":"Free Delivery Across Mauritius","message_link":"","background_color":"#1a1e21","text_color":"#ffffff","auto_rotate":false,"change_slides_speed":5,"color_scheme":"scheme-1","show_line_separator":false,"show_social":false,"enable_country_selector":false,"enable_language_selector":false}},"header":{"type":"header","blocks":{"mega_menu_E8thaM":{"type":"mega_menu","settings":{"menu_trigger":"Home","columns":4,"column_1_image":"shopify:\/\/shop_images\/6ebd3f32ec323f50fba416c7dc22b701042be645.jpg","column_1_title":"TV & Sound","column_1_products":["sharp-32-hd-google-tv-2t-c32gh3000nx","sharp-43-aquos-full-hd-smart-tv-2t-c43gh3000nx","sharp-50-4k-uhd-led-google-tv-4t-c50jl5500x","sharp-50-inch-4k-uhd-google-tv-4tc50fj1x","sharp-55-4k-uhd-led-google-tv-4t-c55jl5500x","sharp-55-inch-4k-uhd-google-tv-4tc55fj1x","sharp-60-8k-smart-android-led-tv-8t-c60dw1x"],"column_2_image":"shopify:\/\/shop_images\/5cf144988f219be657e18166972c29a0cbf04d9f.jpg","column_2_title":"Refrigeration","column_2_products":["brabantia-sort-go-2-x-12-litres-built-in-bin-jade-green-grey","brabantia-sort-go-built-in-bin-2-x-16-litre-mint-grey-110023","sharp-270l-197l-top-mount-refrigerator-2-door-inox-no-frost-sj-hm270-hs3","sharp-top-mount-refrigerator-2-door-no-frost-sj-hm330-hs3","sharp-top-mount-refrigerator-2-door-inox-sj-hm450-hs3","sharp-540l-420l-top-mount-refrigerator-2-door-inverter-no-frost-sj-hm540-hs3"],"column_3_image":"shopify:\/\/shop_images\/da86e19b953792808d69c32df9382c3c55f36eee.jpg","column_3_title":"Everyday Living","column_3_products":["copy-of-electrolux-built-in-fully-integrated-13-place-setting-dishwasher-eea172ool-pre-book-now","sharp-10kg-front-loading-inverter-washing-machine-es-fsi1012dlz-s","sharp-10kg-top-loading-diamond-drum-washing-machine","sharp-10kg-6kg-freestanding-washer-dryer-es-fwd1006sd-s"],"column_4_image":"shopify:\/\/shop_images\/703d179e0198791d5348f2d045f522f988836712.jpg","column_4_title":"Comfort","column_4_products":["rotai-massage-chair-a36smart","rotai-massage-chair-rt5660","rotai-massage-chair-rt6898"],"banner_image":"shopify:\/\/shop_images\/912a45eea79056d763817bdf62a80c5520332519.png","banner_title":"Upgrade your everyday","banner_richtext":"","banner_button_label":"Explore appliances","banner_button_link":"#","view_all_label":"View all Home Appliances","view_all_link":"shopify:\/\/collections\/home-organisation","brand_1":"SHARP","brand_2":"AEG","brand_3":"Electrolux","brand_4":"Redline"}},"mega_menu_dth3Dw":{"type":"mega_menu","settings":{"menu_trigger":"Home Appliances","columns":4,"column_1_image":"shopify:\/\/shop_images\/6ebd3f32ec323f50fba416c7dc22b701042be645.jpg","column_1_title":"TV & Sound","column_1_products":["sharp-32-hd-google-tv-2t-c32gh3000nx","sharp-43-aquos-full-hd-smart-tv-2t-c43gh3000nx","sharp-50-4k-uhd-led-google-tv-4t-c50jl5500x","sharp-50-inch-4k-uhd-google-tv-4tc50fj1x","sharp-55-4k-uhd-led-google-tv-4t-c55jl5500x","sharp-55-inch-4k-uhd-google-tv-4tc55fj1x","sharp-60-8k-smart-android-led-tv-8t-c60dw1x"],"column_2_image":"shopify:\/\/shop_images\/5cf144988f219be657e18166972c29a0cbf04d9f.jpg","column_2_title":"Refrigeration","column_2_products":["brabantia-sort-go-2-x-12-litres-built-in-bin-jade-green-grey","brabantia-sort-go-built-in-bin-2-x-16-litre-mint-grey-110023","sharp-270l-197l-top-mount-refrigerator-2-door-inox-no-frost-sj-hm270-hs3","sharp-top-mount-refrigerator-2-door-no-frost-sj-hm330-hs3","sharp-top-mount-refrigerator-2-door-inox-sj-hm450-hs3","sharp-540l-420l-top-mount-refrigerator-2-door-inverter-no-frost-sj-hm540-hs3"],"column_3_image":"shopify:\/\/shop_images\/da86e19b953792808d69c32df9382c3c55f36eee.jpg","column_3_title":"Everyday Living","column_3_products":["copy-of-electrolux-built-in-fully-integrated-13-place-setting-dishwasher-eea172ool-pre-book-now","sharp-10kg-front-loading-inverter-washing-machine-es-fsi1012dlz-s","sharp-10kg-top-loading-diamond-drum-washing-machine","sharp-10kg-6kg-freestanding-washer-dryer-es-fwd1006sd-s"],"column_4_image":"shopify:\/\/shop_images\/703d179e0198791d5348f2d045f522f988836712.jpg","column_4_title":"Comfort","column_4_products":["rotai-massage-chair-a36smart","rotai-massage-chair-rt5660","rotai-massage-chair-rt6898"],"banner_image":"shopify:\/\/shop_images\/912a45eea79056d763817bdf62a80c5520332519.png","banner_title":"Upgrade your everyday","banner_richtext":"","banner_button_label":"Explore appliances","banner_button_link":"#","view_all_label":"View all Home Appliances","view_all_link":"shopify:\/\/collections\/home-organisation","brand_1":"SHARP","brand_2":"AEG","brand_3":"Electrolux","brand_4":"Redline"}},"mega_menu_keg7DQ":{"type":"mega_menu","settings":{"menu_trigger":"Technology","columns":4,"column_1_image":"shopify:\/\/shop_images\/6ebd3f32ec323f50fba416c7dc22b701042be645.jpg","column_1_title":"TV & Sound","column_1_products":["sharp-32-hd-google-tv-2t-c32gh3000nx","sharp-43-aquos-full-hd-smart-tv-2t-c43gh3000nx","sharp-50-4k-uhd-led-google-tv-4t-c50jl5500x","sharp-50-inch-4k-uhd-google-tv-4tc50fj1x","sharp-55-4k-uhd-led-google-tv-4t-c55jl5500x","sharp-55-inch-4k-uhd-google-tv-4tc55fj1x","sharp-60-8k-smart-android-led-tv-8t-c60dw1x"],"column_2_image":"shopify:\/\/shop_images\/5cf144988f219be657e18166972c29a0cbf04d9f.jpg","column_2_title":"Refrigeration","column_2_products":["brabantia-sort-go-2-x-12-litres-built-in-bin-jade-green-grey","brabantia-sort-go-built-in-bin-2-x-16-litre-mint-grey-110023","sharp-270l-197l-top-mount-refrigerator-2-door-inox-no-frost-sj-hm270-hs3","sharp-top-mount-refrigerator-2-door-no-frost-sj-hm330-hs3","sharp-top-mount-refrigerator-2-door-inox-sj-hm450-hs3","sharp-540l-420l-top-mount-refrigerator-2-door-inverter-no-frost-sj-hm540-hs3"],"column_3_image":"shopify:\/\/shop_images\/da86e19b953792808d69c32df9382c3c55f36eee.jpg","column_3_title":"Everyday Living","column_3_products":["copy-of-electrolux-built-in-fully-integrated-13-place-setting-dishwasher-eea172ool-pre-book-now","sharp-10kg-front-loading-inverter-washing-machine-es-fsi1012dlz-s","sharp-10kg-top-loading-diamond-drum-washing-machine","sharp-10kg-6kg-freestanding-washer-dryer-es-fwd1006sd-s"],"column_4_image":"shopify:\/\/shop_images\/703d179e0198791d5348f2d045f522f988836712.jpg","column_4_title":"Comfort","column_4_products":["rotai-massage-chair-a36smart","rotai-massage-chair-rt5660","rotai-massage-chair-rt6898"],"banner_image":"shopify:\/\/shop_images\/912a45eea79056d763817bdf62a80c5520332519.png","banner_title":"Upgrade your everyday","banner_richtext":"","banner_button_label":"Explore appliances","banner_button_link":"#","view_all_label":"View all Home Appliances","view_all_link":"shopify:\/\/collections\/home-organisation","brand_1":"SHARP","brand_2":"AEG","brand_3":"Electrolux","brand_4":"Redline"}}},"block_order":["mega_menu_E8thaM","mega_menu_dth3Dw","mega_menu_keg7DQ"],"settings":{"logo_position":"middle-left","mobile_logo_position":"center","menu":"primary-menu","menu_type_desktop":"dropdown","menu_open_trigger":"hover","categories_label":"Shop categories","search_placeholder":"Search appliances, brands and more...","show_wishlist":true,"wishlist_link":"","icon_search":"shopify:\/\/shop_images\/Search.png","icon_account":"shopify:\/\/shop_images\/User.png","icon_wishlist":"shopify:\/\/shop_images\/Heart.png","icon_cart":"shopify:\/\/shop_images\/Cart.png","sticky_header_type":"on-scroll-up","show_line_separator":true,"color_scheme":"scheme-1","menu_color_scheme":"scheme-1","enable_country_selector":true,"enable_language_selector":true,"margin_bottom":0,"padding_top":0,"padding_bottom":0}}},"order":["announcement-bar","header"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "utility_find_store": {
+          "type": "utility_link",
+          "settings": {
+            "text": "Find A Store",
+            "link": ""
+          }
+        },
+        "utility_help": {
+          "type": "utility_link",
+          "settings": {
+            "text": "Help & Support",
+            "link": ""
+          }
+        },
+        "utility_phones": {
+          "type": "utility_link",
+          "settings": {
+            "text": "5250 2503 ,5941 6225",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "utility_find_store",
+        "utility_help",
+        "utility_phones"
+      ],
+      "settings": {
+        "message": "Free Delivery Across Mauritius",
+        "message_link": "",
+        "background_color": "#1a1e21",
+        "text_color": "#ffffff",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "color_scheme": "scheme-1",
+        "show_line_separator": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "mega_menu_fcBLzr": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_trigger": "Home Appliances",
+            "columns": 4,
+            "column_1_image": "shopify://shop_images/6ebd3f32ec323f50fba416c7dc22b701042be645.jpg",
+            "column_1_title": "TV & Sound",
+            "column_1_products": [
+              "sharp-32-hd-google-tv-2t-c32gh3000nx",
+              "sharp-43-aquos-full-hd-smart-tv-2t-c43gh3000nx",
+              "sharp-50-inch-4k-uhd-google-tv-4tc50fj1x",
+              "sharp-50-4k-uhd-led-google-tv-4t-c50jl5500x"
+            ],
+            "column_2_image": "shopify://shop_images/5cf144988f219be657e18166972c29a0cbf04d9f.jpg",
+            "column_2_title": "Refrigeration",
+            "column_2_products": [
+              "aeg-355l-upright-cabinet-refrigerator-rkb53911nx",
+              "aeg-508l-side-by-side-refrigerator-rxb57011nx"
+            ],
+            "column_3_image": "shopify://shop_images/da86e19b953792808d69c32df9382c3c55f36eee.jpg",
+            "column_3_title": "Everyday Living",
+            "column_3_products": [
+              "aeg-6000-series-8kg-free-standing-condenser-tumble-dryer-tr738a4obc",
+              "aeg-8kg-3000-series-a-1200rpm-freestanding-front-load-washing-machine-awf8024m3sb"
+            ],
+            "column_4_image": "shopify://shop_images/703d179e0198791d5348f2d045f522f988836712.jpg",
+            "column_4_title": "Comfort",
+            "column_4_products": [
+              "instant-pot-5-7l-multi-cooker-plus-wifi-112-2001-01-eu",
+              "tineco-floor-one-cordless-wet-dry-vacuum-cleaner-s7-master"
+            ],
+            "banner_image": "shopify://shop_images/912a45eea79056d763817bdf62a80c5520332519.png",
+            "banner_title": "Upgrade your everyday",
+            "banner_richtext": "",
+            "banner_button_label": "Explore appliances",
+            "banner_button_link": "#",
+            "view_all_label": "View all Home Appliances",
+            "view_all_link": "shopify://collections/home-organisation",
+            "brand_1": "SHARP",
+            "brand_2": "AEG",
+            "brand_3": "Electrolux",
+            "brand_4": "Redline"
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_fcBLzr"
+      ],
+      "settings": {
+        "logo_position": "middle-left",
+        "mobile_logo_position": "center",
+        "menu": "primary-menu",
+        "menu_type_desktop": "dropdown",
+        "menu_open_trigger": "hover",
+        "categories_label": "Shop categories",
+        "search_placeholder": "Search appliances, brands and more...",
+        "show_wishlist": false,
+        "wishlist_link": "",
+        "icon_search": "shopify://shop_images/Search.png",
+        "icon_account": "shopify://shop_images/User.png",
+        "icon_wishlist": "shopify://shop_images/Heart.png",
+        "icon_cart": "shopify://shop_images/Cart.png",
+        "sticky_header_type": "on-scroll-up",
+        "show_line_separator": true,
+        "color_scheme": "scheme-1",
+        "menu_color_scheme": "scheme-1",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "margin_bottom": 0,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

@@ -72,7 +72,7 @@
   margin: 0;
   list-style: none;
   scroll-snap-align: start;
-  scroll-snap-stop: normal;
+  scroll-snap-stop: always;
 }
 
 .rl-collection__tile {

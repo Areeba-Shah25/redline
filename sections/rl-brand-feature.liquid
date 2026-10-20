@@ -2,43 +2,20 @@
   rl-brand-feature — brand spotlight: coloured panel (logo, text, button) + white product carousel from a collection.
   Needs assets: rl-base.css, rl-brand-feature.css, rl-brand-feature.js
   Product cards use static 4 yellow + 1 grey stars (rl-static-stars).
-  NEW: optional photo behind the brand panel with a merchant-chosen overlay colour + strength.
-       (needs the small CSS block "Brand panel photo + overlay" appended to rl-brand-feature.css)
 {%- endcomment -%}
 {{ 'rl-base.css' | asset_url | stylesheet_tag }}
 {{ 'rl-brand-feature.css' | asset_url | stylesheet_tag }}
 {%- assign s = section.settings -%}
 {%- assign src = s.collection | default: collections.all -%}
 
-{%- assign shade_alpha = s.panel_overlay_opacity | divided_by: 100.0 -%}
-{%- assign shade = s.panel_overlay_color | color_modify: 'alpha', shade_alpha -%}
-{%- assign panel_focal = s.panel_image.presentation.focal_point | default: '50% 50%' -%}
-{%- assign panel_focal_style = 'object-position:' | append: panel_focal -%}
-
 <section
   class="rl-section rl-bf{% if s.button_gradient %} rl-bf--grad{% endif %}"
   data-rl-bf
-  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-border:{{ s.border_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--bf-panel:{{ s.panel_color }};--bf-panel-text:{{ s.panel_text_color }};--bf-shade:{{ shade }};--bf-btn:{{ s.button_color }};--bf-btn-text:{{ s.button_text_color }};--bf-card:{{ s.card_bg }};--bf-left:{{ s.left_width }}px;--bf-logo:{{ s.logo_width }}px;--bf-radius:{{ s.radius }}px;--bf-pv-d:{{ s.cards_desktop }};--bf-pv-t:{{ s.cards_tablet }};--bf-pv-m:{{ s.cards_mobile }};"
+  style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-border:{{ s.border_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--bf-panel:{{ s.panel_color }};--bf-panel-text:{{ s.panel_text_color }};--bf-btn:{{ s.button_color }};--bf-btn-text:{{ s.button_text_color }};--bf-card:{{ s.card_bg }};--bf-left:{{ s.left_width }}px;--bf-logo:{{ s.logo_width }}px;--bf-radius:{{ s.radius }}px;--bf-pv-d:{{ s.cards_desktop }};--bf-pv-t:{{ s.cards_tablet }};--bf-pv-m:{{ s.cards_mobile }};"
 >
   <div class="rl-container">
     <div class="rl-bf__box">
       <div class="rl-bf__intro">
-        {%- if s.panel_image != blank -%}
-          <div class="rl-bf__bg" aria-hidden="true">
-            {{
-              s.panel_image
-              | image_url: width: 1000
-              | image_tag:
-                loading: 'lazy',
-                widths: '400, 600, 800, 1000',
-                sizes: '(min-width: 750px) 400px, 100vw',
-                alt: '',
-                style: panel_focal_style
-            }}
-          </div>
-          <span class="rl-bf__shade" aria-hidden="true"></span>
-        {%- endif -%}
-
         {%- if s.logo != blank -%}
           <div class="rl-bf__logo">
             {{
@@ -103,7 +80,6 @@
                 {%- assign on_sale = true -%}
                 {%- assign saving = product.compare_at_price | minus: product.price -%}
               {%- endif -%}
-              {%- assign alt_text = product.featured_media.alt | default: product.title -%}
               <li class="rl-bf__item">
                 <a class="rl-bf__card" href="{{ product.url }}" draggable="false">
                   {%- if product.available == false -%}
@@ -129,7 +105,8 @@
                           loading: 'lazy',
                           widths: '160, 240, 320, 400',
                           sizes: '(min-width: 990px) 12vw, 40vw',
-                          alt: alt_text
+                          alt: product.featured_media.alt
+                        | default: product.title
                       }}
                     {%- else -%}
                       {{ 'product-1' | placeholder_svg_tag }}
@@ -206,32 +183,6 @@
     },
     { "type": "text", "id": "button_label", "label": "Button text", "default": "Shop New Arrival" },
     { "type": "url", "id": "button_link", "label": "Button link", "info": "Button is hidden if there is no link." },
-
-    { "type": "header", "content": "Brand panel photo (optional)" },
-    {
-      "type": "image_picker",
-      "id": "panel_image",
-      "label": "Photo behind the brand panel",
-      "info": "Empty = plain colored panel. Set the focus point so nothing important is cropped."
-    },
-    {
-      "type": "color",
-      "id": "panel_overlay_color",
-      "label": "Image overlay color",
-      "default": "#b0000f",
-      "info": "Tints the photo so the white text stays readable. Only used when a photo is added."
-    },
-    {
-      "type": "range",
-      "id": "panel_overlay_opacity",
-      "label": "Overlay strength",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 70,
-      "info": "0 = photo only, 100 = solid color."
-    },
 
     { "type": "header", "content": "2. Products" },
     {

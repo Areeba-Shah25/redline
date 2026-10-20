@@ -46,15 +46,17 @@
   grid-template-columns: repeat(var(--rl-mega-cols, 4), minmax(0, 1fr));
   gap: 29px;
   min-width: 0;
-  align-items: start;
+  /* Stretch so every column (and divider) shares the same height */
+  align-items: stretch;
 }
 
 .rl-mega__col {
   position: relative;
   min-width: 0;
+  height: 100%;
 }
 
-/* Vertical divider: 29px from content, #EBEBEB, ~banner height */
+/* Vertical divider: 29px from content, equal height across columns */
 .rl-mega__col:not(:last-child) {
   padding-right: 29px;
   border-right: 1px solid #ebebeb;

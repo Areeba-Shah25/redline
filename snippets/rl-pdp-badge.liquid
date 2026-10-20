@@ -1,0 +1,5 @@
+{%- comment -%} rl-pdp-badge — "Save Rs 3,000" pill on the main photo. Params: product {%- endcomment -%}
+{%- assign v = product.selected_or_first_available_variant -%}
+{%- if v.compare_at_price > v.price and v.available -%}
+  <span class="rl-gbadge">Save {{ v.compare_at_price | minus: v.price | money_without_trailing_zeros }}</span>
+{%- endif -%}

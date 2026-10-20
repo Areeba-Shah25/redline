@@ -47,8 +47,8 @@
     }
 
     function scrollByStep(dir) {
-      var amount = itemStep() * Math.max(1, Math.floor(sc.clientWidth / itemStep()) || 1);
-      sc.scrollBy({ left: dir * amount, behavior: reduceMotion ? 'auto' : 'smooth' });
+      /* one tile at a time */
+      sc.scrollBy({ left: dir * itemStep(), behavior: reduceMotion ? 'auto' : 'smooth' });
     }
 
     function stopMomentum() {

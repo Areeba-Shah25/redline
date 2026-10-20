@@ -12,8 +12,15 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "custom_liquid_qNtFH9": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<p class=\"rl-vendor\">{{ product.vendor }}</p>"
+          }
+        },
         "vendor": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "{{ product.vendor }}",
             "text_style": "uppercase"
@@ -23,19 +30,73 @@
           "type": "title",
           "settings": {}
         },
+        "custom_liquid_bTg7Tc": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<p class=\"rl-model\">Model: {{ product.metafields.custom.model | default: product.selected_or_first_available_variant.sku }}</p>"
+          }
+        },
         "price": {
           "type": "price",
           "settings": {}
         },
-        "variant_picker": {
-          "type": "variant_picker",
+        "inventory_QJU9Dw": {
+          "type": "inventory",
           "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
+            "text_style": "body",
+            "inventory_threshold": 21,
+            "show_inventory_quantity": true
+          }
+        },
+        "rating_8GdUM9": {
+          "type": "rating",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "custom_liquid_jwqWBw": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<p class=\"rl-short\">{{ product.metafields.custom.short_description }}</p>"
+          }
+        },
+        "rl_warranty_LPnjRY": {
+          "type": "rl_warranty",
+          "settings": {
+            "eyebrow": "Peace of mind, included",
+            "title": "Official Warranty",
+            "term1_value": "3 years",
+            "term1_label": "functional parts & labour",
+            "term2_value": "1 year",
+            "term2_label": "transport coverage",
+            "foot_text": "Backed by local after-sales support in Mauritius",
+            "link_text": "View warranty details",
+            "link_url": ""
+          }
+        },
+        "rl_hp_4tXTQT": {
+          "type": "rl_hp",
+          "settings": {
+            "heading": "Hire Purchase Available",
+            "subtitle": "Calculate Your Estimated Monthly Payment.",
+            "toggle_text": "Calculate Instalments",
+            "start_open": true,
+            "deposit_label": "Deposit Percentage",
+            "deposit_options": "0,10,20,30,40",
+            "period_label": "Instalment Period",
+            "term_options": "6,12,24,36",
+            "breakdown_title": "Estimated Payment Breakdown",
+            "min_price": 0,
+            "notice_title": "Estimated instalment amount",
+            "notice_text": "This is an indicative calculation only. Final hire purchase approval and eligibility are subject to the chosen hire purchase provider's assessment."
           }
         },
         "quantity_selector": {
           "type": "quantity_selector",
+          "disabled": true,
           "settings": {}
         },
         "buy_buttons": {
@@ -45,9 +106,35 @@
             "show_gift_card_recipient": true
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
+        "rl_follow_mgGwh3": {
+          "type": "rl_follow",
+          "settings": {
+            "heading": "Follow Us",
+            "text": "Discover our latest offers, new arrivals and home inspiration.",
+            "facebook": "#",
+            "pinterest": "#",
+            "instagram": "#",
+            "linkedin": "#",
+            "youtube": "#"
+          }
+        },
+        "rl_info_cards_DkEQr3": {
+          "type": "rl_info_cards",
+          "settings": {
+            "card1_icon": "truck",
+            "card1_title": "Free delivery on eligible orders",
+            "card1_text": "Convenient delivery across Mauritius.",
+            "card2_icon": "tag",
+            "card2_title": "Shipping Cost Transparency",
+            "card2_text": "Applicable delivery charges are clearly shown at checkout. No hidden surprises."
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
         },
         "share": {
           "type": "share",
@@ -57,27 +144,36 @@
         }
       },
       "block_order": [
+        "custom_liquid_qNtFH9",
         "vendor",
         "title",
+        "custom_liquid_bTg7Tc",
         "price",
-        "variant_picker",
+        "inventory_QJU9Dw",
+        "rating_8GdUM9",
+        "description",
+        "custom_liquid_jwqWBw",
+        "rl_warranty_LPnjRY",
+        "rl_hp_4tXTQT",
         "quantity_selector",
         "buy_buttons",
-        "description",
+        "rl_follow_mgGwh3",
+        "rl_info_cards_DkEQr3",
+        "variant_picker",
         "share"
       ],
       "settings": {
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
-        "media_size": "large",
+        "media_size": "medium",
         "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "gallery_layout": "stacked",
-        "mobile_thumbnails": "hide",
+        "media_fit": "cover",
+        "gallery_layout": "thumbnail",
+        "mobile_thumbnails": "show",
         "media_position": "left",
         "image_zoom": "lightbox",
         "hide_variants": true,
-        "enable_video_looping": false,
+        "enable_video_looping": true,
         "padding_top": 36,
         "padding_bottom": 12
       }
@@ -85,12 +181,475 @@
     "disclosures": {
       "type": "disclosures",
       "settings": {
+        "heading": "Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 0
       }
     },
+    "rl_ticker_qCdJTB": {
+      "type": "rl-ticker",
+      "blocks": {
+        "message_LPtpAa": {
+          "type": "message",
+          "settings": {
+            "text": "100% Authentic & Certified Products",
+            "custom_icon": "shopify://shop_images/Authenti.png",
+            "icon_size": 18,
+            "link": ""
+          }
+        },
+        "message_Br8xhW": {
+          "type": "message",
+          "settings": {
+            "text": "Secure & Encrypted Checkout",
+            "custom_icon": "shopify://shop_images/Encrypted_a107acd9-4b0d-4a69-aa82-5f352d6f30e8.png",
+            "icon_size": 40,
+            "link": ""
+          }
+        },
+        "message_7ggkWY": {
+          "type": "message",
+          "settings": {
+            "text": "CUSTOMER SUPPORT AVAILABLE",
+            "custom_icon": "shopify://shop_images/support.png",
+            "icon_size": 40,
+            "link": ""
+          }
+        },
+        "message_4yp9gp": {
+          "type": "message",
+          "settings": {
+            "text": "AFTER-SALES SERVICE",
+            "custom_icon": "shopify://shop_images/setting.png",
+            "icon_size": 40,
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "message_LPtpAa",
+        "message_Br8xhW",
+        "message_7ggkWY",
+        "message_4yp9gp"
+      ],
+      "name": "RL Ticker",
+      "settings": {
+        "speed": 5,
+        "direction": "left",
+        "pause_on_hover": true,
+        "uppercase": true,
+        "height": 60,
+        "font_size": 16,
+        "bg_color": "#c8001a",
+        "text_color": "#ffffff",
+        "icon_color": "#ffffff",
+        "aria_label": "Store highlights"
+      }
+    },
+    "static_image_rP3NCX": {
+      "type": "static-image",
+      "name": "Static Image",
+      "settings": {
+        "st__heading": "",
+        "st__image": "shopify://shop_images/Crop_1.png",
+        "max_width": 1400,
+        "image_height": 390,
+        "image_height_mobile": 260,
+        "padding_top": 40,
+        "padding_bottom": 32
+      }
+    },
+    "rl_product_tabs_6Bm3Fp": {
+      "type": "rl-product-tabs",
+      "blocks": {
+        "custom_liquid_YcXMBe": {
+          "type": "custom_liquid",
+          "settings": {
+            "code": "{% render 'rl-reviews' %}"
+          }
+        }
+      },
+      "block_order": [
+        "custom_liquid_YcXMBe"
+      ],
+      "name": "RL Product tabs",
+      "settings": {
+        "default_tab": "reviews",
+        "label_reviews": "Reviews",
+        "show_review_count": true,
+        "label_description": "Description",
+        "label_specs": "Specifications",
+        "label_delivery": "Delivery information & Warranty",
+        "delivery_text": "<ul><li><strong>Free Delivery:</strong> Available on eligible orders across Mauritius.</li><li><strong>Secure Delivery:</strong> Your order is carefully handled and delivered safely.</li><li><strong>Transparent Shipping:</strong> Delivery charges are clearly displayed before checkout.</li></ul>",
+        "warranty_title": "Your warranty, explained clearly",
+        "warranty_text": "<p><strong>2 years:</strong> functional parts and labour.</p><p><strong>1 year:</strong> transport coverage.</p><p>Warranty conditions and service eligibility are subject to the retailer's official warranty policy. Contact RedLine's after-sales team for a claim or service request.</p>",
+        "warranty_link_text": "View official product information",
+        "warranty_link_url": "#",
+        "warranty_link_new_tab": true,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#555555",
+        "line_color": "#e8e8e6",
+        "panel_bg": "#f4f4f2",
+        "card_bg": "#ffffff",
+        "section_bg": "#ffffff",
+        "inner_width": 1000,
+        "radius": 8,
+        "padding_top": 24,
+        "padding_bottom": 40
+      }
+    },
+    "rl_brands_BDWeJm": {
+      "type": "rl-brands",
+      "blocks": {
+        "brand_9RmJET": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_25.png",
+            "name": "RedLine",
+            "link": ""
+          }
+        },
+        "brand_EibBmL": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_26_1.png",
+            "name": "Sharp",
+            "link": ""
+          }
+        },
+        "brand_UBn3ry": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_27.png",
+            "name": "Instant",
+            "link": ""
+          }
+        },
+        "brand_w8RyY6": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_28.png",
+            "name": "Nutricook",
+            "link": ""
+          }
+        },
+        "brand_C4EF38": {
+          "type": "brand",
+          "settings": {
+            "logo": "shopify://shop_images/image_29.png",
+            "name": "Ooni",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_9RmJET",
+        "brand_EibBmL",
+        "brand_UBn3ry",
+        "brand_w8RyY6",
+        "brand_C4EF38"
+      ],
+      "name": "RL Brands",
+      "settings": {
+        "eyebrow": "Trusted Worldwide",
+        "heading": "Our Brands",
+        "link_text": "View All Brands",
+        "link_url": "#",
+        "items_desktop": "6",
+        "items_tablet": "4",
+        "items_mobile": "2",
+        "autoplay": true,
+        "autoplay_speed": 4,
+        "show_arrows": false,
+        "show_dots": false,
+        "max_width": 1400,
+        "cell_height": 100,
+        "grayscale": false,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "border_color": "#e5e5e5",
+        "cell_bg": "#ffffff",
+        "section_bg": "#ffffff",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rl_faq_PCXHW7": {
+      "type": "rl-faq",
+      "blocks": {
+        "question_6pUw3J": {
+          "type": "question",
+          "settings": {
+            "question": "How much storage does this refrigerator have?",
+            "answer": "<p>Refrigerator storage capacity depends on the specific model type, ranging from compact units under 100 litres to large American-style models exceeding 500 litres<br/><br/></p>"
+          }
+        },
+        "question_F6jmRy": {
+          "type": "question",
+          "settings": {
+            "question": "Does this model have No Frost cooling?",
+            "answer": "<p>To tell if a freezer is frost-free, look at the interior design, check for a fan, or look up the manufacturer's label</p>"
+          }
+        },
+        "question_WjcPHG": {
+          "type": "question",
+          "settings": {
+            "question": "What are the product dimensions?",
+            "answer": "<p>Add your answer here.</p>"
+          }
+        },
+        "question_YKtJmk": {
+          "type": "question",
+          "settings": {
+            "question": "What warranty is included?",
+            "answer": "<p>Add your answer here.</p>"
+          }
+        },
+        "question_9kxTyV": {
+          "type": "question",
+          "settings": {
+            "question": "What are my delivery options?",
+            "answer": "<p>Add your answer here.</p>"
+          }
+        },
+        "question_MPdNMy": {
+          "type": "question",
+          "settings": {
+            "question": "Can I buy with hire purchase?",
+            "answer": "<p>Add your answer here.</p>"
+          }
+        },
+        "question_qHqzMT": {
+          "type": "question",
+          "settings": {
+            "question": "Who do I contact for after-sales support?",
+            "answer": "<p>Add your answer here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_6pUw3J",
+        "question_F6jmRy",
+        "question_WjcPHG",
+        "question_YKtJmk",
+        "question_9kxTyV",
+        "question_MPdNMy",
+        "question_qHqzMT"
+      ],
+      "name": "RL FAQ",
+      "settings": {
+        "eyebrow": "FAQs",
+        "heading": "Your Questions,\nAnswered.",
+        "description": "Find answers to the most frequently asked questions about our products, services, and policies. We're here to make your experience simple, clear, and hassle-free.",
+        "button_label": "Contact Us",
+        "button_link": "#",
+        "one_at_a_time": true,
+        "first_open": false,
+        "sticky_intro": false,
+        "seo": true,
+        "left_share": 4,
+        "column_gap": 24,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "line_color": "#e8e6e3",
+        "section_bg": "rgba(0,0,0,0)",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "rl_product_grid_3LWU3r": {
+      "type": "rl-product-grid",
+      "name": "RL Product grid – Exclusive",
+      "settings": {
+        "collection": "blender",
+        "product_list": [],
+        "product_limit": 24,
+        "eyebrow": "Recommend products",
+        "heading": "Customer also Like",
+        "link_text": "Explore All Offers",
+        "link_url": "shopify://products/aeg-36cm-ceramic-domino-hob-with-2-cooking-zones",
+        "layout": "carousel",
+        "image_shape": "standard",
+        "gap": 18,
+        "max_width": 1400,
+        "car_desktop": "4",
+        "car_tablet": "2.5",
+        "car_mobile": "1.6",
+        "show_arrows": true,
+        "show_stepper": false,
+        "stepper_width": 240,
+        "autoplay": false,
+        "autoplay_speed": 4,
+        "cols_desktop": 4,
+        "cols_tablet": "2",
+        "cols_mobile": "2",
+        "mobile_swipe": false,
+        "show_vendor": true,
+        "show_rating": true,
+        "badge_style": "amount",
+        "badge_text": "Save",
+        "sold_out_text": "Sold out",
+        "button_label": "View Product",
+        "strike_old_price": false,
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#444444",
+        "card_bg": "#ffffff",
+        "border_color": "#e6e6e6",
+        "section_bg": "#f4f4f1",
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    },
+    "rl_testimonials_LxrijG": {
+      "type": "rl-testimonials",
+      "blocks": {
+        "testimonial_g7zKqB": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Very happy with my experience at Redline. The team was helpful, the ordering process was easy, and my appliance was delivered on time. I would definitely shop here again.",
+            "name": "Amanda S.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        },
+        "testimonial_Fnf9NA": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Redline has a great range of quality brands and appliances. The staff helped me choose the right product for my kitchen and answered all my questions clearly.",
+            "name": "Jessica L.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        },
+        "testimonial_zKezFm": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "From purchase to delivery, everything went smoothly. The team was professional and responsive, and the product arrived in perfect condition.",
+            "name": "Rachel K.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        },
+        "testimonial_n7nWQq": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Easy to order, fast delivery and great after-sales support. Highly recommended.",
+            "name": "Sarah M.",
+            "role": "Happy customer",
+            "rating": 0
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_g7zKqB",
+        "testimonial_Fnf9NA",
+        "testimonial_zKezFm",
+        "testimonial_n7nWQq"
+      ],
+      "name": "Testimonials slider",
+      "settings": {
+        "eyebrow": "Testimonials",
+        "heading": "What Our Customers Say?",
+        "slides_desktop": 3,
+        "slides_tablet": 2,
+        "show_arrows": true,
+        "autoplay": false,
+        "autoplay_speed": 5,
+        "show_stepper": true,
+        "stepper_width": 600,
+        "track_color": "#eeeeee",
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#222222",
+        "muted_color": "#666666",
+        "card_bg": "#ffffff",
+        "border_color": "#e3e3e3",
+        "section_bg": "#ffffff",
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    },
+    "rl_instagram_c9xAYE": {
+      "type": "rl-instagram",
+      "blocks": {
+        "post_dcmTiV": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_rCCdp6": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_xG46tM": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        },
+        "post_UrAARE": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/biger.png",
+            "link": "https://www.instagram.com/redline.mu/p/DXGeu7YGJJt/",
+            "alt": ""
+          }
+        },
+        "post_RxkUhT": {
+          "type": "post",
+          "settings": {
+            "image": "shopify://shop_images/Picture.png",
+            "link": "https://www.instagram.com/by.fatimakhaan/reel/DdJ9YzCs1gW/",
+            "alt": ""
+          }
+        }
+      },
+      "block_order": [
+        "post_dcmTiV",
+        "post_rCCdp6",
+        "post_xG46tM",
+        "post_UrAARE",
+        "post_RxkUhT"
+      ],
+      "name": "RL Instagram feed",
+      "settings": {
+        "heading": "We’re on Gram",
+        "handle": "redline.mu",
+        "profile_url": "",
+        "link_text": "@Redline.Mu",
+        "feed_endpoint": "",
+        "feed_limit": 12,
+        "slides_desktop": "4.5",
+        "slides_tablet": "2.5",
+        "slides_mobile": "1.3",
+        "autoplay": true,
+        "autoplay_speed": 2,
+        "section_bg": "#f4f4f0",
+        "heading_color": "#000000",
+        "card_bg": "#ffffff",
+        "text_color": "#111111",
+        "padding_top": 64,
+        "padding_bottom": 56
+      }
+    },
     "related-products": {
       "type": "related-products",
+      "disabled": true,
       "settings": {
         "heading": "You may also like",
         "heading_size": "h2",
@@ -111,6 +670,14 @@
   "order": [
     "main",
     "disclosures",
+    "rl_ticker_qCdJTB",
+    "static_image_rP3NCX",
+    "rl_product_tabs_6Bm3Fp",
+    "rl_brands_BDWeJm",
+    "rl_faq_PCXHW7",
+    "rl_product_grid_3LWU3r",
+    "rl_testimonials_LxrijG",
+    "rl_instagram_c9xAYE",
     "related-products"
   ]
 }

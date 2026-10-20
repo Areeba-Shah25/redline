@@ -10,11 +10,14 @@
   {% endif %}
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'rl-product-gallery.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
   {{ 'component-rating.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+  {{ 'rl-pdp.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'rl-pdp.js' | asset_url }}" defer="defer"></script>
 
   {% unless product.has_only_default_variant %}
     {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -77,7 +80,38 @@
     <div class="page-width">
       <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
         <div class="grid__item product__media-wrapper">
+          
           {% render 'product-media-gallery', variant_images: variant_images %}
+
+
+{% assign highlights = product.metafields.custom.product_highlights.value %}
+
+{% if highlights != blank %}
+  <div class="rl-product-highlights">
+    <h3 class="rl-highlights-heading">Product highlights</h3>
+
+    <div class="rl-highlights-grid">
+      {% for highlight in highlights %}
+        <div class="rl-highlight-item">
+          {% if highlight.icons.value != blank %}
+            {{
+              highlight.icons.value
+              | image_url: width: 64
+              | image_tag: loading: 'lazy', class: 'rl-highlight-icon'
+            }}
+          {% endif %}
+
+          {% if highlight.text.value != blank %}
+            <span class="rl-highlight-text">
+              {{ highlight.text.value | escape }}
+            </span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
         </div>
         <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
           <section
@@ -114,6 +148,7 @@
                       show_badges: true,
                       price_class: 'price--large'
                     -%}
+                    {% render 'rl-pdp-price-extras', product: product %}
                   </div>
                   {%- if product.quantity_price_breaks_configured? -%}
                     <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
@@ -142,8 +177,7 @@
                     {%- endform -%}
                   </div>
                 {%- when 'inventory' -%}
-                  <p
-                    class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
+                  <p class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
                     {{ block.shopify_attributes }}
                     id="Inventory-{{ section.id }}"
                     role="status"
@@ -492,13 +526,22 @@
                     product_form_id: product_form_id
                   %}
                 {%- when 'buy_buttons' -%}
+
+
+                  {%- render 'button-quantity' ,
+                     block: block,
+                    product: product,
+                    product_form_id: product_form_id,
+                    section_id: section.id,
+                    show_pickup_availability: false -%}
+{% comment %}              
                   {%- render 'buy-buttons',
                     block: block,
                     product: product,
                     product_form_id: product_form_id,
                     section_id: section.id,
                     show_pickup_availability: true
-                  -%}
+                  -%} {% endcomment %}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
@@ -688,6 +731,14 @@
                   </product-recommendations>
                 {%- when 'icon-with-text' -%}
                   {% render 'icon-with-text', block: block %}
+                {%- when 'rl_warranty' -%}
+                  {% render 'rl-pdp-warranty', block: block %}
+                {%- when 'rl_hp' -%}
+                  {% render 'rl-pdp-hp', block: block, product: product %}
+                {%- when 'rl_info_cards' -%}
+                  {% render 'rl-pdp-cards', block: block %}
+                {%- when 'rl_follow' -%}
+                  {% render 'rl-pdp-follow', block: block %}
               {%- endcase -%}
             {%- endfor -%}
             <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -2142,6 +2193,292 @@
           "default": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.default",
           "label": "t:sections.main-product.blocks.icon_with_text.settings.heading_3.label",
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
+        }
+      ]
+    },
+    {
+      "type": "rl_warranty",
+      "name": "RL Warranty card",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small title",
+          "default": "Peace of mind, included"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Official RedLine Warranty"
+        },
+        {
+          "type": "text",
+          "id": "term1_value",
+          "label": "Box 1 – big text",
+          "default": "3 years"
+        },
+        {
+          "type": "text",
+          "id": "term1_label",
+          "label": "Box 1 – small text",
+          "default": "functional parts & labour"
+        },
+        {
+          "type": "text",
+          "id": "term2_value",
+          "label": "Box 2 – big text",
+          "default": "1 year"
+        },
+        {
+          "type": "text",
+          "id": "term2_label",
+          "label": "Box 2 – small text",
+          "default": "transport coverage"
+        },
+        {
+          "type": "text",
+          "id": "foot_text",
+          "label": "Footer text",
+          "default": "Backed by local after-sales support in Mauritius"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "View warranty details"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "rl_hp",
+      "name": "RL Hire purchase estimate",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Wording"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Hire Purchase Available"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sub-heading",
+          "default": "Calculate Your Estimated Monthly Payment."
+        },
+        {
+          "type": "text",
+          "id": "toggle_text",
+          "label": "Open/close link",
+          "default": "Calculate Instalments"
+        },
+        {
+          "type": "checkbox",
+          "id": "start_open",
+          "label": "Start opened",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Options staff can change"
+        },
+        {
+          "type": "text",
+          "id": "deposit_label",
+          "label": "Deposit title",
+          "default": "Deposit Percentage"
+        },
+        {
+          "type": "text",
+          "id": "deposit_options",
+          "label": "Deposit options (%)",
+          "default": "0,10,20,30,40",
+          "info": "Comma-separated numbers. The first one is selected by default. Leave only 0 if no deposit is used."
+        },
+        {
+          "type": "text",
+          "id": "period_label",
+          "label": "Period title",
+          "default": "Instalment Period"
+        },
+        {
+          "type": "text",
+          "id": "term_options",
+          "label": "Instalment months",
+          "default": "6,12,24,36",
+          "info": "Comma-separated numbers of months (to be confirmed by Redline). The first one is selected by default."
+        },
+        {
+          "type": "header",
+          "content": "Breakdown & notice"
+        },
+        {
+          "type": "text",
+          "id": "breakdown_title",
+          "label": "Breakdown title",
+          "default": "Estimated Payment Breakdown"
+        },
+        {
+          "type": "number",
+          "id": "min_price",
+          "label": "Only show when price is at least",
+          "default": 0,
+          "info": "In store currency (e.g. Rs). 0 = always show."
+        },
+        {
+          "type": "text",
+          "id": "notice_title",
+          "label": "Notice title",
+          "default": "Estimated instalment amount"
+        },
+        {
+          "type": "textarea",
+          "id": "notice_text",
+          "label": "Notice / disclaimer",
+          "default": "This is an indicative calculation only. Final hire purchase approval and eligibility are subject to the chosen hire purchase provider's assessment.",
+          "info": "Wording to be confirmed by Redline."
+        }
+      ]
+    },
+    {
+      "type": "rl_info_cards",
+      "name": "RL Info cards (2)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "card1_icon",
+          "label": "Card 1 – icon",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "value": "card",
+              "label": "Payment card"
+            }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "card1_title",
+          "label": "Card 1 – title",
+          "default": "Free delivery on eligible orders"
+        },
+        {
+          "type": "text",
+          "id": "card1_text",
+          "label": "Card 1 – text",
+          "default": "Convenient delivery across Mauritius."
+        },
+        {
+          "type": "select",
+          "id": "card2_icon",
+          "label": "Card 2 – icon",
+          "options": [
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            },
+            {
+              "value": "chat",
+              "label": "Chat"
+            },
+            {
+              "value": "card",
+              "label": "Payment card"
+            }
+          ],
+          "default": "tag"
+        },
+        {
+          "type": "text",
+          "id": "card2_title",
+          "label": "Card 2 – title",
+          "default": "Shipping Cost Transparency"
+        },
+        {
+          "type": "text",
+          "id": "card2_text",
+          "label": "Card 2 – text",
+          "default": "Applicable delivery charges are clearly shown at checkout. No hidden surprises."
+        }
+      ]
+    },
+    {
+      "type": "rl_follow",
+      "name": "RL Follow us",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Follow Us"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Small text",
+          "default": "Discover our deals! Follow us and stay updated with the latest offers."
+        },
+        {
+          "type": "url",
+          "id": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "type": "url",
+          "id": "pinterest",
+          "label": "Pinterest"
+        },
+        {
+          "type": "url",
+          "id": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "type": "url",
+          "id": "linkedin",
+          "label": "LinkedIn"
+        },
+        {
+          "type": "url",
+          "id": "youtube",
+          "label": "YouTube"
         }
       ]
     }

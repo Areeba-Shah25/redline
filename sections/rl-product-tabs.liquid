@@ -1,0 +1,226 @@
+{%- comment -%}
+  rl-product-tabs — PDP tabs: Reviews · Description · Specifications · Delivery information & Warranty.
+  Needs assets: rl-base.css, rl-product-tabs.css, rl-product-tabs.js
+  Use ONLY in the Product template.
+
+  Where each tab gets its content
+    Reviews        → blocks in this section (app block of your reviews app, or "Custom Liquid")
+    Description    → the product's own description
+    Specifications → product metafield  custom.specifications  (multi-line text, see format below)
+    Delivery       → section settings (same for all products)
+    Warranty card  → section settings, or per product via metafield  custom.warranty  (rich text)
+
+  Specifications format (one product = one text; "##" starts a group, "Label: Value" is a row):
+    ## General
+    Brand: RedLine
+    Model: RL-FN2-453-B
+    ## Capacity
+    Refrigerator / Freezer: 219L / 104L
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-product-tabs.css' | asset_url | stylesheet_tag }}
+{%- assign s = section.settings -%}
+{%- assign uid = section.id -%}
+
+{%- if product -%}
+  {%- comment -%} which tabs exist {%- endcomment -%}
+  {%- assign has_rev = false -%}
+  {%- if section.blocks.size > 0 or request.design_mode -%}{%- assign has_rev = true -%}{%- endif -%}
+  {%- assign has_desc = false -%}
+  {%- if product.description != blank -%}{%- assign has_desc = true -%}{%- endif -%}
+  {%- assign spec_raw = product.metafields.custom.specifications.value -%}
+  {%- assign has_spec = false -%}
+  {%- if spec_raw != blank -%}{%- assign has_spec = true -%}{%- endif -%}
+  {%- assign has_del = false -%}
+  {%- if s.delivery_text != blank or s.warranty_title != blank -%}{%- assign has_del = true -%}{%- endif -%}
+
+  {%- assign first_key = '' -%}
+  {%- if has_rev -%}{%- assign first_key = 'reviews' -%}
+  {%- elsif has_desc -%}{%- assign first_key = 'description' -%}
+  {%- elsif has_spec -%}{%- assign first_key = 'specifications' -%}
+  {%- elsif has_del -%}{%- assign first_key = 'delivery' -%}{%- endif -%}
+
+  {%- assign active = s.default_tab -%}
+  {%- assign ok = false -%}
+  {%- if active == 'reviews' and has_rev -%}{%- assign ok = true -%}
+  {%- elsif active == 'description' and has_desc -%}{%- assign ok = true -%}
+  {%- elsif active == 'specifications' and has_spec -%}{%- assign ok = true -%}
+  {%- elsif active == 'delivery' and has_del -%}{%- assign ok = true -%}{%- endif -%}
+  {%- unless ok -%}{%- assign active = first_key -%}{%- endunless -%}
+
+  {%- assign rc = product.metafields.reviews.rating_count.value -%}
+
+  {%- if first_key != blank -%}
+  <section
+    class="rl-section rl-ptabs"
+    id="product-tabs"
+    data-rl-ptabs
+    style="--rl-accent:{{ s.accent_color }};--rl-heading:{{ s.heading_color }};--rl-text:{{ s.text_color }};--rl-border:{{ s.line_color }};--rl-bg:{{ s.section_bg }};--rl-pt:{{ s.padding_top }}px;--rl-pb:{{ s.padding_bottom }}px;--pt-panel:{{ s.panel_bg }};--pt-card:{{ s.card_bg }};--pt-inner:{{ s.inner_width }}px;--pt-radius:{{ s.radius }}px;"
+  >
+    <div class="rl-container">
+
+      <div class="rl-ptabs__nav" role="tablist" aria-label="Product information">
+        {%- if has_rev -%}
+          <button type="button" class="rl-ptabs__tab" role="tab" id="pt-tab-reviews-{{ uid }}" aria-controls="pt-panel-reviews-{{ uid }}" aria-selected="{% if active == 'reviews' %}true{% else %}false{% endif %}" tabindex="{% if active == 'reviews' %}0{% else %}-1{% endif %}" data-pt-tab="reviews">{{ s.label_reviews }}{% if s.show_review_count and rc > 0 %} ({{ rc }}){% endif %}</button>
+        {%- endif -%}
+        {%- if has_desc -%}
+          <button type="button" class="rl-ptabs__tab" role="tab" id="pt-tab-description-{{ uid }}" aria-controls="pt-panel-description-{{ uid }}" aria-selected="{% if active == 'description' %}true{% else %}false{% endif %}" tabindex="{% if active == 'description' %}0{% else %}-1{% endif %}" data-pt-tab="description">{{ s.label_description }}</button>
+        {%- endif -%}
+        {%- if has_spec -%}
+          <button type="button" class="rl-ptabs__tab" role="tab" id="pt-tab-specifications-{{ uid }}" aria-controls="pt-panel-specifications-{{ uid }}" aria-selected="{% if active == 'specifications' %}true{% else %}false{% endif %}" tabindex="{% if active == 'specifications' %}0{% else %}-1{% endif %}" data-pt-tab="specifications">{{ s.label_specs }}</button>
+        {%- endif -%}
+        {%- if has_del -%}
+          <button type="button" class="rl-ptabs__tab warranty" role="tab" id="pt-tab-delivery-{{ uid }}" aria-controls="pt-panel-delivery-{{ uid }}" aria-selected="{% if active == 'delivery' %}true{% else %}false{% endif %}" tabindex="{% if active == 'delivery' %}0{% else %}-1{% endif %}" data-pt-tab="delivery">{{ s.label_delivery }}</button>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ===== 1. REVIEWS ===== {%- endcomment -%}
+      {%- if has_rev -%}
+        <div class="rl-ptabs__panel" role="tabpanel" id="pt-panel-reviews-{{ uid }}" aria-labelledby="pt-tab-reviews-{{ uid }}" tabindex="0"{% unless active == 'reviews' %} hidden{% endunless %}>
+          <div class="rl-ptabs__inner rl-ptabs__reviews">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when '@app' -%}
+                  {% render block %}
+                {%- when 'custom_liquid' -%}
+                  <div {{ block.shopify_attributes }}>{{ block.settings.code }}</div>
+              {%- endcase -%}
+            {%- else -%}
+              {%- if request.design_mode -%}
+                <p class="rl-ptabs__hint">Add your reviews app block (or a “Custom Liquid” block) to this section to fill the Reviews tab.</p>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ===== 2. DESCRIPTION ===== {%- endcomment -%}
+      {%- if has_desc -%}
+        <div class="rl-ptabs__panel" role="tabpanel" id="pt-panel-description-{{ uid }}" aria-labelledby="pt-tab-description-{{ uid }}" tabindex="0"{% unless active == 'description' %} hidden{% endunless %}>
+          <div class="rl-ptabs__inner rl-ptabs__rte">{{ product.description }}</div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ===== 3. SPECIFICATIONS ===== {%- endcomment -%}
+      {%- if has_spec -%}
+        <div class="rl-ptabs__panel" role="tabpanel" id="pt-panel-specifications-{{ uid }}" aria-labelledby="pt-tab-specifications-{{ uid }}" tabindex="0"{% unless active == 'specifications' %} hidden{% endunless %}>
+          <div class="rl-ptabs__inner">
+            <div class="rl-ptabs__specwrap">
+              <table class="rl-ptabs__spec">
+                <tbody>
+                  {%- assign spec_lines = spec_raw | escape | newline_to_br | split: '<br />' -%}
+                  {%- for raw in spec_lines -%}
+                    {%- assign line = raw | strip -%}
+                    {%- if line == blank -%}{%- continue -%}{%- endif -%}
+                    {%- assign mark = line | slice: 0, 2 -%}
+                    {%- if mark == '##' -%}
+                      <tr class="rl-ptabs__grp"><th colspan="2" scope="colgroup">{{ line | remove_first: '##' | strip }}</th></tr>
+                    {%- elsif line contains ':' -%}
+                      {%- assign parts = line | split: ':' -%}
+                      {%- assign label = parts[0] | strip -%}
+                      {%- assign value = line | remove_first: parts[0] | remove_first: ':' | strip -%}
+                      <tr><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>
+                    {%- else -%}
+                      <tr><td colspan="2" class="rl-ptabs__note">{{ line }}</td></tr>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} ===== 4. DELIVERY & WARRANTY ===== {%- endcomment -%}
+      {%- if has_del -%}
+        <div class="rl-ptabs__panel" role="tabpanel" id="pt-panel-delivery-{{ uid }}" aria-labelledby="pt-tab-delivery-{{ uid }}" tabindex="0"{% unless active == 'delivery' %} hidden{% endunless %}>
+          <div class="rl-ptabs__inner">
+            {%- if s.delivery_text != blank -%}<div class="rl-ptabs__rte rl-ptabs__delivery">{{ s.delivery_text }}</div>{%- endif -%}
+
+            {%- if s.warranty_title != blank -%}
+              {%- assign w_meta = product.metafields.custom.warranty -%}
+              <div class="rl-ptabs__warranty">
+                <span class="rl-ptabs__wicon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.5c0 4.5-3 8-7.5 9.5-4.5-1.5-7.5-5-7.5-9.5V6L12 3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg>
+                </span>
+                <div class="rl-ptabs__wbody">
+                  <h3 class="rl-ptabs__wtitle">{{ s.warranty_title }}</h3>
+                  <div class="rl-ptabs__wtext">
+                    {%- if w_meta != blank -%}{{ w_meta | metafield_tag }}{%- else -%}{{ s.warranty_text }}{%- endif -%}
+                  </div>
+                  {%- if s.warranty_link_text != blank and s.warranty_link_url != blank -%}
+                    <a class="rl-ptabs__wlink" href="{{ s.warranty_link_url }}"{% if s.warranty_link_new_tab %} target="_blank" rel="noopener"{% endif %}>{{ s.warranty_link_text }}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </section>
+  <script src="{{ 'rl-product-tabs.js' | asset_url }}" defer></script>
+  {%- endif -%}
+{%- elsif request.design_mode -%}
+  <div class="rl-container"><p>RL Product tabs only works on the Product template.</p></div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "RL Product tabs",
+  "tag": "div",
+  "class": "section-rl-product-tabs",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "header", "content": "1. Tabs" },
+    { "type": "select", "id": "default_tab", "label": "Tab open first", "options": [ { "value": "reviews", "label": "Reviews" }, { "value": "description", "label": "Description" }, { "value": "specifications", "label": "Specifications" }, { "value": "delivery", "label": "Delivery & Warranty" } ], "default": "reviews", "info": "If that tab has no content for a product, the first available tab opens." },
+    { "type": "text", "id": "label_reviews", "label": "Reviews label", "default": "Reviews" },
+    { "type": "checkbox", "id": "show_review_count", "label": "Show review count in the Reviews tab (e.g. Reviews (3))", "default": false, "info": "Uses the product's standard rating-count data." },
+    { "type": "text", "id": "label_description", "label": "Description label", "default": "Description" },
+    { "type": "text", "id": "label_specs", "label": "Specifications label", "default": "Specifications", "info": "This tab shows only when the product has the “Specifications” data filled in." },
+    { "type": "text", "id": "label_delivery", "label": "Delivery label", "default": "Delivery information & Warranty" },
+
+    { "type": "header", "content": "2. Delivery tab (same for all products)" },
+    { "type": "richtext", "id": "delivery_text", "label": "Delivery list", "default": "<ul><li><strong>Free Delivery:</strong> Available on eligible orders across Mauritius.</li><li><strong>Secure Delivery:</strong> Your order is carefully handled and delivered safely.</li><li><strong>Transparent Shipping:</strong> Delivery charges are clearly displayed before checkout.</li></ul>" },
+    { "type": "text", "id": "warranty_title", "label": "Warranty card title", "default": "Your warranty, explained clearly", "info": "Empty = hide the warranty card." },
+    { "type": "richtext", "id": "warranty_text", "label": "Warranty text (default)", "default": "<p><strong>2 years:</strong> functional parts and labour.</p><p><strong>1 year:</strong> transport coverage.</p><p>Warranty conditions and service eligibility are subject to the retailer's official warranty policy. Contact RedLine's after-sales team for a claim or service request.</p>", "info": "A product can override this with its own “Warranty” data." },
+    { "type": "text", "id": "warranty_link_text", "label": "Warranty link text", "default": "View official product information" },
+    { "type": "url", "id": "warranty_link_url", "label": "Warranty link" },
+    { "type": "checkbox", "id": "warranty_link_new_tab", "label": "Open link in a new tab", "default": true },
+
+    { "type": "header", "content": "3. Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent (red)", "default": "#d0021b" },
+    { "type": "color", "id": "heading_color", "label": "Headings", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#555555" },
+    { "type": "color", "id": "line_color", "label": "Lines", "default": "#e8e8e6" },
+    { "type": "color", "id": "panel_bg", "label": "Grey panel", "default": "#f4f4f2" },
+    { "type": "color", "id": "card_bg", "label": "White cards", "default": "#ffffff" },
+    { "type": "color", "id": "section_bg", "label": "Section background", "default": "#ffffff" },
+
+    { "type": "header", "content": "4. Layout" },
+    { "type": "range", "id": "inner_width", "label": "Content width inside the panel", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1000 },
+    { "type": "range", "id": "radius", "label": "Rounded corners", "min": 0, "max": 20, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "padding_top", "label": "Top space", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom space", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+  "type": "custom_liquid",
+  "name": "Custom Liquid (reviews)",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "code",
+      "label": "Liquid / HTML",
+      "info": "Paste your existing reviews widget code here."
+    }
+  ]
+}
+  ],
+  "presets": [ { "name": "RL Product tabs" } ]
+}
+{% endschema %}

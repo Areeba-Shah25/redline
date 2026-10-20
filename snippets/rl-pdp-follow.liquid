@@ -1,0 +1,22 @@
+{%- comment -%} rl-pdp-follow — "Follow Us" row with coloured social icons. Params: block (icons with no link are hidden) {%- endcomment -%}
+{%- assign b = block.settings -%}
+<div class="rl-fol" {{ block.shopify_attributes }}>
+  <div class="rl-fol__t"><strong>{{ b.heading }}</strong><span>{{ b.text }}</span></div>
+  <div class="rl-fol__icons">
+    {%- if b.facebook != blank -%}<a class="fb" href="{{ b.facebook }}" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.8c0-.9.3-1.5 1.6-1.5h1.7V3.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.4H7.7V13h2.7v8z"/></svg></a>{%- endif -%}
+ {%- if b.pinterest != blank -%}
+  <a class="pi" href="{{ b.pinterest }}" target="_blank" rel="noopener" aria-label="Pinterest">
+    <svg
+      viewBox="0 0 32 32"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M16.292 5C10.536 5 7.48 8.866 7.48 13.077c0 1.955 1.039 4.392 2.707 5.168.253.118.387.064.443-.18.047-.185.273-1.089.373-1.511a.402.402 0 0 0-.095-.386c-.55-.667-.988-1.896-.988-3.041 0-2.942 2.228-5.787 6.021-5.787 3.28 0 5.571 2.23 5.571 5.426 0 3.61-1.82 6.108-4.191 6.108-1.309 0-2.291-1.081-1.978-2.413.378-1.584 1.106-3.298 1.106-4.438 0-1.026-.552-1.883-1.685-1.883-1.341 0-2.415 1.385-2.415 3.241 0 1.182.4 1.978.4 1.978s-1.323 5.593-1.563 6.634c-.413 1.765.051 4.625.094 4.876.021.134.172.18.252.066.129-.175 1.725-2.565 2.174-4.292l.828-3.171c.439.829 1.707 1.531 3.061 1.531 4.021 0 6.923-3.703 6.923-8.299C24.52 8.301 20.92 5 16.292 5z"/>
+    </svg>
+  </a>
+{%- endif -%}
+    {%- if b.linkedin != blank -%}<a class="li" href="{{ b.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="9" width="2.6" height="9"/><circle cx="6.3" cy="6" r="1.6"/><path d="M10 9h2.5v1.3c.5-.9 1.5-1.5 2.9-1.5 2.4 0 3.1 1.5 3.1 3.7V18h-2.6v-4.6c0-1.1-.3-1.9-1.4-1.9-1.2 0-1.8.8-1.8 2V18H10z"/></svg></a>{%- endif -%}
+    {%- if b.youtube != blank -%}<a class="yt" href="{{ b.youtube }}" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3z"/></svg></a>{%- endif -%}
+  </div>
+</div>

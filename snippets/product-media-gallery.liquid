@@ -44,14 +44,26 @@
 
 <media-gallery
   id="MediaGallery-{{ section.id }}"
-  role="region"
-  {% if section.settings.enable_sticky_info %}
-    class="product__column-sticky"
-  {% endif %}
+  class="rl-product-gallery{% if section.settings.enable_sticky_info %} product__column-sticky{% endif %}"
   aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
   data-desktop-layout="{{ section.settings.gallery_layout }}"
 >
   <div id="GalleryStatus-{{ section.id }}" class="visually-hidden" role="status"></div>
+
+{%- assign rl_variant = product.selected_or_first_available_variant -%}
+{%- assign rl_saving = 0 -%}
+
+{%- if rl_variant.compare_at_price > rl_variant.price -%}
+  {%- assign rl_saving = rl_variant.compare_at_price | minus: rl_variant.price -%}
+{%- endif -%}
+
+<div
+  class="rl-gallery-badge"
+  {% if rl_saving <= 0 %}hidden{% endif %}
+>
+  Save {{ rl_saving | money_without_trailing_zeros }}
+</div>
+
   <slider-component id="GalleryViewer-{{ section.id }}" class="slider-mobile-gutter">
     <a class="skip-to-content-link button visually-hidden quick-add-hidden" href="#ProductInfo-{{ section.id }}">
       {{ 'accessibility.skip_to_product_info' | t }}
@@ -125,8 +137,7 @@
         {%- endunless -%}
       {%- endfor -%}
     </ul>
-    <div class="slider-buttons quick-add-hidden{% if hide_mobile_slider %} small-hide{% endif %}">
-      <button
+<div class="slider-buttons rl-gallery-controls quick-add-hidden">      <button
         type="button"
         class="slider-button slider-button--prev"
         name="previous"

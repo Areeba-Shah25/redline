@@ -7,13 +7,7 @@
 {%- assign s = section.settings -%}
 {%- assign duration = s.speed | times: section.blocks.size | at_least: 12 -%}
 
-{%- capture icon -%}
-  {%- case s.icon -%}
-    {%- when 'bolt' -%}<svg class="rl-tick__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L5 14h6l-1 8 8-12h-6z"/></svg>
-    {%- when 'star' -%}<svg class="rl-tick__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
-    {%- when 'dot' -%}<svg class="rl-tick__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="4"/></svg>
-  {%- endcase -%}
-{%- endcapture -%}
+
 
 {%- if section.blocks.size > 0 -%}
   <section
@@ -30,28 +24,40 @@
             aria-hidden="true"
           {% endif %}
         >
-          {%- for block in section.blocks -%}
-            <li
-              class="rl-tick__item"
-              {% if copy == 1 %}
-                {{- block.shopify_attributes -}}
-              {% endif %}
-            >
-              {{ icon }}
-              {%- if block.settings.link != blank -%}
-                <a
-                  href="{{ block.settings.link }}"
-                  {% if copy == 2 %}
-                    tabindex="-1"
-                  {% endif %}
-                >
-                  {{- block.settings.text -}}
-                </a>
-              {%- else -%}
-                <span>{{ block.settings.text }}</span>
-              {%- endif -%}
-            </li>
-          {%- endfor -%}
+        
+{%- for block in section.blocks -%}
+  <li
+    class="rl-tick__item"
+    {% if copy == 1 %}
+      {{ block.shopify_attributes }}
+    {% endif %}
+  >
+    {%- if block.settings.custom_icon != blank -%}
+      {{
+        block.settings.custom_icon
+        | image_url: width: 80
+        | image_tag:
+          class: 'rl-tick__icon',
+          width: block.settings.icon_size,
+          height: block.settings.icon_size,
+          alt: '',
+          loading: 'eager'
+      }}
+    {%- endif -%}
+
+    {%- if block.settings.link != blank -%}
+      <a
+        href="{{ block.settings.link }}"
+        {% if copy == 2 %}tabindex="-1"{% endif %}
+      >
+        {{ block.settings.text | escape }}
+      </a>
+    {%- else -%}
+      <span>{{ block.settings.text | escape }}</span>
+    {%- endif -%}
+  </li>
+{%- endfor -%}
+
         </ul>
       {%- endfor -%}
     </div>
@@ -90,18 +96,7 @@
     { "type": "checkbox", "id": "pause_on_hover", "label": "Pause when hovered", "default": true },
 
     { "type": "header", "content": "Look" },
-    {
-      "type": "select",
-      "id": "icon",
-      "label": "Icon between messages",
-      "options": [
-        { "value": "bolt", "label": "Lightning bolt" },
-        { "value": "star", "label": "Star" },
-        { "value": "dot", "label": "Dot" },
-        { "value": "none", "label": "None" }
-      ],
-      "default": "bolt"
-    },
+    
     { "type": "checkbox", "id": "uppercase", "label": "UPPERCASE text", "default": true },
     {
       "type": "range",
@@ -130,16 +125,40 @@
     { "type": "header", "content": "Accessibility" },
     { "type": "text", "id": "aria_label", "label": "Screen-reader label", "default": "Store highlights" }
   ],
-  "blocks": [
-    {
-      "type": "message",
-      "name": "Message",
-      "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "Customer support available" },
-        { "type": "url", "id": "link", "label": "Link (optional)" }
-      ]
-    }
-  ],
+ "blocks": [
+  {
+    "type": "message",
+    "name": "Message",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text",
+        "default": "Customer support available"
+      },
+      {
+        "type": "image_picker",
+        "id": "custom_icon",
+        "label": "Custom icon (SVG or PNG)"
+      },
+      {
+        "type": "range",
+        "id": "icon_size",
+        "label": "Icon size",
+        "min": 12,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 18
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link (optional)"
+      }
+    ]
+  }
+],
   "max_blocks": 12,
   "presets": [
     {
