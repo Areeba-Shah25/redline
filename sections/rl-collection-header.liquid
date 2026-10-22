@@ -1,0 +1,151 @@
+{%- comment -%}
+  rl-collection-header — breadcrumbs + title + description (no product count).
+  Same template for all collections:
+  - /collections/all → schema heading + description
+  - other collections → collection.title + collection.description (empty if none)
+  Needs asset: rl-collection-header.css
+{%- endcomment -%}
+{{ 'rl-collection-header.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  if collection.handle == 'all'
+    assign heading = s.heading | strip
+    if heading == blank
+      assign heading = 'Shop All Products'
+    endif
+    assign desc = s.description
+  else
+    assign heading = collection.title
+    assign desc = collection.description
+  endif
+-%}
+
+<section
+  class="rl-cheader"
+  style="
+    --ch-bg: {{ s.section_bg }};
+    --ch-heading: {{ s.heading_color }};
+    --ch-text: {{ s.text_color }};
+    --ch-pt: {{ s.padding_top }}px;
+    --ch-pb: {{ s.padding_bottom }}px;
+    --ch-max: {{ s.max_width }}px;
+    --rl-accent: {{ s.accent_color }};
+  "
+>
+  <div class="rl-cheader__inner">
+    {%- if s.show_breadcrumbs -%}
+      <nav class="rl-cheader__crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="rl-cheader__crumbs-sep" aria-hidden="true">/</span>
+        <span class="rl-cheader__crumbs-current">{{ collection.title | escape }}</span>
+      </nav>
+    {%- endif -%}
+
+    <h1 class="rl-cheader__title">{{ heading | escape }}</h1>
+
+    {%- if desc != blank -%}
+      <div class="rl-cheader__desc rte">{{ desc }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RL Collection header",
+  "tag": "section",
+  "class": "section-rl-collection-header",
+  "enabled_on": {
+    "templates": ["collection"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "default": true,
+      "label": "Show breadcrumbs"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Used on the All Products collection (/collections/all). Other collections use their own title.",
+      "default": "Shop All Products"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Explore our complete collection of home appliances, electronics, kitchen essentials, and more.</p>",
+      "info": "Used on the All Products collection. Other collections use their own description (hidden if empty)."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description",
+      "default": "#777777"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (breadcrumb hover)",
+      "default": "#d0021b"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "RL Collection header"
+    }
+  ]
+}
+{% endschema %}

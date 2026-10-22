@@ -1,0 +1,24 @@
+{
+  "sections": {
+    "main": {
+      "type": "rl-care-blog",
+      "settings": {
+        "show_breadcrumbs": true,
+        "hub_page": "",
+        "hub_label": "Care & Maintenance",
+        "eyebrow": "HELPFUL HOW-TO VIDEOS",
+        "description": "",
+        "meta_label": "Video guide",
+        "videos_per_page": 12,
+        "max_width": 1400,
+        "padding_top": 32,
+        "padding_bottom": 64,
+        "section_bg": "#ffffff",
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#777777"
+      }
+    }
+  },
+  "order": ["main"]
+}

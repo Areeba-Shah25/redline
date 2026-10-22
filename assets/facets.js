@@ -161,7 +161,26 @@ class FacetFiltersForm extends HTMLElement {
     container.classList.remove('loading');
     if (containerDesktop) {
       containerDesktop.innerHTML = count;
+      containerDesktop.dataset.productCount = sourceCount.dataset.productCount || '';
+      containerDesktop.dataset.totalCount = sourceCount.dataset.totalCount || '';
       containerDesktop.classList.remove('loading');
+      const pageRoot = containerDesktop.closest('[data-rl-cview]');
+      if (pageRoot) {
+        const empty = (parseInt(sourceCount.dataset.productCount, 10) || 0) === 0;
+        pageRoot.classList.toggle('rl-cview-page--empty', empty);
+        pageRoot.setAttribute('data-rl-empty', empty ? 'true' : 'false');
+        pageRoot
+          .querySelectorAll('[data-rl-cview-filters], [data-rl-sort-toggle], [data-rl-cview-mode]')
+          .forEach((el) => {
+            if (empty) {
+              el.setAttribute('disabled', '');
+              el.setAttribute('aria-disabled', 'true');
+            } else {
+              el.removeAttribute('disabled');
+              el.removeAttribute('aria-disabled');
+            }
+          });
+      }
     }
     const loadingSpinners = document.querySelectorAll(
       '.facets-container .loading__spinner, facet-filters-form .loading__spinner',
@@ -379,7 +398,7 @@ FacetFiltersForm.setListeners();
 class PriceRange extends HTMLElement {
   constructor() {
     super();
-    this.querySelectorAll('input').forEach((element) => {
+    this.querySelectorAll('input[name]').forEach((element) => {
       element.addEventListener('change', this.onRangeChange.bind(this));
       element.addEventListener('keydown', this.onKeyDown.bind(this));
     });
@@ -399,9 +418,10 @@ class PriceRange extends HTMLElement {
   }
 
   setMinAndMaxValues() {
-    const inputs = this.querySelectorAll('input');
+    const inputs = this.querySelectorAll('input[name]');
     const minInput = inputs[0];
     const maxInput = inputs[1];
+    if (!minInput || !maxInput) return;
     if (maxInput.value) minInput.setAttribute('data-max', maxInput.value);
     if (minInput.value) maxInput.setAttribute('data-min', minInput.value);
     if (minInput.value === '') maxInput.setAttribute('data-min', 0);

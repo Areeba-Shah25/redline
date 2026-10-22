@@ -11,10 +11,27 @@
   "sections": {
     "banner": {
       "type": "main-collection-banner",
+      "disabled": true,
       "settings": {
         "show_collection_description": true,
         "show_collection_image": false,
         "color_scheme": "scheme-1"
+      }
+    },
+    "rl_collection_header_YqA9af": {
+      "type": "rl-collection-header",
+      "name": "RL Collection header",
+      "settings": {
+        "show_breadcrumbs": true,
+        "heading": "Shop All Products",
+        "description": "<p>Explore our complete collection of home appliances, electronics, kitchen essentials, and more.</p>",
+        "section_bg": "#ffffff",
+        "heading_color": "#1a1a1a",
+        "text_color": "#777777",
+        "accent_color": "#d0021b",
+        "max_width": 1400,
+        "padding_top": 40,
+        "padding_bottom": 28
       }
     },
     "rl_collection_jCcfgf": {
@@ -25,7 +42,7 @@
           "settings": {
             "collection": "",
             "name": "Built-in Kitchen",
-            "link": "",
+            "link": "shopify://collections/sink-side",
             "image": "shopify://shop_images/Built-in_Kitchen.png"
           }
         },
@@ -34,7 +51,7 @@
           "settings": {
             "collection": "41l-50l-oven",
             "name": "Refrigeration",
-            "link": "",
+            "link": "shopify://collections/upright-fridge-freezer",
             "image": "shopify://shop_images/Refrigeration.png"
           }
         },
@@ -43,7 +60,7 @@
           "settings": {
             "collection": "41l-50l-oven",
             "name": "Laundry",
-            "link": "",
+            "link": "shopify://collections/laundry-and-ironing",
             "image": "shopify://shop_images/Laundry.png"
           }
         },
@@ -52,7 +69,7 @@
           "settings": {
             "collection": "61l-70l-oven",
             "name": "Small Appliances",
-            "link": "",
+            "link": "shopify://collections/small-appliances",
             "image": "shopify://shop_images/Small_Appliances.png"
           }
         },
@@ -61,7 +78,7 @@
           "settings": {
             "collection": "",
             "name": "TV & Audio",
-            "link": "",
+            "link": "shopify://collections/tv-1",
             "image": "shopify://shop_images/TV_Audio.png"
           }
         },
@@ -70,7 +87,7 @@
           "settings": {
             "collection": "",
             "name": "Built-in Kitchen",
-            "link": "",
+            "link": "shopify://collections/your-kitchen-essentials-on-promo",
             "image": "shopify://shop_images/Built-in_Kitchen.png"
           }
         },
@@ -79,7 +96,7 @@
           "settings": {
             "collection": "",
             "name": "Air Conditioning",
-            "link": "",
+            "link": "shopify://collections/air-conditioner-air-purifier",
             "image": "shopify://shop_images/Air_Conditioning.png"
           }
         },
@@ -88,7 +105,7 @@
           "settings": {
             "collection": "61l-70l-oven",
             "name": "Small Appliances",
-            "link": "",
+            "link": "shopify://collections/small-appliances",
             "image": "shopify://shop_images/Small_Appliances.png"
           }
         },
@@ -97,7 +114,7 @@
           "settings": {
             "collection": "",
             "name": "Kitchen Appliances",
-            "link": "",
+            "link": "shopify://collections/sink-side",
             "image": "shopify://shop_images/Kitchen.png"
           }
         },
@@ -106,7 +123,7 @@
           "settings": {
             "collection": "",
             "name": "TV & Audio",
-            "link": "",
+            "link": "shopify://collections/tv-accessories",
             "image": "shopify://shop_images/TV_Audio.png"
           }
         }
@@ -125,71 +142,54 @@
       ],
       "name": "RL Collection",
       "settings": {
-        "eyebrow": "Home / All Products",
+        "eyebrow": "",
         "heading": "Shop By Category",
-        "link_text": "View all categories",
+        "heading_size": 22,
+        "heading_color": "#1a1e21",
+        "link_text": "Swipe to explore",
         "link_url": "#",
-        "tiles_desktop": "6",
+        "tiles_desktop": "9",
         "tiles_tablet": "4",
         "tiles_mobile": "2",
-        "image_height": 170,
+        "image_height": 100,
         "gap": 14,
         "radius": 8,
         "bleed": false,
-        "show_arrows": true,
         "max_width": 1400,
+        "show_arrows": false,
+        "show_dots": false,
+        "autoplay": false,
+        "autoplay_speed": 4,
         "accent_color": "#d0021b",
-        "heading_color": "#1a1a1a",
-        "tile_bg": "#f3f3f0",
+        "tile_bg": "#ffffff",
         "section_bg": "#ffffff",
-        "padding_top": 52,
-        "padding_bottom": 40
-      }
-    },
-    "featured_collection_MREW7T": {
-      "type": "featured-collection",
-      "name": "t:sections.featured-collection.presets.name",
-      "settings": {
-        "collection": "affinity",
-        "products_to_show": 4,
-        "title": "Featured collection",
-        "heading_size": "h1",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
       "settings": {
-        "products_per_page": 16,
-        "columns_desktop": 4,
+        "products_per_page": 9,
+        "products_navigation": "load_more",
+        "columns_desktop": 3,
         "columns_mobile": "2",
         "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
+        "image_ratio": "square",
         "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": true,
+        "badge_style": "amount",
+        "badge_text": "Save",
+        "button_label": "View Product",
+        "quick_add": "standard",
+        "sticky_filters": false,
+        "layout_options": "both",
+        "default_view": "grid",
+        "enable_view_toggle": true,
         "enable_filtering": true,
-        "filter_type": "horizontal",
+        "filter_type": "vertical",
         "enable_sorting": true,
         "padding_top": 36,
         "padding_bottom": 36
@@ -324,8 +324,8 @@
   },
   "order": [
     "banner",
+    "rl_collection_header_YqA9af",
     "rl_collection_jCcfgf",
-    "featured_collection_MREW7T",
     "product-grid",
     "rl_instagram_8FrXVn"
   ]

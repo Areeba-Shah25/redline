@@ -22,10 +22,10 @@
             "heading_1": "A better home",
             "heading_2": "A better everyday.",
             "description": "<p>Discover home appliances and technology designed for modern Mauritian homes.</p>",
-            "button_1_label": "Explore our new collection",
-            "button_1_link": "",
-            "button_2_label": "Browse all products",
-            "button_2_link": "",
+            "button_1_label": "Explore our collection",
+            "button_1_link": "#",
+            "button_2_label": "View offers",
+            "button_2_link": "#",
             "feature_1_icon": "badge",
             "feature_1_image": "shopify://shop_images/Official_brands.svg",
             "feature_1_text": "<p>Official brands & genuine products</p>",
@@ -102,6 +102,7 @@
           "type": "message",
           "settings": {
             "text": "Customer support available",
+            "icon_size": 18,
             "link": ""
           }
         },
@@ -109,6 +110,7 @@
           "type": "message",
           "settings": {
             "text": "After-sales service",
+            "icon_size": 18,
             "link": ""
           }
         },
@@ -116,6 +118,7 @@
           "type": "message",
           "settings": {
             "text": "Top appliance brands",
+            "icon_size": 18,
             "link": ""
           }
         },
@@ -123,6 +126,7 @@
           "type": "message",
           "settings": {
             "text": "Delivery available",
+            "icon_size": 18,
             "link": ""
           }
         },
@@ -130,6 +134,7 @@
           "type": "message",
           "settings": {
             "text": "Secure & convenient payments",
+            "icon_size": 18,
             "link": ""
           }
         },
@@ -137,6 +142,7 @@
           "type": "message",
           "settings": {
             "text": "Returns are free within 7 days",
+            "icon_size": 18,
             "link": ""
           }
         }
@@ -154,7 +160,6 @@
         "speed": 5,
         "direction": "left",
         "pause_on_hover": true,
-        "icon": "bolt",
         "uppercase": true,
         "height": 66,
         "font_size": 17,
@@ -274,6 +279,8 @@
       "settings": {
         "eyebrow": "Explore Our Range",
         "heading": "Shop By Category",
+        "heading_size": 32,
+        "heading_color": "#1a1a1a",
         "link_text": "View all categories",
         "link_url": "#",
         "tiles_desktop": "6",
@@ -283,11 +290,13 @@
         "gap": 14,
         "radius": 8,
         "bleed": false,
-        "show_arrows": true,
         "max_width": 1400,
+        "show_arrows": true,
+        "show_dots": false,
+        "autoplay": false,
+        "autoplay_speed": 4,
         "accent_color": "#d0021b",
-        "heading_color": "#1a1a1a",
-        "tile_bg": "#f3f3f0",
+        "tile_bg": "#ffffff",
         "section_bg": "#ffffff",
         "padding_top": 52,
         "padding_bottom": 40
@@ -422,6 +431,7 @@
       "name": "RL Split banners",
       "settings": {
         "height": 260,
+        "text_width": 60,
         "gap": 14,
         "radius": 8,
         "max_width": 1400,
@@ -545,7 +555,7 @@
         "button_color": "#d0021b",
         "button_text_color": "#ffffff",
         "button_gradient": true,
-        "overlay_color": "#FFFEFE",
+        "overlay_color": "#fffefe",
         "section_bg": "#ffffff",
         "padding_top": 40,
         "padding_bottom": 40

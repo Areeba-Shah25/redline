@@ -1,0 +1,245 @@
+{%- comment -%}
+  rl-care-banner — Care & Maintenance hero: full-width image in container + left gradient overlay + text.
+  Needs assets: rl-base.css, rl-care.css
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-care.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign crumb_label = s.breadcrumb_label | strip
+  if crumb_label == blank
+    assign crumb_label = s.heading | strip
+  endif
+  if crumb_label == blank
+    assign crumb_label = 'Care & Maintenance'
+  endif
+-%}
+
+<section
+  class="rl-section rl-care-banner"
+  style="
+    --rl-accent: {{ s.accent_color }};
+    --rl-heading: {{ s.heading_color }};
+    --rl-bg: {{ s.section_bg }};
+    --rl-maxw: {{ s.max_width }}px;
+    --rl-pt: {{ s.padding_top }}px;
+    --rl-pb: {{ s.padding_bottom }}px;
+    --cb-text: {{ s.text_color }};
+    --cb-radius: {{ s.radius }}px;
+    --cb-minh: {{ s.banner_height }}px;
+    --cb-overlay-from: {{ s.overlay_color }};
+  "
+>
+  <div class="rl-container rl-care-banner__wrap">
+    {%- if s.show_breadcrumbs -%}
+      <nav class="rl-care-banner__crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span class="rl-care-banner__crumbs-sep" aria-hidden="true">/</span>
+        <span class="rl-care-banner__crumbs-current">{{ crumb_label | escape }}</span>
+      </nav>
+    {%- endif -%}
+
+    <div class="rl-care-banner__card">
+      <div class="rl-care-banner__media" aria-hidden="{% if s.image == blank %}false{% else %}true{% endif %}">
+        {%- if s.image != blank -%}
+          {%- assign cb_alt = s.image.alt | default: s.heading | default: s.heading_accent -%}
+          {{
+            s.image
+            | image_url: width: 2000
+            | image_tag:
+              loading: 'lazy',
+              widths: '800, 1200, 1600, 2000',
+              sizes: '(min-width: 1400px) 1400px, 100vw',
+              class: 'rl-care-banner__img',
+              alt: cb_alt
+          }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'rl-care-banner__placeholder' }}
+        {%- endif -%}
+      </div>
+
+      <div class="rl-care-banner__overlay" aria-hidden="true"></div>
+
+      <div class="rl-care-banner__copy">
+        {%- if s.eyebrow != blank -%}
+          <p class="rl-care-banner__eyebrow">{{ s.eyebrow | escape }}</p>
+        {%- endif -%}
+
+        {%- if s.heading != blank or s.heading_accent != blank -%}
+          <h1 class="rl-care-banner__title">
+            {%- if s.heading != blank -%}
+              <span class="rl-care-banner__title-main">{{ s.heading | escape }}</span>
+            {%- endif -%}
+            {%- if s.heading_accent != blank -%}
+              {%- if s.heading != blank -%}<br>{%- endif -%}
+              <span class="rl-care-banner__title-accent">{{ s.heading_accent | escape }}</span>
+            {%- endif -%}
+          </h1>
+        {%- endif -%}
+
+        {%- if s.description != blank -%}
+          <div class="rl-care-banner__desc rte">{{ s.description }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "RL Care banner",
+  "tag": "section",
+  "class": "section-rl-care-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Breadcrumbs"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_label",
+      "label": "Current page label",
+      "default": "Care & Maintenance",
+      "info": "Shown after Home /. Leave blank to use the heading."
+    },
+
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "REDLINE VIDEO GUIDES"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Care &"
+    },
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading accent (red line)",
+      "default": "Maintenance",
+      "info": "Shown under the heading in the accent color."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Simple care tips to keep your appliances running smoothly for years. Watch our quick guides below.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Banner image"
+    },
+
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "min": 280,
+      "max": 560,
+      "step": 10,
+      "unit": "px",
+      "label": "Banner height",
+      "default": 380
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Banner corner radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay start color",
+      "default": "#F3EEE8",
+      "info": "Fades to transparent toward the right over the image."
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#d0021b"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description",
+      "default": "#6b6b69"
+    }
+  ],
+  "presets": [
+    {
+      "name": "RL Care banner"
+    }
+  ]
+}
+{% endschema %}

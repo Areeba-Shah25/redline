@@ -1,26 +1,38 @@
 {{ 'template-collection.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'component-facets.css' | asset_url | stylesheet_tag }}
+{{ 'rl-product-card.css' | asset_url | stylesheet_tag }}
+{{ 'rl-product-card-list.css' | asset_url | stylesheet_tag }}
+{{ 'rl-collection-views.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'rl-collection-views.js' | asset_url }}" defer="defer"></script>
 
 {% if section.settings.image_shape == 'blob' %}
   {{ 'mask-blobs.css' | asset_url | stylesheet_tag }}
 {%- endif -%}
 
-{%- unless section.settings.quick_add == 'none' -%}
-  {{ 'quick-add.css' | asset_url | stylesheet_tag }}
-{%- endunless -%}
-
-{%- if section.settings.quick_add == 'standard' -%}
-  <script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
-
-{%- if section.settings.quick_add == 'bulk' -%}
-  <script src="{{ 'quick-add-bulk.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'price-per-item.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'quick-order-list.js' | asset_url }}" defer="defer"></script>
-{%- endif -%}
+{%- comment -%}
+  Redline collection: filters left + products right.
+  layout_options: both (toggle) | grid | list — default both.
+{%- endcomment -%}
+{%- liquid
+  assign rl_filter_type = 'vertical'
+  assign rl_layout = section.settings.layout_options | default: 'both'
+  assign rl_show_grid = false
+  assign rl_show_list = false
+  assign rl_show_toggle = false
+  if rl_layout == 'grid'
+    assign rl_show_grid = true
+    assign rl_active_view = 'grid'
+  elsif rl_layout == 'list'
+    assign rl_show_list = true
+    assign rl_active_view = 'list'
+  else
+    assign rl_show_grid = true
+    assign rl_show_list = true
+    assign rl_show_toggle = true
+    assign rl_active_view = section.settings.default_view | default: 'grid'
+  endif
+-%}
 
 {%- style -%}
   .section-{{ section.id }}-padding {
@@ -42,22 +54,73 @@
 >
   <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
     {%- paginate collection.products by section.settings.products_per_page -%}
-      {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
-      {%- if section.settings.enable_sorting and section.settings.filter_type == 'vertical' -%}
-        <facet-filters-form class="facets facets-vertical-sort page-width small-hide">
-          <form class="facets-vertical-form" id="FacetSortForm">
-            <div class="facet-filters sorting caption">
-              <div class="facet-filters__field">
-                <h2 class="facet-filters__label caption-large text-body">
-                  <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-                </h2>
-                <div class="select">
-                  {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+      {%- assign rl_is_empty = false -%}
+      {%- if collection.products_count == 0 -%}
+        {%- assign rl_is_empty = true -%}
+      {%- endif -%}
+      <div
+        class="page-width rl-cview-page{% if section.settings.sticky_filters %} rl-cview-page--sticky-filters{% endif %}{% if rl_is_empty %} rl-cview-page--empty{% endif %}"
+        data-rl-cview
+        data-rl-layout="{{ rl_layout }}"
+        data-rl-default-view="{{ rl_active_view }}"
+        data-rl-empty="{% if rl_is_empty %}true{% else %}false{% endif %}"
+        style="--rl-cols-desktop: {{ section.settings.columns_desktop }}; --rl-cols-mobile: {{ section.settings.columns_mobile }};"
+      >
+        <div class="rl-cview">
+          <p class="rl-cview__count">
+            <span
+              id="ProductCountDesktop"
+              data-product-count="{{ collection.products_count }}"
+            >
+              {%- if collection.products_count == collection.all_products_count -%}
+                <strong>{{ collection.products_count }} {% if collection.products_count == 1 %}product{% else %}products{% endif %}</strong>
+                in the {{ collection.title | downcase }} collection
+              {%- else -%}
+                <strong>{{ collection.products_count }} of {{ collection.all_products_count }}</strong>
+                products
+              {%- endif -%}
+            </span>
+          </p>
+          <div class="rl-cview__tools">
+            {%- if section.settings.enable_filtering -%}
+              <button
+                type="button"
+                class="rl-cview__filters-btn"
+                data-rl-cview-filters
+                aria-expanded="true"
+                aria-controls="main-collection-filters"
+                {% if rl_is_empty %}disabled aria-disabled="true"{% endif %}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M2 4h12M4 8h8M6 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Filters
+              </button>
+            {%- endif -%}
+            {%- if section.settings.enable_sorting -%}
+              {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+              {%- assign sort_label = '' -%}
+              {%- for option in collection.sort_options -%}
+                {%- if option.value == sort_by -%}
+                  {%- assign sort_label = option.name -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if sort_label == blank and collection.sort_options.size > 0 -%}
+                {%- assign sort_label = collection.sort_options.first.name -%}
+              {%- endif -%}
+              <facet-filters-form class="facets rl-cview__sort small-hide feature_sorting">
+                <form class="rl-cview__sort-form" id="FacetSortForm" data-rl-sort>
+                  <label class="rl-cview__sort-label" id="SortByLabel" for="SortBy">
+                    {{- 'products.facets.sort_by_label' | t -}}
+                  </label>
                   <select
                     name="sort_by"
-                    class="facet-filters__sort select__select caption-large"
+                    class="rl-cview__sort-select rl-cview__sort-select--native"
                     id="SortBy"
                     aria-describedby="a11y-refresh-page-message"
+                    tabindex="-1"
+                    aria-hidden="true"
+                    {% if rl_is_empty %}disabled{% endif %}
                   >
                     {%- for option in collection.sort_options -%}
                       <option
@@ -70,128 +133,225 @@
                       </option>
                     {%- endfor -%}
                   </select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
-                </div>
+                  <div class="rl-cview__dd">
+                    <button
+                      type="button"
+                      class="rl-cview__dd-btn"
+                      data-rl-sort-toggle
+                      aria-haspopup="listbox"
+                      aria-expanded="false"
+                      aria-labelledby="SortByLabel SortByValue"
+                      {% if rl_is_empty %}disabled aria-disabled="true"{% endif %}
+                    >
+                      <span class="rl-cview__dd-value" id="SortByValue" data-rl-sort-value>{{ sort_label | escape }}</span>
+                      <svg class="rl-cview__dd-caret" xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                        <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                      </svg>
+                    </button>
+                    <ul class="rl-cview__dd-menu" role="listbox" data-rl-sort-menu hidden>
+                      {%- for option in collection.sort_options -%}
+                        <li role="option">
+                          <button
+                            type="button"
+                            class="rl-cview__dd-option{% if option.value == sort_by %} is-selected{% endif %}"
+                            data-rl-sort-option
+                            data-value="{{ option.value | escape }}"
+                            {% if option.value == sort_by %}
+                              aria-selected="true"
+                            {% else %}
+                              aria-selected="false"
+                            {% endif %}
+                          >
+                            {{ option.name | escape }}
+                          </button>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                </form>
+              </facet-filters-form>
+            {%- endif -%}
+            {%- if rl_show_toggle -%}
+              <div class="rl-cview__cols" role="group" aria-label="Product layout">
+                <button
+                  type="button"
+                  class="rl-cview__col"
+                  data-rl-cview-mode="grid"
+                  aria-pressed="{% if rl_active_view == 'grid' %}true{% else %}false{% endif %}"
+                  aria-label="Grid view"
+                  {% if rl_is_empty %}disabled aria-disabled="true"{% endif %}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <rect x="2" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    <rect x="10" y="2" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    <rect x="2" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    <rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="rl-cview__col"
+                  data-rl-cview-mode="list"
+                  aria-pressed="{% if rl_active_view == 'list' %}true{% else %}false{% endif %}"
+                  aria-label="List view"
+                  {% if rl_is_empty %}disabled aria-disabled="true"{% endif %}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <rect x="2" y="3" width="14" height="2.5" rx="0.5" fill="currentColor"/>
+                    <rect x="2" y="7.75" width="14" height="2.5" rx="0.5" fill="currentColor"/>
+                    <rect x="2" y="12.5" width="14" height="2.5" rx="0.5" fill="currentColor"/>
+                  </svg>
+                </button>
               </div>
-            </div>
+            {%- endif -%}
+          </div>
+        </div>
 
-            <div class="product-count-vertical light" role="status">
-              <h2 class="product-count__text text-body">
-                <span id="ProductCountDesktop">
-                  {%- if collection.results_count -%}
-                    {{
-                      'templates.search.results_with_count'
-                      | t: terms: collection.terms, count: collection.results_count
-                    }}
-                  {%- elsif collection.products_count == collection.all_products_count -%}
-                    {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
-                  {%- else -%}
-                    {{
-                      'products.facets.product_count'
-                      | t: product_count: collection.products_count, count: collection.all_products_count
-                    }}
-                  {%- endif -%}
-                </span>
-              </h2>
-              {%- render 'loading-spinner' -%}
-            </div>
-          </form>
-        </facet-filters-form>
-      {%- endif -%}
-
-      <div class="{% if section.settings.filter_type == 'vertical' %} facets-vertical page-width{% endif %}">
-        {{ 'component-facets.css' | asset_url | stylesheet_tag }}
-        <script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
-        {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
-          <aside
-            aria-labelledby="verticalTitle"
-            class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-            id="main-collection-filters"
-            data-id="{{ section.id }}"
-          >
-            {% render 'facets',
-              results: collection,
-              enable_filtering: section.settings.enable_filtering,
-              enable_sorting: section.settings.enable_sorting,
-              filter_type: section.settings.filter_type,
-              paginate: paginate
-            %}
-          </aside>
-        {%- endif -%}
-
-        <div
-          class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          id="ProductGridContainer"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-          {% endif %}
-        >
-          {%- if collection.products.size == 0 -%}
-            <div class="collection collection--empty page-width" id="product-grid" data-id="{{ section.id }}">
-              <div class="loading-overlay gradient"></div>
-              <div class="title-wrapper center">
-                <h2 class="title title--primary">
-                  {{ 'sections.collection_template.empty' | t -}}
-                  <br>
-                  {{
-                    'sections.collection_template.use_fewer_filters_html'
-                    | t: link: collection.url, class: 'underlined-link link'
-                  }}
-                </h2>
-              </div>
-            </div>
-          {%- else -%}
-            <div
-              class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
+        <div class="facets-vertical rl-cview-layout">
+          {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+            <aside
+              aria-labelledby="verticalTitle"
+              class="facets-wrapper{% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}"
+              id="main-collection-filters"
+              data-id="{{ section.id }}"
+              data-rl-cview-side
             >
-              <div class="loading-overlay gradient"></div>
-              <ul
+              {% render 'facets',
+                results: collection,
+                enable_filtering: section.settings.enable_filtering,
+                enable_sorting: false,
+                filter_type: rl_filter_type,
+                paginate: paginate
+              %}
+            </aside>
+          {%- endif -%}
+
+          <div
+            class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            id="ProductGridContainer"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+            {% endif %}
+          >
+            {%- if collection.products.size == 0 -%}
+              <div
+                class="collection collection--empty rl-cview-empty"
                 id="product-grid"
                 data-id="{{ section.id }}"
-                class="
-                  grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
-                  grid--{{ section.settings.columns_desktop }}-col-desktop
-                  {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
-                "
               >
-                {% assign skip_card_product_styles = false %}
-                {%- for product in collection.products -%}
-                  {% assign lazy_load = false %}
-                  {%- if forloop.index > 2 -%}
-                    {%- assign lazy_load = true -%}
-                  {%- endif -%}
-                  <li
-                    class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                    {% if settings.animations_reveal_on_scroll %}
-                      data-cascade
-                      style="--animation-order: {{ forloop.index }};"
-                    {% endif %}
-                  >
-                    {% render 'card-product',
-                      card_product: product,
-                      media_aspect_ratio: section.settings.image_ratio,
-                      image_shape: section.settings.image_shape,
-                      show_secondary_image: section.settings.show_secondary_image,
-                      show_vendor: section.settings.show_vendor,
-                      show_rating: section.settings.show_rating,
-                      lazy_load: lazy_load,
-                      skip_styles: skip_card_product_styles,
-                      quick_add: section.settings.quick_add,
-                      section_id: section.id,
-                      product_view_context: 'collection'
-                    %}
-                  </li>
-                  {%- assign skip_card_product_styles = true -%}
-                {%- endfor -%}
-              </ul>
+                <div class="rl-cview-empty__inner">
+                  <h2 class="rl-cview-empty__title">
+                    {{ 'sections.collection_template.empty' | t }}
+                  </h2>
+                  <p class="rl-cview-empty__text">
+                    <a class="underlined-link link" href="{{ routes.all_products_collection_url }}">
+                      Go to the Shop page
+                    </a>
+                  </p>
+                </div>
+              </div>
+            {%- else -%}
+              <div class="collection">
+                <div class="loading-overlay gradient"></div>
 
-              {%- if paginate.pages > 1 -%}
-                {% render 'pagination', paginate: paginate, anchor: '' %}
-              {%- endif -%}
-            </div>
-          {%- endif -%}
+                <ul
+                  id="product-grid"
+                  data-id="{{ section.id }}"
+                  data-rl-cview-grid
+                  data-rl-view="{{ rl_active_view }}"
+                  class="rl-cview-grid"
+                >
+                  {%- for product in collection.products -%}
+                    <li
+                      class="rl-cview-item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                      {% if settings.animations_reveal_on_scroll %}
+                        data-cascade
+                        style="--animation-order: {{ forloop.index }};"
+                      {% endif %}
+                    >
+                      {%- if rl_show_grid -%}
+                        <div class="rl-cview-item__grid">
+                          {% render 'rl-product-card',
+                            product: product,
+                            show_vendor: section.settings.show_vendor,
+                            show_rating: section.settings.show_rating,
+                            image_ratio: section.settings.image_ratio,
+                            image_shape: section.settings.image_shape,
+                            show_secondary_image: section.settings.show_secondary_image,
+                            badge_style: section.settings.badge_style,
+                            badge_text: section.settings.badge_text,
+                            button_label: section.settings.button_label,
+                            strike: true
+                          %}
+                        </div>
+                      {%- endif -%}
+                      {%- if rl_show_list -%}
+                        <div class="rl-cview-item__list">
+                          {% render 'rl-product-card-list',
+                            product: product,
+                            show_vendor: section.settings.show_vendor,
+                            show_rating: section.settings.show_rating,
+                            image_ratio: section.settings.image_ratio,
+                            image_shape: section.settings.image_shape,
+                            show_secondary_image: section.settings.show_secondary_image,
+                            badge_style: section.settings.badge_style,
+                            badge_text: section.settings.badge_text,
+                            button_label: section.settings.button_label,
+                            strike: true
+                          %}
+                        </div>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+
+                {%- liquid
+                  assign rl_nav = section.settings.products_navigation | default: 'pagination'
+                  assign rl_shown = collection.products.size
+                  assign rl_total = paginate.items
+                  if rl_total == 0
+                    assign rl_total = collection.products_count
+                  endif
+                  if rl_total > 0
+                    assign rl_progress = rl_shown | times: 100.0 | divided_by: rl_total
+                  else
+                    assign rl_progress = 0
+                  endif
+                -%}
+
+                {%- if rl_nav == 'load_more' -%}
+                  {%- if rl_total > 0 -%}
+                    <div
+                      class="rl-loadmore"
+                      data-rl-loadmore
+                      data-rl-section="{{ section.id }}"
+                      data-rl-total="{{ rl_total }}"
+                    >
+                      <p class="rl-loadmore__text" data-rl-loadmore-text>
+                        Showing {{ rl_shown }} of {{ rl_total }} products
+                      </p>
+                      <span class="rl-loadmore__progress" aria-hidden="true">
+                        <i style="width: {{ rl_progress }}%;" data-rl-loadmore-bar></i>
+                      </span>
+                      {%- if paginate.next -%}
+                        <a
+                          href="{{ paginate.next.url }}"
+                          class="rl-loadmore__btn"
+                          data-rl-loadmore-btn
+                        >
+                          Load More
+                        </a>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                {%- elsif paginate.pages > 1 -%}
+                  <div class="rl-pagination">
+                    {% render 'pagination', paginate: paginate, anchor: '' %}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
         </div>
       </div>
     {%- endpaginate -%}
@@ -211,9 +371,20 @@
       "id": "products_per_page",
       "min": 8,
       "max": 36,
-      "step": 4,
+      "step": 1,
       "default": 16,
       "label": "t:sections.main-collection-product-grid.settings.products_per_page.label"
+    },
+    {
+      "type": "select",
+      "id": "products_navigation",
+      "options": [
+        { "value": "pagination", "label": "Pagination" },
+        { "value": "load_more", "label": "Load more button" }
+      ],
+      "default": "pagination",
+      "label": "Product navigation",
+      "info": "Pagination shows page numbers. Load more appends the next page of products."
     },
     {
       "type": "range",
@@ -320,21 +491,45 @@
     {
       "type": "checkbox",
       "id": "show_vendor",
-      "default": false,
+      "default": true,
       "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
     },
     {
       "type": "checkbox",
       "id": "show_rating",
-      "default": false,
+      "default": true,
       "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
-      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
+      "info": "Static 4-star rating on Redline cards"
+    },
+    {
+      "type": "select",
+      "id": "badge_style",
+      "options": [
+        { "value": "amount", "label": "Save amount" },
+        { "value": "percent", "label": "Save percent" },
+        { "value": "none", "label": "Hide badge" }
+      ],
+      "default": "amount",
+      "label": "Sale badge"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "default": "Save",
+      "label": "Sale badge text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "View Product",
+      "label": "Card button label"
     },
     {
       "type": "select",
       "id": "quick_add",
       "default": "none",
       "label": "t:sections.main-collection-product-grid.settings.quick_add.label",
+      "info": "Not used with Redline cards",
       "options": [
         {
           "value": "none",
@@ -349,6 +544,50 @@
           "label": "t:sections.main-collection-product-grid.settings.quick_add.options.option_3"
         }
       ]
+    },
+    {
+      "type": "header",
+      "content": "Filters sidebar"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_filters",
+      "default": false,
+      "label": "Sticky filters sidebar",
+      "info": "Keeps filters visible while scrolling the product grid"
+    },
+    {
+      "type": "header",
+      "content": "List & grid view"
+    },
+    {
+      "type": "select",
+      "id": "layout_options",
+      "options": [
+        { "value": "both", "label": "Grid and list" },
+        { "value": "grid", "label": "Grid only" },
+        { "value": "list", "label": "List only" }
+      ],
+      "default": "both",
+      "label": "Layout options"
+    },
+    {
+      "type": "select",
+      "id": "default_view",
+      "options": [
+        { "value": "grid", "label": "Grid" },
+        { "value": "list", "label": "List" }
+      ],
+      "default": "grid",
+      "label": "Default view",
+      "info": "Used when Layout options is Grid and list"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_view_toggle",
+      "default": true,
+      "label": "Show list / grid toggle",
+      "info": "Deprecated — use Layout options instead"
     },
     {
       "type": "header",
@@ -378,8 +617,9 @@
           "label": "t:sections.main-collection-product-grid.settings.filter_type.options__3.label"
         }
       ],
-      "default": "horizontal",
-      "label": "t:sections.main-collection-product-grid.settings.filter_type.label"
+      "default": "vertical",
+      "label": "t:sections.main-collection-product-grid.settings.filter_type.label",
+      "info": "Use Vertical for filters on the left (Redline layout)"
     },
     {
       "type": "checkbox",

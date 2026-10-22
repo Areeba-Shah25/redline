@@ -1,6 +1,8 @@
 {%- comment -%}
   rl-product-card — one product card (whole card is a link).
-  Params: product, show_vendor, show_rating, badge_style (amount|percent|none), badge_text, sold_out_text, button_label, strike (true = line through old price)
+  Params: product, show_vendor, show_rating, badge_style (amount|percent|none), badge_text,
+          sold_out_text, button_label, strike, image_ratio (adapt|portrait|square),
+          show_secondary_image, image_shape
   Stars are static (4 yellow + 1 grey) via rl-static-stars.
   Needs asset: rl-product-card.css
 {%- endcomment -%}
@@ -12,8 +14,32 @@
     assign saving = product.compare_at_price | minus: product.price
   endif
   assign b_style = badge_style | default: 'amount'
+  assign media_ratio = image_ratio | default: 'square'
+  assign ratio = 1
+  if media_ratio == 'portrait'
+    assign ratio = 0.8
+  elsif media_ratio == 'adapt'
+    if product.featured_media and product.featured_media.aspect_ratio != blank
+      assign ratio = product.featured_media.aspect_ratio
+    endif
+  else
+    assign ratio = 1
+  endif
+  if ratio == 0 or ratio == blank
+    assign ratio = 1
+  endif
+  assign shape = image_shape | default: 'default'
+  assign show_hover = false
+  if show_secondary_image and product.media.size > 1
+    assign show_hover = true
+  endif
 -%}
-<a class="rl-pc{% if strike %} rl-pc--strike{% endif %}" href="{{ product.url }}" draggable="false">
+<a
+  class="rl-pc rl-pc--ratio-{{ media_ratio }}{% if strike %} rl-pc--strike{% endif %}{% if show_hover %} rl-pc--hover-img{% endif %}{% if shape != 'default' %} rl-pc--shape rl-pc--shape-{{ shape }}{% endif %}"
+  href="{{ product.url }}"
+  draggable="false"
+  style="--rl-pc-ratio: {{ ratio }};"
+>
   {%- if product.available == false -%}
     <span class="rl-pc__badge rl-pc__badge--sold">{{ sold_out_text | default: 'Sold out' }}</span>
   {%- elsif on_sale and b_style != 'none' -%}
@@ -25,14 +51,39 @@
 
   <div class="rl-pc__media">
     {%- if product.featured_media -%}
-      {{ product.featured_media | image_url: width: 500 | image_tag: loading: 'lazy', widths: '200, 300, 400, 500', sizes: '(min-width: 990px) 16vw, 45vw', alt: product.featured_media.alt | default: product.title }}
+      {{
+        product.featured_media
+        | image_url: width: 500
+        | image_tag:
+          loading: 'lazy',
+          widths: '200, 300, 400, 500',
+          sizes: '(min-width: 990px) 16vw, 45vw',
+          class: 'rl-pc__img rl-pc__img--primary',
+          alt: product.featured_media.alt
+          | default: product.title
+      }}
+      {%- if show_hover -%}
+        {{
+          product.media[1]
+          | image_url: width: 500
+          | image_tag:
+            loading: 'lazy',
+            widths: '200, 300, 400, 500',
+            sizes: '(min-width: 990px) 16vw, 45vw',
+            class: 'rl-pc__img rl-pc__img--secondary',
+            alt: product.media[1].alt
+            | default: product.title
+        }}
+      {%- endif -%}
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag }}
     {%- endif -%}
   </div>
 
   <div class="rl-pc__body">
-    {%- if show_vendor and product.vendor != blank -%}<p class="rl-pc__vendor">{{ product.vendor }}</p>{%- endif -%}
+    {%- if show_vendor and product.vendor != blank -%}
+      <p class="rl-pc__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
     <h3 class="rl-pc__title">{{ product.title }}</h3>
     {%- if show_rating -%}
       <div class="rl-pc__rating">

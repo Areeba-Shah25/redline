@@ -1,0 +1,225 @@
+{%- comment -%}
+  rl-care-blog — Care Guides listing for blog / tagged URLs (View all).
+  Uses current blog (+ current_tags when present). Same cards + lightbox as hub.
+  Needs assets: rl-base.css, rl-care.css, rl-care.js
+  Assign template “care” to the Care blog, or open with ?view=care
+{%- endcomment -%}
+{{ 'rl-base.css' | asset_url | stylesheet_tag }}
+{{ 'rl-care.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign meta_label = s.meta_label | default: 'Video guide'
+  assign per_page = s.videos_per_page | default: 12
+  assign hub_url = s.hub_page
+  if hub_url == blank
+    assign hub_url = blog.url
+  endif
+  assign page_title = blog.title
+  if current_tags.size > 0
+    assign page_title = current_tags | join: ', '
+  endif
+-%}
+
+{%- paginate blog.articles by per_page -%}
+  <section
+    class="rl-section rl-care-blog"
+    data-rl-care-guides
+    style="
+      --rl-accent: {{ s.accent_color }};
+      --rl-heading: {{ s.heading_color }};
+      --rl-bg: {{ s.section_bg }};
+      --rl-maxw: {{ s.max_width }}px;
+      --rl-pt: {{ s.padding_top }}px;
+      --rl-pb: {{ s.padding_bottom }}px;
+      --cg-muted: {{ s.text_color }};
+    "
+  >
+    <div class="rl-care-guides__wrap">
+      {%- if s.show_breadcrumbs -%}
+        <nav class="rl-care-banner__crumbs" aria-label="Breadcrumb">
+          <a href="{{ routes.root_url }}">Home</a>
+          <span class="rl-care-banner__crumbs-sep" aria-hidden="true">/</span>
+          <a href="{{ hub_url }}">{{ s.hub_label | default: 'Care & Maintenance' | escape }}</a>
+          {%- if current_tags.size > 0 -%}
+            <span class="rl-care-banner__crumbs-sep" aria-hidden="true">/</span>
+            <span class="rl-care-banner__crumbs-current">{{ page_title | escape }}</span>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+
+      <div class="rl-care-blog__head">
+        {%- if s.eyebrow != blank -%}
+          <p class="rl-care-guides__eyebrow">{{ s.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1 class="rl-care-guides__group-title rl-care-blog__title">{{ page_title | escape }}</h1>
+        {%- if s.description != blank and current_tags.size == 0 -%}
+          <div class="rl-care-guides__intro rte">{{ s.description }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- assign shown = 0 -%}
+      <ul class="rl-care-guides__grid rl-care-blog__grid" role="list">
+        {%- for article in blog.articles -%}
+          {%- liquid
+            assign yt = article.metafields.custom.youtube_url.value
+            assign mp4 = article.metafields.custom.mp4_file.value
+            assign has_video = false
+            if yt != blank
+              assign has_video = true
+            elsif mp4 != blank
+              assign has_video = true
+            endif
+            assign cat_label = page_title
+            if current_tags.size == 0 and article.tags.size > 0
+              assign cat_label = article.tags.first
+            endif
+          -%}
+          {%- if has_video -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {% render 'rl-care-video-card',
+              article: article,
+              meta_label: meta_label,
+              category_label: cat_label
+            %}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if shown == 0 -%}
+          <li class="rl-care-guides__empty">
+            <p class="rl-care-guides__empty-text">No video Available for this category</p>
+          </li>
+        {%- endif -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <div class="rl-care-blog__pagination">
+          {% render 'pagination', paginate: paginate %}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="rl-care-lightbox" data-rl-care-lightbox hidden>
+      <button type="button" class="rl-care-lightbox__backdrop" data-rl-care-backdrop aria-label="Close video"></button>
+      <div class="rl-care-lightbox__dialog" role="dialog" aria-modal="true" aria-label="Video player">
+        <button type="button" class="rl-care-lightbox__close" data-rl-care-close aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="rl-care-lightbox__player" data-rl-care-player></div>
+      </div>
+    </div>
+  </section>
+{%- endpaginate -%}
+
+<script src="{{ 'rl-care.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "RL Care blog",
+  "tag": "section",
+  "class": "section-rl-care-blog",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "hub_page",
+      "label": "Care hub page",
+      "info": "Breadcrumb link back to the main Care & Maintenance page. Defaults to this blog URL."
+    },
+    {
+      "type": "text",
+      "id": "hub_label",
+      "label": "Hub breadcrumb label",
+      "default": "Care & Maintenance"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "HELPFUL HOW-TO VIDEOS"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Shown on the main blog URL only (not on tagged View all pages)."
+    },
+    {
+      "type": "text",
+      "id": "meta_label",
+      "label": "Card meta label",
+      "default": "Video guide"
+    },
+    {
+      "type": "range",
+      "id": "videos_per_page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "label": "Videos per page",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 64
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#d0021b"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description",
+      "default": "#777777"
+    }
+  ]
+}
+{% endschema %}

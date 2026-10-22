@@ -1,0 +1,84 @@
+*{
+    font-family: 'Manrope';
+}
+/* rl-collection-header.css — collection page title block */
+.rl-cheader {
+  background: var(--ch-bg, #fff);
+  padding: var(--ch-pt, 40px) 0 var(--ch-pb, 28px);
+}
+
+.rl-cheader__inner {
+  width: min(100% - 32px, var(--ch-max, 1400px));
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.rl-cheader__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+ font-family: 'Manrope';
+  list-style: none;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #9a9a98;
+}
+
+.rl-cheader__crumbs a {
+  color: #9a9a98;
+  text-decoration: none;
+}
+
+.rl-cheader__crumbs a:hover {
+  color: var(--rl-accent, #d0021b);
+}
+
+.rl-cheader__crumbs-sep {
+  color: #c4c4c2;
+}
+
+.rl-cheader__crumbs-current {
+  color: #6b6b69;
+}
+
+.rl-cheader__title {
+  margin: 0 0 10px;
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ch-heading, #1a1a1a);
+}
+
+.rl-cheader__desc {
+  margin: 0;
+  max-width: 720px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ch-text, #777);
+}
+
+.rl-cheader__desc p {
+  margin: 0;
+}
+
+.rl-cheader__desc p + p {
+  margin-top: 0.6em;
+}
+
+@media screen and (max-width: 749px) {
+  .rl-cheader {
+    padding: calc(var(--ch-pt, 40px) * 0.7) 0 calc(var(--ch-pb, 28px) * 0.7);
+  }
+
+  .rl-cheader__title {
+    font-size: 26px;
+  }
+
+  .rl-cheader__desc {
+    font-size: 14px;
+  }
+}

@@ -1,45 +1,143 @@
-<span class="field-currency">{{ cart.currency.symbol }}</span>
-
-<div class="field">
-  <input
-    class="field__input"
-    name="{{ filter.min_value.param_name }}"
-    id="{{ id_prefix }}{{ filter.label | escape }}-GTE"
-    {%- if filter.min_value.value -%}
-      value="{{ filter.min_value.value | money_without_currency }}"
-    {%- endif -%}
-    type="text"
-    inputmode="decimal"
-    placeholder="0"
-    data-pattern="\d| |,|\."
-    data-min="0"
-    data-max="{{ filter.range_max | money_without_currency }}"
+{%- comment -%}
+  Price facet inputs. Vertical (Redline) uses dual slider + Min/Max.
+  Horizontal keeps Dawn From/To fields.
+{%- endcomment -%}
+{%- if filter_type == 'vertical' -%}
+  {%- liquid
+    assign max_cents = filter.range_max
+    assign max_units = max_cents | divided_by: 100.0 | round
+    assign min_units = 0
+    assign cur_max = max_units
+    if filter.min_value.value
+      assign min_units = filter.min_value.value | divided_by: 100.0 | round
+    endif
+    if filter.max_value.value
+      assign cur_max = filter.max_value.value | divided_by: 100.0 | round
+    endif
+    assign money_format = shop.money_format | default: '{{amount}}'
+  -%}
+  <div
+    class="rl-price"
+    data-rl-price
+    data-rl-price-max="{{ max_units }}"
+    data-rl-price-format="{{ money_format | escape }}"
   >
-  <label class="field__label" for="{{ id_prefix }}{{ filter.label | escape }}-GTE">
-    {{- 'products.facets.from' | t -}}
-  </label>
-</div>
+    <p class="rl-price__label" data-rl-price-label>
+      {{ min_units | times: 100 | money_without_trailing_zeros }}
+      —
+      {{ cur_max | times: 100 | money_without_trailing_zeros }}
+    </p>
 
-{%- if filter_type != 'vertical' -%}
+    {%- liquid
+      assign lo_pct = 0
+      assign hi_pct = 100
+      if max_units > 0
+        assign lo_pct = min_units | times: 100.0 | divided_by: max_units
+        assign hi_pct = cur_max | times: 100.0 | divided_by: max_units
+      endif
+    -%}
+    <div class="rl-price__slider" data-rl-price-slider style="--lo: {{ lo_pct }}%; --hi: {{ hi_pct }}%;">
+      <div class="rl-price__track" aria-hidden="true"><i></i></div>
+      <input
+        type="range"
+        class="rl-price__range rl-price__range--min"
+        data-rl-price-range-min
+        min="0"
+        max="{{ max_units }}"
+        step="1"
+        value="{{ min_units }}"
+        aria-label="Minimum price"
+      >
+      <input
+        type="range"
+        class="rl-price__range rl-price__range--max"
+        data-rl-price-range-max
+        min="0"
+        max="{{ max_units }}"
+        step="1"
+        value="{{ cur_max }}"
+        aria-label="Maximum price"
+      >
+    </div>
+
+    <div class="rl-price__minmax">
+      <label class="rl-price__field">
+        <span class="rl-price__field-label">Min</span>
+        <input
+          class="rl-price__input field__input"
+          name="{{ filter.min_value.param_name }}"
+          id="{{ id_prefix }}{{ filter.label | escape }}-GTE"
+          type="text"
+          inputmode="decimal"
+          value="{{ min_units }}"
+          placeholder="0"
+          data-min="0"
+          data-max="{{ max_units }}"
+          data-rl-price-min
+          data-pattern="\d| |,|\."
+        >
+      </label>
+      <span class="rl-price__dash" aria-hidden="true">—</span>
+      <label class="rl-price__field">
+        <span class="rl-price__field-label">Max</span>
+        <input
+          class="rl-price__input field__input"
+          name="{{ filter.max_value.param_name }}"
+          id="{{ id_prefix }}{{ filter.label | escape }}-LTE"
+          type="text"
+          inputmode="decimal"
+          value="{{ cur_max }}"
+          placeholder="{{ max_units }}"
+          data-min="0"
+          data-max="{{ max_units }}"
+          data-rl-price-max
+          data-pattern="\d| |,|\."
+        >
+      </label>
+    </div>
+  </div>
+{%- else -%}
   <span class="field-currency">{{ cart.currency.symbol }}</span>
-{%- endif -%}
 
-<div class="field">
-  <input
-    class="field__input"
-    name="{{ filter.max_value.param_name }}"
-    id="{{ id_prefix }}{{ filter.label | escape }}-LTE"
-    {%- if filter.max_value.value -%}
-      value="{{ filter.max_value.value | money_without_currency }}"
-    {%- endif -%}
-    type="text"
-    inputmode="decimal"
-    placeholder="{{ filter.range_max | money_without_currency }}"
-    data-pattern="\d| |,|\."
-    data-min="0"
-    data-max="{{ filter.range_max | money_without_currency }}"
-  >
-  <label class="field__label" for="{{ id_prefix }}{{ filter.label | escape }}-LTE">
-    {{- 'products.facets.to' | t -}}
-  </label>
-</div>
+  <div class="field">
+    <input
+      class="field__input"
+      name="{{ filter.min_value.param_name }}"
+      id="{{ id_prefix }}{{ filter.label | escape }}-GTE"
+      {%- if filter.min_value.value -%}
+        value="{{ filter.min_value.value | money_without_currency }}"
+      {%- endif -%}
+      type="text"
+      inputmode="decimal"
+      placeholder="0"
+      data-pattern="\d| |,|\."
+      data-min="0"
+      data-max="{{ filter.range_max | money_without_currency }}"
+    >
+    <label class="field__label" for="{{ id_prefix }}{{ filter.label | escape }}-GTE">
+      {{- 'products.facets.from' | t -}}
+    </label>
+  </div>
+
+  <span class="field-currency">{{ cart.currency.symbol }}</span>
+
+  <div class="field">
+    <input
+      class="field__input"
+      name="{{ filter.max_value.param_name }}"
+      id="{{ id_prefix }}{{ filter.label | escape }}-LTE"
+      {%- if filter.max_value.value -%}
+        value="{{ filter.max_value.value | money_without_currency }}"
+      {%- endif -%}
+      type="text"
+      inputmode="decimal"
+      placeholder="{{ filter.range_max | money_without_currency }}"
+      data-pattern="\d| |,|\."
+      data-min="0"
+      data-max="{{ filter.range_max | money_without_currency }}"
+    >
+    <label class="field__label" for="{{ id_prefix }}{{ filter.label | escape }}-LTE">
+      {{- 'products.facets.to' | t -}}
+    </label>
+  </div>
+{%- endif -%}
