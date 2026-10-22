@@ -38,7 +38,8 @@ a.rl-cats__card:hover .rl-cats__arrow, a.rl-cats__card:focus-visible .rl-cats__a
   .rl-cats__grid { --cols: var(--cols-t, 2); }
 }
 @media (max-width: 749px) {
-  .rl-cats__grid { --cols: var(--cols-m, 1); gap: calc(var(--cat-gap, 16px) * .75); }
+  .rl-cats__grid { --cols: var(--cols-t, 2); gap: calc(var(--cat-gap, 16px) * .75); grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr; }
   .rl-cats__bar { padding: 12px 14px; }
   .rl-cats__title { font-size: 15px; }
 
@@ -46,4 +47,7 @@ a.rl-cats__card:hover .rl-cats__arrow, a.rl-cats__card:focus-visible .rl-cats__a
   .rl-cats--swipe .rl-cats__grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin-right: -20px; padding-right: 20px; }
   .rl-cats--swipe .rl-cats__grid::-webkit-scrollbar { display: none; }
   .rl-cats--swipe .rl-cats__item { flex: 0 0 72%; scroll-snap-align: start; }
+  h2.rl-heading {
+    font-size: 18px;
+}
 }

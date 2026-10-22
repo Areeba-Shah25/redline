@@ -11,6 +11,7 @@
   "sections": {
     "main": {
       "type": "main-blog",
+      "disabled": true,
       "settings": {
         "layout": "collage",
         "show_image": true,
@@ -20,9 +21,112 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "rl_care_banner_ARBtUb": {
+      "type": "rl-care-banner",
+      "name": "RL Care banner",
+      "settings": {
+        "show_breadcrumbs": true,
+        "breadcrumb_label": "Care & Maintenance",
+        "eyebrow": "REDLINE VIDEO GUIDES",
+        "heading": "Care &",
+        "heading_accent": "Maintenance",
+        "description": "<p>Simple care tips to keep your appliances running smoothly for years. Watch our quick guides below.</p>",
+        "image": "shopify://shop_images/4f213a6e25132d60b594e7420129d04ddea515d8.jpg",
+        "max_width": 1400,
+        "banner_height": 380,
+        "radius": 16,
+        "padding_top": 32,
+        "padding_bottom": 40,
+        "section_bg": "#ffffff",
+        "overlay_color": "#f3eee8",
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#6b6b69"
+      }
+    },
+    "rl_care_guides_RLNfJN": {
+      "type": "rl-care-guides",
+      "blocks": {
+        "category_pJ8cMp": {
+          "type": "category",
+          "settings": {
+            "title": "Refrigerators",
+            "tag": "Refrigerators",
+            "tag_custom": ""
+          }
+        },
+        "category_LGUUfP": {
+          "type": "category",
+          "settings": {
+            "title": "Washing Machines",
+            "tag": "Washing Machines",
+            "tag_custom": ""
+          }
+        },
+        "category_VWWAjM": {
+          "type": "category",
+          "settings": {
+            "title": "Air Conditioners",
+            "tag": "Air Conditioners",
+            "tag_custom": ""
+          }
+        },
+        "category_Qf7nmr": {
+          "type": "category",
+          "settings": {
+            "title": "Televisions",
+            "tag": "Televisions",
+            "tag_custom": ""
+          }
+        },
+        "category_qCc8dE": {
+          "type": "category",
+          "settings": {
+            "title": "Kitchen Appliances",
+            "tag": "Kitchen Appliances",
+            "tag_custom": ""
+          }
+        },
+        "category_f4qK7H": {
+          "type": "category",
+          "settings": {
+            "title": "Small Appliances",
+            "tag": "Small Appliances",
+            "tag_custom": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_pJ8cMp",
+        "category_LGUUfP",
+        "category_VWWAjM",
+        "category_Qf7nmr",
+        "category_qCc8dE",
+        "category_f4qK7H"
+      ],
+      "name": "RL Care guides",
+      "settings": {
+        "blog": "care-maintenance",
+        "eyebrow": "HELPFUL HOW-TO VIDEOS",
+        "heading": "Explore Care Guides",
+        "description": "<p>Browse simple maintenance tutorials to keep your appliances working their best.</p>",
+        "meta_label": "Video guide",
+        "preview_per_category": 1,
+        "show_count": true,
+        "max_width": 1400,
+        "padding_top": 48,
+        "padding_bottom": 64,
+        "section_bg": "#ffffff",
+        "accent_color": "#d0021b",
+        "heading_color": "#1a1a1a",
+        "text_color": "#777777"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "rl_care_banner_ARBtUb",
+    "rl_care_guides_RLNfJN"
   ]
 }

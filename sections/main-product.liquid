@@ -803,6 +803,15 @@
     </div>
   </product-component>
 </product-info>
+<script>(function () {
+    function renameBuyNow() {
+      document.querySelectorAll('.shopify-payment-button__button--unbranded').forEach(function (btn) {
+        if (btn.textContent.trim() !== 'Buy now') btn.textContent = 'Buy Now';
+      });
+    }
+    renameBuyNow();
+    new MutationObserver(renameBuyNow).observe(document.body, { childList: true, subtree: true });
+  })();</script>
 
 {% schema %}
 {

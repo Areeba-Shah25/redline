@@ -13,6 +13,7 @@
   object-fit: cover; }
 .rl-grid .rl-pc__vendor { font-size: 14px; 
 font-weight:700;
+color:#D0021B;
 font-family: 'Manrope';}
 .rl-grid .rl-pc__title { font-size: 15px; }
 .rl-grid .rl-pc__now { font-size: 24px; font-family: 'Manrope';}

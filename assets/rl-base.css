@@ -25,8 +25,16 @@
 
 @media (max-width: 749px) {
   .rl-section { padding-top: calc(var(--rl-pt, 40px) * .7); padding-bottom: calc(var(--rl-pb, 40px) * .7); }
-  .rl-eyebrow { font-size: 14px; }
-  .rl-link { font-size: 14px; }
+  .rl-eyebrow { font-size: 12px; }
+  .rl-link { font-size: 12px; }
+  .rl-arrow {
+    width: 26px !important;
+    height: 26px !important;}
+    .rl-arrow svg {
+    width: 12px !important;
+    height: 12px !important;
+}
+
 }
 @media (prefers-reduced-motion: reduce) {
   .rl-section *, .rl-section *::before, .rl-section *::after { transition: none !important; animation: none !important; }

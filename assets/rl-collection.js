@@ -177,6 +177,8 @@
     }
 
     function onPointerDown(e) {
+        // Let mobile touchscreens use native horizontal scrolling.
+  if (e.pointerType === 'touch') return;
       if (e.button !== 0 && e.pointerType === 'mouse') return;
       /* Ignore drag start on controls so arrows/dots stay clickable */
       if (e.target.closest && e.target.closest('.rl-collection__arrow, .rl-collection__dot')) return;

@@ -99,5 +99,5 @@
   .rl-bf__logo { width: min(var(--bf-logo, 210px), 60%); }
   .rl-bf__panel { margin: 0 10px; }
   .rl-bf__arrow { display: none; }
-  .rl-bf__btn { display: block; text-align: center; padding: 14px 20px; }
+  .rl-bf__btn { display: block; text-align: center; padding: 14px 20px; width:50%; }
 }

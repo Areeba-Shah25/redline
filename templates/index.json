@@ -102,6 +102,7 @@
           "type": "message",
           "settings": {
             "text": "Customer support available",
+            "custom_icon": "shopify://shop_images/sale.png",
             "icon_size": 18,
             "link": ""
           }
@@ -110,6 +111,7 @@
           "type": "message",
           "settings": {
             "text": "After-sales service",
+            "custom_icon": "shopify://shop_images/sale.png",
             "icon_size": 18,
             "link": ""
           }
@@ -118,6 +120,7 @@
           "type": "message",
           "settings": {
             "text": "Top appliance brands",
+            "custom_icon": "shopify://shop_images/sale.png",
             "icon_size": 18,
             "link": ""
           }
@@ -126,6 +129,7 @@
           "type": "message",
           "settings": {
             "text": "Delivery available",
+            "custom_icon": "shopify://shop_images/sale.png",
             "icon_size": 18,
             "link": ""
           }
@@ -134,6 +138,7 @@
           "type": "message",
           "settings": {
             "text": "Secure & convenient payments",
+            "custom_icon": "shopify://shop_images/sale.png",
             "icon_size": 18,
             "link": ""
           }
@@ -142,6 +147,7 @@
           "type": "message",
           "settings": {
             "text": "Returns are free within 7 days",
+            "custom_icon": "shopify://shop_images/sale.png",
             "icon_size": 18,
             "link": ""
           }
@@ -296,7 +302,7 @@
         "autoplay": false,
         "autoplay_speed": 4,
         "accent_color": "#d0021b",
-        "tile_bg": "#ffffff",
+        "tile_bg": "#f6f6f5",
         "section_bg": "#ffffff",
         "padding_top": 52,
         "padding_bottom": 40
@@ -396,7 +402,8 @@
         "banner_i3YF67": {
           "type": "banner",
           "settings": {
-            "image": "shopify://shop_images/instant_pot.png",
+            "image": "shopify://shop_images/instant.png",
+            "mobile_image": "shopify://shop_images/istanat-mb_png.png",
             "image_alt": "",
             "heading": "Instant Pot®:\nAmerica’s No.1 Air\nFryer Brand",
             "description": "<p>The Instant™ Vortex® Plus 6-quart Clear Cook Air Fryer is now Available!<br/>Using an Instant Vortex is everyday magic and is good for your health!<br/>We have several models in store to choose from!</p>",
@@ -411,7 +418,8 @@
         "banner_aXYJNH": {
           "type": "banner",
           "settings": {
-            "image": "shopify://shop_images/Ecovacs.png",
+            "image": "shopify://shop_images/pot-desktop.png",
+            "mobile_image": "shopify://shop_images/pot.png",
             "image_alt": "",
             "heading": "Ecovacs | Auto\nCleaning Robots",
             "description": "<p>To empower and inspire you to live a more convenient, connected lifestyle, we design intelligent robotic solutions that seamlessly integrate into your everyday life, so you have more time to do what you love.</p>",
@@ -653,7 +661,7 @@
         "link_text": "Explore More",
         "link_url": "#",
         "cols_desktop": 4,
-        "cols_tablet": 2,
+        "cols_tablet": 1,
         "cols_mobile": "1",
         "mobile_swipe": false,
         "image_shape": "landscape",
@@ -715,7 +723,7 @@
         "heading": "Less cleaning.\nMore living.",
         "description": "<p>Discover smarter ways to care for your home, with time-saving technology made beautifully simple.</p>",
         "button_label": "Explore Ecovacs",
-        "button_link": "",
+        "button_link": "#",
         "text_position": "right",
         "heading_size": "medium",
         "height": 330,
@@ -801,7 +809,7 @@
         "items_mobile": "2",
         "autoplay": true,
         "autoplay_speed": 8,
-        "show_arrows": true,
+        "show_arrows": false,
         "show_dots": false,
         "max_width": 1400,
         "cell_height": 120,
